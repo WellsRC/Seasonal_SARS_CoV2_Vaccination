@@ -7,7 +7,7 @@ T_Run=[datenum('July 1, 2022'):datenum('July 1, 2023')];
 parfor jj=1:NS
     temp_cd=pwd;
     temp_cd=temp_cd(1:end-3);
-    Parameters=load([temp_cd 'Contact_Matrix\Contact_USA_85.mat'],'N','C');
+    Parameters=load([temp_cd 'Contact_Matrix/Contact_USA_85.mat'],'N','C');
 
     A=length(Parameters.N);
     AC=[0:84];
