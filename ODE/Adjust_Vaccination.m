@@ -1,12 +1,6 @@
-function Parameters_Adj = Adjust_Vaccination(T_Run,Parameters,Time_Vac,Reduction_Vac)
+function Parameters_Adj = Adjust_Vaccination(Parameters,Reduction_Vac)
 
 Parameters_Adj=Parameters;
-
-dT=datenum(Time_Vac)-T_Run(1);
-lambda_V=-log(0.05)./dT;
-Parameters_Adj.nu_V.lambda_v=ones(A,1).*lambda_V;
-
-
 Parameters_Adj.vac_int=(1-Reduction_Vac).*Parameters_Adj.vac_int;
 
 % Adjust the initial conditions

@@ -25,8 +25,10 @@ CI_v=11+span_A;
 
 vac_R=Vaccination_Function(t,nu_V);
 
+beta_t=Transmission_Rate(t,beta_I);
+
 I_tot_FI=(x(I)+(1-psi_V).*x(I_v))./N;
-lambda_FI=beta_I.*(C*I_tot_FI);
+lambda_FI=beta_t.*(C*I_tot_FI);
 
 dxdt(S_n)=omega_R.*x(R_n)-lambda_FI.*x(S_n)+gamma_V.*x(V);
 
