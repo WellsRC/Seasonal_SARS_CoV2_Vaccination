@@ -1,155 +1,468 @@
 function [T_Run,P] = Parameter_Sample(NS)
 
 P=cell(NS,1);
-lhs_samp=lhsdesign(NS,40);
-T_Run=[datenum('July 1, 2022'):datenum('July 1, 2023')];
+lhs_samp=lhsdesign(NS,97);
+T_Run=[datenum('September 1, 2022'):datenum('September 1, 2023')];
 
 parfor jj=1:NS
     temp_cd=pwd;
     temp_cd=temp_cd(1:end-3);
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Load population and contact matrix
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Parameters=load([temp_cd 'Contact_Matrix/Contact_USA_85.mat'],'N','C');
 
     A=length(Parameters.N);
     AC=[0:84];
+    count=1;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Latent period
-    Parameters.sigma_E=ones(A,1)./(1.48+(2.76-1.48).*lhs_samp(jj,32));
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Parameters.sigma_E=ones(A,1)./(1.48+(2.76-1.48).*lhs_samp(jj,count));
+    count=count+1;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Infectious period (no vaccine)
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     day_delta_I=zeros(A,1);
-    day_delta_I(AC<30)=9.0+(10.6-9.0).*lhs_samp(jj,1);
-    day_delta_I(AC>=30 & AC<50)=8.7+(11.6-8.7).*lhs_samp(jj,2);
-    day_delta_I(AC>=50)=9.6+(17.5-9.6).*lhs_samp(jj,3);
+    day_delta_I(AC<30)=9.0+(10.6-9.0).*lhs_samp(jj,count);
+    count=count+1;
+    day_delta_I(AC>=30 & AC<50)=8.7+(11.6-8.7).*lhs_samp(jj,count);
+    count=count+1;
+    day_delta_I(AC>=50)=9.6+(17.5-9.6).*lhs_samp(jj,count);
+    count=count+1;
     Parameters.delta_I=1./day_delta_I;
-
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Infectious period (vaccine)
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     day_delta_V=zeros(A,1);
-    day_delta_V(AC<30)=10.5+(12.4-10.5).*lhs_samp(jj,4);
-    day_delta_V(AC>=30 & AC<50)=11.7+(13.4-11.7).*lhs_samp(jj,5);
-    day_delta_V(AC>=50)=12.2+(15.0-12.2).*lhs_samp(jj,6);
+    day_delta_V(AC<30)=10.5+(12.4-10.5).*lhs_samp(jj,count);
+    count=count+1;
+    day_delta_V(AC>=30 & AC<50)=11.7+(13.4-11.7).*lhs_samp(jj,count);
+    count=count+1;
+    day_delta_V(AC>=50)=12.2+(15.0-12.2).*lhs_samp(jj,count);
+    count=count+1;
     Parameters.delta_V=1./day_delta_V;
-
-    % Vaccine effectiveness
-    eps_V=zeros(A,1);
-    eps_V(AC<=17)=0.45+(0.59-0.45).*lhs_samp(jj,7);
-    eps_V(AC>=18 & AC<=49)=0.49+(0.52-0.49).*lhs_samp(jj,8);
-    eps_V(AC>=50 & AC<=64)=0.40+(0.43-0.40).*lhs_samp(jj,9);
-    eps_V(AC>=65)=0.37+(0.43-0.37).*lhs_samp(jj,10);
-    Parameters.eps_V=eps_V;
-
-    % Vaccine effectiveness Hospitalization
-    eps_H=ones(A,1).*0.2961;
-    Parameters.eps_H=eps_H;
-
-    % Reduction transmission
-    Parameters.psi_V=ones(A,1).*(0.2713+(0.3125-0.2713).*lhs_samp(jj,11));
-
-    % Transmission
-    Parameters.beta_I.beta_max=(0.025+(0.075-0.025).*lhs_samp(jj,12));
-    Parameters.beta_I.beta_min=(0.01+(0.025-0.01).*lhs_samp(jj,13));
-    Parameters.beta_I.phi_t=0.2+(0.8-0.2).*lhs_samp(jj,14);
-    Parameters.beta_I.scale_t=365;
     
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Vaccine effectiveness
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    eps_V=zeros(A,1);
+    eps_V(AC<=17)=0.45+(0.59-0.45).*lhs_samp(jj,count);
+    count=count+1;
+    eps_V(AC>=18 & AC<=49)=0.49+(0.52-0.49).*lhs_samp(jj,count);
+    count=count+1;
+    eps_V(AC>=50 & AC<=64)=0.40+(0.43-0.40).*lhs_samp(jj,count);
+    count=count+1;
+    eps_V(AC>=65)=0.37+(0.43-0.37).*lhs_samp(jj,count);
+    count=count+1;
+    Parameters.eps_V=eps_V;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Vaccine effectiveness Hospitalization
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    eps_H=ones(A,1).*(0.13+(0.6-0.13).*lhs_samp(jj,count));
+    count=count+1;
+    Parameters.eps_H=eps_H;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Vaccine effectiveness death given Hospitalization
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    eps_DH=zeros(A,1);
+    
+    %Under 65
+    % Sample probability of death given hopsitalization under no booster
+    No_Booster=binoinv([0.025 0.975],948,496/948)/948;
+    pn=No_Booster(1)+(No_Booster(2)-No_Booster(1)).*lhs_samp(jj,count);
+    count=count+1;
+    
+    % Sample probability of death given hopsitalization with booster
+    Booster=binoinv([0.025 0.975],57,17/57)/57;
+    pb=Booster(1)+(Booster(2)-Booster(1)).*lhs_samp(jj,count);
+    count=count+1;
+    
+    % Determine the level of reduction 
+    eps_DH(AC<65)=1-pb./pn;
+    
+    % OVer 65
+    % Sample probability of death given hopsitalization under no booster
+    No_Booster=binoinv([0.025 0.975],717,437/717)/717;
+    pn=No_Booster(1)+(No_Booster(2)-No_Booster(1)).*lhs_samp(jj,count);
+    count=count+1;
+    % Sample probability of death given hopsitalization with booster
+    
+    Booster=binoinv([0.025 0.975],53,14/53)/53;
+    pb=Booster(1)+(Booster(2)-Booster(1)).*lhs_samp(jj,count);
+    count=count+1;
+    
+    % Determine the level of reduction 
+    eps_DH(AC>=65)=1-pb./pn;
+    
+    Parameters.eps_DH=eps_DH;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Reduction transmission    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Parameters.psi_V=ones(A,1).*(0.2713+(0.3125-0.2713).*lhs_samp(jj,count));
+    count=count+1;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Transmission
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Parameters.beta_I.beta_max=(0.025+(0.075-0.025).*lhs_samp(jj,count));
+    count=count+1;
+    Parameters.beta_I.beta_min=(0.005+(0.025-0.005).*lhs_samp(jj,count));
+    count=count+1;
+    Parameters.beta_I.phi_t=lhs_samp(jj,count);
+    count=count+1;
+    Parameters.beta_I.scale_t=365.*(0.4+(1-0.4).*lhs_samp(jj,count));
+    count=count+1;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Susceptilibty
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     S_Inf=zeros(A,1);
-    S_Inf(AC<10)=0.25+(0.57-0.25).*lhs_samp(jj,33);
-    S_Inf(AC>=10 & AC<20)=0.27+(0.53-0.27).*lhs_samp(jj,34);
-    S_Inf(AC>=20 & AC<30)=0.59+(0.96-0.59).*lhs_samp(jj,35);
-    S_Inf(AC>=30 & AC<40)=0.69+(0.98-0.69).*lhs_samp(jj,36);
-    S_Inf(AC>=40 & AC<50)=0.61+(0.96-0.61).*lhs_samp(jj,37);
-    S_Inf(AC>=50 & AC<60)=0.63+(0.97-0.63).*lhs_samp(jj,38);
-    S_Inf(AC>=60 & AC<70)=0.7+(0.99-0.7).*lhs_samp(jj,39);
-    S_Inf(AC>=70)=0.56+(0.90-0.56).*lhs_samp(jj,40);
+    S_Inf(AC<10)=0.25+(0.57-0.25).*lhs_samp(jj,count);
+    count=count+1;
+    S_Inf(AC>=10 & AC<20)=0.27+(0.53-0.27).*lhs_samp(jj,count);
+    count=count+1;
+    S_Inf(AC>=20 & AC<30)=0.59+(0.96-0.59).*lhs_samp(jj,count);
+    count=count+1;
+    S_Inf(AC>=30 & AC<40)=0.69+(0.98-0.69).*lhs_samp(jj,count);
+    count=count+1;
+    S_Inf(AC>=40 & AC<50)=0.61+(0.96-0.61).*lhs_samp(jj,count);
+    count=count+1;
+    S_Inf(AC>=50 & AC<60)=0.63+(0.97-0.63).*lhs_samp(jj,count);
+    count=count+1;
+    S_Inf(AC>=60 & AC<70)=0.7+(0.99-0.7).*lhs_samp(jj,count);
+    count=count+1;
+    S_Inf(AC>=70)=0.56+(0.90-0.56).*lhs_samp(jj,count);
+    count=count+1;
     
     Parameters.beta_I.S_Inf=S_Inf;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Influenza campaign
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    % Vaccination parameters
-    Parameters.nu_V.vac_rate=ones(A,1).*(0.01+(0.05-0.01).*lhs_samp(jj,15));
-    Parameters.nu_V.t0=T_Run(1);
-
-    Parameters.nu_V.vac_start=datenum('September 1, 2022');
-
+    % Vaccination rate
+    vac_rate=zeros(A,1);
+    
+    vac_rate(AC<=4)=0.0171+(0.0445-0.0171).*lhs_samp(jj,count);
+    count=count+1;
+    vac_rate(AC>=5 & AC<=12)=0.0191+(0.0252-0.0191).*lhs_samp(jj,count);
+    count=count+1;
+    vac_rate(AC>=13 & AC<=17)=0.0199+(0.0303-0.0199).*lhs_samp(jj,count);
+    count=count+1;
+    vac_rate(AC>=18 & AC<=49)=0.0166+(0.0231-0.0166).*lhs_samp(jj,count);
+    count=count+1;
+    vac_rate(AC>=50 & AC<=64)=0.0181+(0.0263-0.0181).*lhs_samp(jj,count);
+    count=count+1;
+    vac_rate(AC>=65)=0.0178+(0.0304-0.0178).*lhs_samp(jj,count);
+    count=count+1;
+    Parameters.nu_V_Influenza.vac_rate=vac_rate;
+    Parameters.nu_V_Influenza.t0=T_Run(1).*ones(A,1);
+    
+    
+    % Delay in vaccination for saturation
+    vac_delay_start=zeros(A,1);
+    
+    vac_delay_start(AC<=4)=7.4987+(83.8131-7.4987).*lhs_samp(jj,count);
+    count=count+1;
+    vac_delay_start(AC>=5 & AC<=12)=11.4628+(20.1999-11.4628).*lhs_samp(jj,count);
+    count=count+1;
+    vac_delay_start(AC>=13 & AC<=17)=13.4019+(30.3156-13.4019).*lhs_samp(jj,count);
+    count=count+1;
+    vac_delay_start(AC>=18 & AC<=49)=15.8267+(23.0024-15.8267).*lhs_samp(jj,count);
+    count=count+1;
+    vac_delay_start(AC>=50 & AC<=64)=15.4328+(24.2047-15.4328).*lhs_samp(jj,count);
+    count=count+1;
+    vac_delay_start(AC>=65)=11.2138+(23.4614-11.2138).*lhs_samp(jj,count);
+    count=count+1;
+    Parameters.nu_V_Influenza.vac_delay_start=vac_delay_start;
+    
+    
+    % Hill coefficient for function
+    vac_n=zeros(A,1);
+    
+    vac_n(AC<=4)=0.6421+(29.4843-0.6421).*lhs_samp(jj,count);
+    count=count+1;
+    vac_n(AC>=5 & AC<=12)=1.4778+(72.7098-1.4778).*lhs_samp(jj,count);
+    count=count+1;
+    vac_n(AC>=13 & AC<=17)=0.8398+(69.3464-0.8398).*lhs_samp(jj,count);
+    count=count+1;
+    vac_n(AC>=18 & AC<=49)=1.7758+(95.4960-1.7758).*lhs_samp(jj,count);
+    count=count+1;
+    vac_n(AC>=50 & AC<=64)=3.6271+(96.9207-3.6271).*lhs_samp(jj,count);
+    count=count+1;
+    vac_n(AC>=65)=2.4438+(30.6773-2.4438).*lhs_samp(jj,count);
+    count=count+1;
+    Parameters.nu_V_Influenza.n=vac_n;
+    
+    Parameters.nu_V_Influenza.vac_start=datenum('September 1, 2022').*ones(A,1);
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Annual campaign
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Vaccination rate
+    vac_rate=zeros(A,1);
+    
+    vac_rate(AC<=2)=0.0507.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=12 & AC<=15)=0.0057.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=16 & AC<=17)=0.0052.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=18 & AC<=24)=0.0043.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=2 & AC<=4)=0.0236.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=25 & AC<=39)=0.0096.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=40 & AC<=49)=0.0093.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=5 & AC<=11)=0.0138.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=50 & AC<=64)=0.0089.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=65 & AC<=74)=0.0114.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=75)=0.0130.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.nu_V_Annual.vac_rate=vac_rate;
+    
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Natural immunity waning rate 
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    day_omega_R=(90+(730-90).*lhs_samp(jj,count)).*ones(A,1);
+    count=count+1;
+    Parameters.omega_R=1./day_omega_R;
+    
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Vaccine waning rate
-    day_gamma_V=30.*(3+(18-3).*lhs_samp(jj,16)).*ones(A,1);
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    day_gamma_V=(30+(365-30).*lhs_samp(jj,count)).*ones(A,1);
+    count=count+1;
     Parameters.gamma_V=1./day_gamma_V;
 
-
-    % Natural immunity waning rate
-    day_omega_R=30.*(6+(24-6).*lhs_samp(jj,17)).*ones(A,1);
-    Parameters.omega_R=1./day_omega_R;
-
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Probability of hospital admission
-
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     prob_H=zeros(A,1);
+    
+    NI=43147;
+    NH=475;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC<10)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    NI=119261;
+    NH=456;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC>=10 & AC<=19)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    NI=265199;
+    NH=1593;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC>=20 & AC<=29)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    NI=228915;
+    NH=1500;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC>=30 & AC<=39)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    NI=167045;
+    NH=987;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC>=40 & AC<=49)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    NI=134186;
+    NH=1031;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC>=50 & AC<=59)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
 
-    prob_H(AC<10)=0.011;
-    prob_H(AC>=10 & AC<=19)=0.0038;
-    prob_H(AC>=20 & AC<=29)=0.006;
-    prob_H(AC>=30 & AC<=39)=0.0066;
-    prob_H(AC>=40 & AC<=49)=0.0059;
-    prob_H(AC>=50 & AC<=59)=0.0077;
-    prob_H(AC>=60 & AC<=69)=0.0139;
-    prob_H(AC>=70 & AC<=79)=0.0357;
-    prob_H(AC>=80)=0.111;
+    NI=64875;
+    NH=900;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC>=60 & AC<=69)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    NI=31066;
+    NH=1108;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC>=70 & AC<=79)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    NI=14165;
+    NH=1574;
+    md=binoinv(0.025,NI,NH/NI)/NI;
+    Md=binoinv(0.975,NI,NH/NI)/NI;
+    prob_H(AC>=80)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
 
     Parameters.prob_H=prob_H;
     
-    % Duration of stay in Hospital
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Probability of death given hospitalization
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    prob_death_H=zeros(A,1);
+    Hp=690;
+    Hd=6;
+    md=binoinv(0.025,Hp,Hd/Hp)/Hp;
+    Md=binoinv(0.975,Hp,Hd/Hp)/Hp;
+    prob_death_H(AC<18)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+        
+    Hp=875;
+    Hd=8;
+    md=binoinv(0.025,Hp,Hd/Hp)/Hp;
+    Md=binoinv(0.975,Hp,Hd/Hp)/Hp;  
+    prob_death_H(AC>=18 & AC<=34)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    Hp=1415;
+    Hd=29;
+    md=binoinv(0.025,Hp,Hd/Hp)/Hp;
+    Md=binoinv(0.975,Hp,Hd/Hp)/Hp;
+    prob_death_H(AC>=34 & AC<=49)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    Hp=3691;
+    Hd=139;
+    md=binoinv(0.025,Hp,Hd/Hp)/Hp;
+    Md=binoinv(0.975,Hp,Hd/Hp)/Hp;
+    prob_death_H(AC>=50 & AC<=64)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    Hp=7063;
+    Hd=371;
+    md=binoinv(0.025,Hp,Hd/Hp)/Hp;
+    Md=binoinv(0.975,Hp,Hd/Hp)/Hp;
+    prob_death_H(AC>=65 & AC<=79)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    
+    Hp=6921;
+    Hd=451;
+    md=binoinv(0.025,Hp,Hd/Hp)/Hp;
+    Md=binoinv(0.975,Hp,Hd/Hp)/Hp;
+    prob_death_H(AC>=80)=md+(Md-md).*lhs_samp(jj,count); 
+    count=count+1;
 
-    DOS_Hosp=zeros(A,1);
-
-    DOS_Hosp(AC<=17)=3+round(lhs_samp(jj,18));
-    DOS_Hosp(AC>=18 & AC<=50)=4+ceil(lhs_samp(jj,19)-0.7);
-    DOS_Hosp(AC>50)=6+ceil(lhs_samp(jj,20)-0.8);
-    Parameters.DOS_Hosp=DOS_Hosp;
-
+    Parameters.prob_death_H=prob_death_H;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Initial conditions
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    X0=zeros(11.*A,1);
+    X0=zeros(15.*A,1);
 
-    span_A=11.*[0:(A-1)];
+    
+    span_A=15.*[0:(A-1)];
+
     S_n=1+span_A;
-    S_v=2+span_A;
+    S_i=2+span_A;
 
-    E=4+span_A;
-    I=6+span_A;
+    
+    E_n=4+span_A;
 
-    R_n=8+span_A;
-    R_v=9+span_A;
+    I_n=7+span_A;
+
+    R_n=10+span_A;
+    R_i=11+span_A;
+
 
 
     Parameters.R0=zeros(A,1);
 
-    Parameters.R0(AC<=11)=0.735+(0.768-0.735).*lhs_samp(jj,21);
-    Parameters.R0(AC>=12 & AC<=17)=0.728+(0.755-0.728).*lhs_samp(jj,22);
-    Parameters.R0(AC>=18 & AC<=49)=0.625+(0.648-0.625).*lhs_samp(jj,23);
-    Parameters.R0(AC>=50 & AC<=64)=0.485+(0.513-0.485).*lhs_samp(jj,24);
-    Parameters.R0(AC>=65)=0.322+(0.343-0.322).*lhs_samp(jj,25);
+    Parameters.R0(AC<=11)=0.735+(0.768-0.735).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.R0(AC>=12 & AC<=17)=0.728+(0.755-0.728).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.R0(AC>=18 & AC<=49)=0.625+(0.648-0.625).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.R0(AC>=50 & AC<=64)=0.485+(0.513-0.485).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.R0(AC>=65)=0.322+(0.343-0.322).*lhs_samp(jj,count); 
+    count=count+1;
 
 
     X0(R_n)=Parameters.N.*Parameters.R0;
 
-    X0(I)=(Parameters.N.*Parameters.R0.*Parameters.omega_R./Parameters.delta_I).*0.1;
+    X0(I_n)=(Parameters.N.*Parameters.R0.*Parameters.omega_R./Parameters.delta_I);
 
-    X0(E)=Parameters.delta_I.*X0(I)./Parameters.sigma_E;
-
-    X0(S_n)=Parameters.N-X0(R_n)-X0(I)-X0(E);
-       
-    Parameters.vac_int=zeros(A,1);
-
-    Parameters.vac_int(AC<=4)=0.636+(0.752-0.636).*lhs_samp(jj,26);
-    Parameters.vac_int(AC>=5 & AC<=12)=0.542+(0.645-0.542).*lhs_samp(jj,27);
-    Parameters.vac_int(AC>=13 & AC<=17)=0.337+(0.533-0.337).*lhs_samp(jj,28);
-    Parameters.vac_int(AC>=18 & AC<=49)=0.269+(0.384-0.269).*lhs_samp(jj,29);
-    Parameters.vac_int(AC>=50 & AC<=64)=0.397+(0.542-0.397).*lhs_samp(jj,30);
-    Parameters.vac_int(AC>=65)=0.596+(0.752-0.596).*lhs_samp(jj,31);
-
-    X0(R_v)=X0(R_n).*Parameters.vac_int;
-    X0(R_n)=X0(R_n)-X0(R_v);
-    
-    X0(S_v)=X0(S_n).*Parameters.vac_int;
-    X0(S_n)=X0(S_n)-X0(S_v);
-    
-    Parameters.X0=X0;
+    X0(E_n)=Parameters.delta_I.*X0(I_n)./Parameters.sigma_E;
+   
+    X0(S_n)=Parameters.N-X0(R_n)-X0(I_n)-X0(E_n);
     
     
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+    % Influenza
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+    Parameters.vac_int_influenza=zeros(A,1);
+
+    Parameters.vac_int_influenza(AC<=4)=0.636+(0.752-0.636).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.vac_int_influenza(AC>=5 & AC<=12)=0.542+(0.645-0.542).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.vac_int_influenza(AC>=13 & AC<=17)=0.337+(0.533-0.337).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.vac_int_influenza(AC>=18 & AC<=49)=0.269+(0.384-0.269).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.vac_int_influenza(AC>=50 & AC<=64)=0.397+(0.542-0.397).*lhs_samp(jj,count); 
+    count=count+1;
+    Parameters.vac_int_influenza(AC>=65)=0.596+(0.752-0.596).*lhs_samp(jj,count); 
+    count=count+1;
+
+    X0(R_i)=X0(R_n).*Parameters.vac_int_influenza;
+    X0(R_n)=X0(R_n)-X0(R_i);
+    
+    X0(S_i)=X0(S_n).*Parameters.vac_int_influenza;
+    X0(S_n)=X0(S_n)-X0(S_i);
+    
+    Parameters.X0.Influenza_Campaign=X0;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+    % Annual
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+    
+    X0=zeros(15.*A,1);
+    
+    X0(R_n)=Parameters.N.*Parameters.R0;
+
+    X0(I_n)=(Parameters.N.*Parameters.R0.*Parameters.omega_R./Parameters.delta_I);
+
+    X0(E_n)=Parameters.delta_I.*X0(I_n)./Parameters.sigma_E;
+   
+    X0(S_n)=Parameters.N-X0(R_n)-X0(I_n)-X0(E_n);
+    
+    Parameters.vac_int_annual=zeros(A,1);
+    
+    Parameters.vac_int_annual(AC<=2)=0.0023.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=12 & AC<=15)=0.1253.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=16 & AC<=17)=0.1362.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=18 & AC<=24)=0.1453.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=2 & AC<=4)=0.0043.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=25 & AC<=39)=0.1325.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=40 & AC<=49)=0.1827.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=5 & AC<=11)=0.0523.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=50 & AC<=64)=0.2843.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=65 & AC<=74)=0.4943.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_int_annual(AC>=75)=0.5127.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    
+    X0(R_i)=X0(R_n).*Parameters.vac_int_annual;
+    X0(R_n)=X0(R_n)-X0(R_i);
+    
+    X0(S_i)=X0(S_n).*Parameters.vac_int_annual;
+    X0(S_n)=X0(S_n)-X0(S_i);
+    
+    Parameters.X0.Annual_Campaign=X0;
     
     P{jj}=Parameters;
 end

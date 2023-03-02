@@ -1,36 +1,43 @@
-function Parameters_Adj = Adjust_Vaccination(Parameters,Reduction_Vac)
+function P_new=Adjust_Vaccination(P_old,vac_start,vac_red)
 
-Parameters_Adj=Parameters;
-Parameters_Adj.vac_int=(1-Reduction_Vac).*Parameters_Adj.vac_int;
+P_new=P_old;
 
-% Adjust the initial conditions
+P_new.nu_V_Influenza.vac_start=vac_start.*ones(A,1);
 
-X0=zeros(11.*A,1);
+P_new.vac_int_influenza=P_old.vac_int_influenza.*(1-vac_red);
 
-span_A=11.*[0:(A-1)];
+
+% Adjust initial condictions
+X0=zeros(14.*A,1);
+
+    
+span_A=14.*[0:(A-1)];
+
 S_n=1+span_A;
-S_v=2+span_A;
-
-E=4+span_A;
-I=6+span_A;
-
-R_n=8+span_A;
-R_v=9+span_A;
+S_i=2+span_A;
 
 
-X0(R_n)=Parameters_Adj.N.*Parameters_Adj.R0.*(1-Parameters_Adj.vac_int);
-X0(R_v)=Parameters_Adj.N.*Parameters_Adj.R0.*Parameters_Adj.vac_int;
+E_n=4+span_A;
 
-X0(I)=Parameters.X0(I);
+I_n=7+span_A;
 
-X0(E)=Parameters.X0(E);
+R_n=10+span_A;
+R_i=11+span_A;
 
-S_Tot=Parameters_Adj.N-Parameters_Adj.N.*Parameters_Adj.R0-X0(I)-X0(E);
+X0(R_n)=P_new.N.*P_new.R0;
 
-X0(S_n)=S_Tot.*(1-Parameters_Adj.vac_int);
-X0(S_v)=S_Tot.*Parameters_Adj.vac_int;
+X0(I_n)=(P_new.N.*P_new.R0.*P_new.omega_R./P_new.delta_I);
 
-Parameters_Adj.X0=X0;
+X0(E_n)=P_new.delta_I.*X0(I_n)./P_new.sigma_E;
+
+X0(S_n)=P_new.N-X0(R_n)-X0(I_n)-X0(E_n);
+
+X0(R_i)=X0(R_n).*P_new.vac_int_influenza;
+X0(R_n)=X0(R_n)-X0(R_i);
+
+X0(S_i)=X0(S_n).*P_new.vac_int_influenza;
+X0(S_n)=X0(S_n)-X0(S_i);
+
+P_new.X0.Influenza_Campaign=X0;
 
 end
-
