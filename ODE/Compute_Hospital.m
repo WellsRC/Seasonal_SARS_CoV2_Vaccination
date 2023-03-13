@@ -1,9 +1,10 @@
-function [Hospital_Admission,Hospital_Prevalence,Hospital_Count]=Compute_Hospital(Daily_Incidence_Unvaccinated,Daily_Incidence_Vaccinated,Parameters,T_Run)
+function [Hospital_Admission,Hospital_Prevalence,Hospital_Count,Cumulative_Hospital_Age]=Compute_Hospital(Daily_Incidence_Unvaccinated,Daily_Incidence_Vaccinated,Parameters,T_Run,T_Month_Age)
 Daily_Incidence_Unvaccinated_Hospital=zeros(size(Daily_Incidence_Unvaccinated));
 Daily_Incidence_Vaccinated_Hospital=zeros(size(Daily_Incidence_Vaccinated));
 
 A=length(Parameters.N);
 
+Cumulative_Hospital_Age=zeros(A,length(T_Month_Age));
 Hospital_Admission=zeros(A,length(T_Run)-1);
 Hospital_Prevalence=zeros(A,length(T_Run)-1);
 
@@ -13,6 +14,9 @@ for a=1:A
 end
 
 temp_H=Daily_Incidence_Unvaccinated_Hospital+Daily_Incidence_Vaccinated_Hospital;
+for a=1:A
+    Cumulative_Hospital_Age(a,:)=pchip(T_Run(2:end),cumsum(temp_H(a,:)),T_Month_Age);
+end
 
 for t=1:(size(Hospital_Admission,2)-1)
     ta=[1:size(Hospital_Admission,2)-t];

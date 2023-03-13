@@ -140,7 +140,7 @@ parfor jj=1:NS
     
     Parameters.beta_I.S_Inf=S_Inf;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Influenza campaign
+    % Influenza seaosonal coverage
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % Vaccination rate
@@ -178,8 +178,7 @@ parfor jj=1:NS
     vac_delay_start(AC>=65)=11.2138+(23.4614-11.2138).*lhs_samp(jj,count);
     count=count+1;
     Parameters.nu_V_Influenza.vac_delay_start=vac_delay_start;
-    
-    
+        
     % Hill coefficient for function
     vac_n=zeros(A,1);
     
@@ -199,12 +198,12 @@ parfor jj=1:NS
     
     Parameters.nu_V_Influenza.vac_start=datenum('September 1, 2022').*ones(A,1);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Annual campaign
+    % SARS CoV-2 Boosters
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Vaccination rate
     vac_rate=zeros(A,1);
     
-    vac_rate(AC<=2)=0.0507.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    vac_rate(AC<=1)=0.0507.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     vac_rate(AC>=12 & AC<=15)=0.0057.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
@@ -226,8 +225,15 @@ parfor jj=1:NS
     count=count+1;
     vac_rate(AC>=75)=0.0130.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
-    Parameters.nu_V_Annual.vac_rate=vac_rate;
+    Parameters.nu_V_SARSCoV2.vac_rate=vac_rate;
     
+    
+    % Assume for the seasonal campaign under low coverage the functional
+    % form is similar to keep things as consistent as possible
+    Parameters.nu_V_SARSCoV2.n=Parameters.nu_V_Influenza.n;
+    Parameters.nu_V_SARSCoV2.vac_start=Parameters.nu_V_Influenza.vac_start;
+    Parameters.nu_V_SARSCoV2.vac_delay_start=Parameters.nu_V_Influenza.vac_delay_start;
+    Parameters.nu_V_SARSCoV2.t0=Parameters.nu_V_Influenza.t0;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Natural immunity waning rate 
@@ -394,7 +400,7 @@ parfor jj=1:NS
     
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-    % Influenza
+    % Influenza seasonal coverage
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
     Parameters.vac_int_influenza=zeros(A,1);
 
@@ -419,7 +425,7 @@ parfor jj=1:NS
     
     Parameters.X0.Influenza_Campaign=X0;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-    % Annual
+    % SARS CoV-2 coverage
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
     
     X0=zeros(15.*A,1);
@@ -434,7 +440,7 @@ parfor jj=1:NS
     
     Parameters.vac_int_annual=zeros(A,1);
     
-    Parameters.vac_int_annual(AC<=2)=0.0023.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    Parameters.vac_int_annual(AC<=1)=0.0023.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     Parameters.vac_int_annual(AC>=12 & AC<=15)=0.1253.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
@@ -462,7 +468,7 @@ parfor jj=1:NS
     X0(S_i)=X0(S_n).*Parameters.vac_int_annual;
     X0(S_n)=X0(S_n)-X0(S_i);
     
-    Parameters.X0.Annual_Campaign=X0;
+    Parameters.X0.SARSCoV2=X0;
     
     P{jj}=Parameters;
 end

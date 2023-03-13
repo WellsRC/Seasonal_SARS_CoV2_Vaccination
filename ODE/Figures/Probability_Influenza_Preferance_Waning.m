@@ -8,11 +8,11 @@ elseif(strcmp(State_V,'Hospitalization'))
 elseif(strcmp(State_V,'Deaths'))
     jj=3;
 end
-Scenarios={'All','Large_Summer','Large_Winter','Similar_Winter_Summer'};
+Scenarios={'All','Large_Summer','Large_Winter'};
 
-Title_Name={'All scenarios','Large summer peak','Large winter peak','Similar winter and summer peaks'};
+Title_Name={'All scenarios','Large summer peak','Large winter peak'};
 
-CC=[hex2rgb('#000B29');hex2rgb('#967bb6');hex2rgb('#2988BC');hex2rgb('#E1B80D')];
+CC=[hex2rgb('#000B29');hex2rgb('#E1B80D');hex2rgb('#2988BC')];
 
 X=zeros(length(Scenarios),11);
 for ss=1:length(Scenarios)
