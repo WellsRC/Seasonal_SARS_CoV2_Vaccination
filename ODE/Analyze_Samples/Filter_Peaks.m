@@ -130,7 +130,7 @@ P_Large_Summer=P_All(R_WP<0);
 
 [Filtered_Output_All,Filtered_Output_Large_Winter,Filtered_Output_Large_Summer]=Output_Peak_Filter(Filtered_Output_All,R_WP,Pks);
 
-save('Parameter_Filtered.mat','P','P_Large_Winter','P_Large_Summer');
+save('Parameter_Filtered.mat','P_All','P_Large_Winter','P_Large_Summer','R_WP');
 
 end
 

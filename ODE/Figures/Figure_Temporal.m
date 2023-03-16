@@ -1,5 +1,12 @@
 function Figure_Temporal(State_V,Scenario)
 
+temp_cd=pwd;
+temp_cd=temp_cd(1:end-11);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Load population and contact matrix
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Pop_S=load([temp_cd 'Contact_Matrix/Contact_USA_85.mat'],'N');
+Pop_S=sum(Pop_S.N);
 
 T_Run=[datenum('September 1, 2022'):datenum('September 1, 2023')];
 
@@ -10,37 +17,41 @@ load([temp_cd 'Model_Output_Summary_' Scenario '.mat']);
 Scenario_Text=double(Scenario);
 Scenario_Text(Scenario_Text==double('_'))=double(' ');
 Scenario_Text=char(Scenario_Text);
-if(strcmp(State_V,'Incidence'))    
-    Y_Plot_PRCT=Output_Summary.PRCT.Incidence;
-    Y_Plot_mean=Output_Summary.Average.Incidence;
-    yL={'Daily incidence'};    
-    CC=[hex2rgb('#DB9501')];
+if(strcmp(State_V,'Incidence')) 
+    PerC=10^3;
+    Y_Plot_PRCT=PerC.*Output_Summary.PRCT.Incidence./Pop_S;
+    Y_Plot_mean=PerC.*Output_Summary.Average.Incidence./Pop_S;
+    yL={['Daily incidence per ' num2str(PerC)]};    
+    CC=[hex2rgb('#EDAE01')];
 elseif(strcmp(State_V,'Hospital Admission'))
-    Y_Plot_PRCT=Output_Summary.PRCT.Hospital_Admission;
-    Y_Plot_mean=Output_Summary.Average.Hospital_Admission;
-    yL={'Daily new admissions'};
-    y_max=8.5*10^4;
+    PerC=10^4;
+    Y_Plot_PRCT=PerC.*Output_Summary.PRCT.Hospital_Admission./Pop_S;
+    Y_Plot_mean=PerC.*Output_Summary.Average.Hospital_Admission./Pop_S;
+    yL={['Daily new admissions  per ' num2str(PerC)]};
+    y_max=PerC.*8.5*10^4./Pop_S;
     
-    CC=[hex2rgb('#C05805')];
+    CC=[hex2rgb('#E94F08')];
 elseif(strcmp(State_V,'Hospital Burden'))
-    Y_Plot_PRCT=Output_Summary.PRCT.Hospital_Burden;
-    Y_Plot_mean=Output_Summary.Average.Hospital_Burden;
-    yL={'Current hospitalizations'};
+    PerC=10^4;
+    Y_Plot_PRCT=PerC.*Output_Summary.PRCT.Hospital_Burden./Pop_S;
+    Y_Plot_mean=PerC.*Output_Summary.Average.Hospital_Burden./Pop_S;
+    yL={['Current hospitalizations per ' num2str(PerC)]};
     
-    CC=[hex2rgb('#C05805')];
+    CC=[hex2rgb('#E94F08')];
 elseif(strcmp(State_V,'Deaths'))
-    Y_Plot_PRCT=Output_Summary.PRCT.Death;
-    Y_Plot_mean=Output_Summary.Average.Death;
-    yL={'Expected deaths from new infections'};
+    PerC=10^6;
+    Y_Plot_PRCT=PerC.*Output_Summary.PRCT.Death./Pop_S;
+    Y_Plot_mean=PerC.*Output_Summary.Average.Death./Pop_S;
+    yL={'Expected deaths from',['new infections per ' num2str(PerC)]};
     
-    CC=[hex2rgb('#2E2300')];
+    CC=[hex2rgb('#7F152E')];
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Daily Incidence
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure('units','normalized','outerposition',[0.05 0.2 0.6 0.6]);
 
-subplot('Position',[0.065,0.2775,0.9,0.665]);
+subplot('Position',[0.087,0.2775,0.9,0.665]);
 T_Plot=T_Run(1:end-1);
 patch([T_Plot flip(T_Plot)],[Y_Plot_PRCT(PRCT==2.5,:) flip(Y_Plot_PRCT(PRCT==97.5,:))],CC,'LineStyle','none','FaceAlpha',0.2);
 hold on;

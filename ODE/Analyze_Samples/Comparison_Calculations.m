@@ -50,7 +50,7 @@ Comparison.PRCT.Age_Cumulative_Count_Incidence_rel=prctile(Age_Cumulative_Count_
 Comparison.PRCT.Age_Cumulative_Count_Hospital_rel=prctile(Age_Cumulative_Count_Hospital_rel,PRCT);
 Comparison.PRCT.Age_Cumulative_Count_Death_rel=prctile(Age_Cumulative_Count_Death_rel,PRCT);
 
-xbin_edges=[-1:0.01:1.5];
+xbin_edges=[-1.005:0.01:1.505];
 [Comparison.Histogram.Cumulative_Count_Incidence_rel,~] = histcounts(Cumulative_Count_Incidence_rel,xbin_edges);
 [Comparison.Histogram.Cumulative_Count_Hospital_rel,~] = histcounts(Cumulative_Count_Hospital_rel,xbin_edges);
 [Comparison.Histogram.Cumulative_Count_Death_rel,~] = histcounts(Cumulative_Count_Death_rel,xbin_edges);

@@ -1,11 +1,13 @@
 clear;
 clc;
 
-NG=187;
+NG=200;
 NS=10^3;
 Av=[0:84];
-ACg=[0 4;5 17;18 49;50 64;65 84];
+ACg=[0 4;5 17;18 49;50 64;65 84;0 64];
 [Filtered_Output_All,Filtered_Output_Large_Winter,Filtered_Output_Large_Summer] = Filter_Peaks(NG,NS,Av,ACg);
+
+save('Filtered_Outputs.mat','Filtered_Output_All','Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
 
 Scenario_Calculations(Filtered_Output_All.Continual_Booster.Low_Coverage,'All_Low_Coverage_Continual_Booster');
 Scenario_Calculations(Filtered_Output_All.Continual_Booster.High_Coverage,'All_High_Coverage_Continual_Booster');
