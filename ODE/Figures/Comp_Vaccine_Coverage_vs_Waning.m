@@ -10,13 +10,36 @@ CC=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E')];
 vac_scale_influenza=[0.1:0.1:1];
 vac_wane_red=[0.1:0.1:1];
 
+
+
 figure('units','normalized','outerposition',[0.05 0.2 0.42 0.5]);
 
 subplot('Position',[0.165,0.175,0.65,0.8]);
 
-for ss=1:length(vac_scale_influenza)
-    for vv=1:length(vac_wane_red)
-        patch(100.*(vac_wane_red(vv)+[-0.05 -0.05 0.05 0.05]),100.*(vac_scale_influenza(ss)+[-0.05 0.05 0.05 -0.05]),CC(t_out,:),'facealpha',rand(1),'LineStyle','none');
+temp_cd=pwd;
+temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
+Pt=zeros(2,10);
+for ss=1:2%length(vac_scale_influenza)
+    for vv=1:10%length(vac_wane_red)
+        load([temp_cd 'Comparison_Summary_All_Baseline_65_plus_Coverage_Scaled=' num2str(100.*vac_scale_influenza(ss)) '_vs_Reduced_waning_65_plus=' num2str(100.*vac_wane_red(vv)) '.mat'])
+        
+        xt=(xbin_edges(1:end-1)+xbin_edges(2:end))./2;
+        if(t_out(1))
+            Y=Comparison.Histogram.Cumulative_Count_Incidence_rel;
+        elseif(t_out(2))   
+            Y=Comparison.Histogram.Cumulative_Count_Hospital_rel;
+        elseif(t_out(3))   
+            Y=Comparison.PRCT.Cumulative_Count_Death_dt;
+        end
+        P=Y(PRCT==50);
+        Pt(ss,vv)=P;
+    end
+end
+Ptt=(Pt-min(Pt(:)))./(max(Pt(:))-min(Pt(:)));
+for ss=1:2%length(vac_scale_influenza)
+    for vv=1:10%length(vac_wane_red)
+        
+        patch(100.*(vac_wane_red(vv)+[-0.05 -0.05 0.05 0.05]),100.*(vac_scale_influenza(ss)+[-0.05 0.05 0.05 -0.05]),CC(t_out,:),'facealpha',Ptt(ss,vv),'LineStyle','none'); hold on;
     end
 end
 xtickformat('percentage');

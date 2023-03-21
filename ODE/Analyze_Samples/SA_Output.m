@@ -15,6 +15,9 @@ if(strcmp('Vaccine_Waning',SA_Scenario.Variable))
     Filtered_Output_All.Continual_Booster.Low_Coverage.Incidence_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
     Filtered_Output_All.Continual_Booster.Low_Coverage.Death_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
     Filtered_Output_All.Continual_Booster.Low_Coverage.Hospital_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Continual_Booster.Low_Coverage.Incidence_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Continual_Booster.Low_Coverage.Death_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Continual_Booster.Low_Coverage.Hospital_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
 
     Filtered_Output_All.Annual_Booster.High_Coverage.Incidence=zeros(NN,365);
     Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Burden=zeros(NN,365);
@@ -26,6 +29,9 @@ if(strcmp('Vaccine_Waning',SA_Scenario.Variable))
     Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
     Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
     Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
 
     for ss=1:NN 
         MOS=Model_Output_SARSCoV2{ss};
@@ -53,11 +59,19 @@ if(strcmp('Vaccine_Waning',SA_Scenario.Variable))
 
             Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
             Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
-            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));            
+            
+            Filtered_Output_All.Continual_Booster.Low_Coverage.Incidence_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOS.Continual_Booster.Low_Coverage.Age_Incidence(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Continual_Booster.Low_Coverage.Death_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOS.Continual_Booster.Low_Coverage.Age_Death(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Continual_Booster.Low_Coverage.Hospital_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOS.Continual_Booster.Low_Coverage.Age_Hospital(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)>Av | Av>ACg(aa,2),end));
         end
     end
 elseif(strcmp('Vaccination_coverage_Scaled',SA_Scenario.Variable))
-    load([temp_cd(1:end-15) '/Scale_Seasonal_Influenza_Coverage_' num2str(100.*SA_Scenario.value(1)) '_and_SARSCoV2_Coverage_Under5_' num2str(100.*SA_Scenario.value(2)) '.mat'],'Model_Output_Influenza','R_WP');  
+    load([temp_cd(1:end-15) '/Scale_Seasonal_Influenza_Coverage_' num2str(100.*SA_Scenario.value) '.mat'],'Model_Output_Influenza','R_WP');  
     NN=length(R_WP);
 
     Filtered_Output_All.Annual_Booster.High_Coverage.Incidence=zeros(NN,365);
@@ -70,6 +84,9 @@ elseif(strcmp('Vaccination_coverage_Scaled',SA_Scenario.Variable))
     Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
     Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
     Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
 
     for ss=1:NN 
         MOI=Model_Output_Influenza{ss};
@@ -86,10 +103,95 @@ elseif(strcmp('Vaccination_coverage_Scaled',SA_Scenario.Variable))
             Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
             Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
             Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)>Av | Av>ACg(aa,2),end));
         end
     end
-elseif(strcmp('Vaccination_coverage_Under_5',SA_Scenario.Variable))
-    load([temp_cd(1:end-15) '/Scale_Seasonal_Influenza_Coverage_' num2str(100.*SA_Scenario.value(1)) '_and_SARSCoV2_Coverage_Under5_' num2str(100.*SA_Scenario.value(2)) '.mat'],'Model_Output_SARSCoV2','R_WP');
+elseif(strcmp('Baseline_Coverages_Age',SA_Scenario.Variable))
+    load([temp_cd(1:end-15) '/Baseline_Coverages_Ages_' num2str(SA_Scenario.value(1)) '_to_' num2str(SA_Scenario.value(2)) '=' num2str(100.*SA_Scenario.value(3)) '.mat'],'Model_Output_Age','R_WP');
+    NN=length(R_WP);
+    
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Burden=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Admission=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+
+    for ss=1:NN 
+        MOI=Model_Output_Age{ss};
+
+        Filtered_Output_All.Annual_Booster.High_Coverage.Incidence(ss,:)=MOI.Annual_Booster.High_Coverage.Incidence;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Burden(ss,:)=MOI.Annual_Booster.High_Coverage.Hospital_Burden;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Admission(ss,:)=MOI.Annual_Booster.High_Coverage.Hospital_Admission;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Death(ss,:)=MOI.Annual_Booster.High_Coverage.Death;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Incidence);
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Hospital_Count);
+        Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Death);
+        for aa=1:length(ACg(:,1))
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+        end
+    end
+elseif(strcmp('Seasonal_Influenza_Coverages_Age',SA_Scenario.Variable))
+    load([temp_cd(1:end-15) '/Seasonal_Influenza_Coverages_Ages_' num2str(SA_Scenario.value(1)) '_to_' num2str(SA_Scenario.value(2)) '=' num2str(100.*SA_Scenario.value(3)) '.mat'],'Model_Output_Age','R_WP');
+    NN=length(R_WP);
+    
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Burden=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Admission=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
+
+    for ss=1:NN 
+        MOI=Model_Output_Age{ss};
+
+        Filtered_Output_All.Annual_Booster.High_Coverage.Incidence(ss,:)=MOI.Annual_Booster.High_Coverage.Incidence;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Burden(ss,:)=MOI.Annual_Booster.High_Coverage.Hospital_Burden;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Admission(ss,:)=MOI.Annual_Booster.High_Coverage.Hospital_Admission;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Death(ss,:)=MOI.Annual_Booster.High_Coverage.Death;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Incidence);
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Hospital_Count);
+        Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Death);
+        for aa=1:length(ACg(:,1))
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+        end
+    end
+elseif(strcmp('Vaccination_coverage_vs_Waning-Coverage',SA_Scenario.Variable))
+    load([temp_cd(1:end-15) '/Coverage_vs_Waning_Scaled_Coverage=' num2str(100.*SA_Scenario.value(1)) '_and_Waning_Reduction=' num2str(100.*SA_Scenario.value(2)) '.mat'],'Model_Output_VC','R_WP');
     NN=length(R_WP);
 
     Filtered_Output_All.Annual_Booster.High_Coverage.Incidence=zeros(NN,365);
@@ -104,7 +206,7 @@ elseif(strcmp('Vaccination_coverage_Under_5',SA_Scenario.Variable))
     Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
 
     for ss=1:NN 
-        MOI=Model_Output_SARSCoV2{ss};
+        MOI=Model_Output_VC{ss};
 
         Filtered_Output_All.Annual_Booster.High_Coverage.Incidence(ss,:)=MOI.Annual_Booster.High_Coverage.Incidence;
         Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Burden(ss,:)=MOI.Annual_Booster.High_Coverage.Hospital_Burden;
@@ -118,6 +220,48 @@ elseif(strcmp('Vaccination_coverage_Under_5',SA_Scenario.Variable))
             Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
             Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
             Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+        end
+    end
+elseif(strcmp('Vaccination_coverage_vs_Waning-Immunity',SA_Scenario.Variable))
+    load([temp_cd(1:end-15) '/Coverage_vs_Waning_Scaled_Coverage=' num2str(100.*SA_Scenario.value(1)) '_and_Waning_Reduction=' num2str(100.*SA_Scenario.value(2)) '.mat'],'Model_Output_VacWane','R_WP');
+    NN=length(R_WP);
+
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Burden=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Admission=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death=zeros(NN,365);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count=zeros(NN,1);
+    Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+    Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
+
+    for ss=1:NN 
+        MOI=Model_Output_VacWane{ss};
+
+        Filtered_Output_All.Annual_Booster.High_Coverage.Incidence(ss,:)=MOI.Annual_Booster.High_Coverage.Incidence;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Burden(ss,:)=MOI.Annual_Booster.High_Coverage.Hospital_Burden;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Admission(ss,:)=MOI.Annual_Booster.High_Coverage.Hospital_Admission;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Death(ss,:)=MOI.Annual_Booster.High_Coverage.Death;
+        Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Incidence);
+        Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Hospital_Count);
+        Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count(ss,:)=sum(MOI.Annual_Booster.High_Coverage.Death);
+        for aa=1:length(ACg(:,1))
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)<=Av & Av<=ACg(aa,2),end));
+            
+
+            Filtered_Output_All.Annual_Booster.High_Coverage.Incidence_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Incidence(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Death_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Death(ACg(aa,1)>Av | Av>ACg(aa,2),end));
+            Filtered_Output_All.Annual_Booster.High_Coverage.Hospital_Cumulative_Count_Compliment_Age(ss,aa)=sum(MOI.Annual_Booster.High_Coverage.Age_Hospital(ACg(aa,1)>Av | Av>ACg(aa,2),end));
         end
     end
 end

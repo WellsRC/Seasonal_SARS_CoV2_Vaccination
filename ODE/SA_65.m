@@ -14,7 +14,7 @@ for ss=1:10
         parfor jj=1:NS
             Pt=Scale_Vaccination_65(P_All{jj},vac_scale_influenza(ss));
             [~,~,Model_Output_VC{jj}] = Run_Annual_Booster_ODE(T_Run,Pt);
-            Pt=P_All{jj};
+            Pt=Scale_Vaccination_65(P_All{jj},0);
             Pt.gamma_V(AC>=65)=Pt.gamma_V(AC>=65).*(1-vac_wane_red(vv));
             [~,~,Model_Output_VacWane{jj}] = Run_Annual_Booster_ODE(T_Run,Pt);
         end
