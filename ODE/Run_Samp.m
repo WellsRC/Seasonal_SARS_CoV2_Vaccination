@@ -3,8 +3,8 @@ clc;
 close all;
 parpool(32)
 rng('shuffle');
-for ss=1:50
-    NS=10^3;  
+for ss=1:5
+    NS=10^4;  
 
     [T_Run,P] = Parameter_Sample(NS);
     count_f=1;
@@ -18,7 +18,7 @@ for ss=1:50
     
     parfor jj=1:NS
         Pt=P{jj};
-        [~,~,Model_Output{jj}] = Run_ODE(T_Run,Pt);
+        [~,Model_Output{jj}] = Run_Cont_Booster_ODE(T_Run,Pt);
     end
     save(['Sample_Gen_' num2str(count_f) '.mat'],'P','T_Run','Model_Output');
     

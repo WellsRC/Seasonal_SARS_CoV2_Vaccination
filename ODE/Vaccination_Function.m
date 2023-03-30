@@ -1,3 +1,3 @@
-function vac_r=Vaccination_Function(t,nu_v)
-    vac_r=nu_v.vac_rate.*(t-nu_v.t0).^nu_v.n./((t-nu_v.t0).^nu_v.n+(nu_v.vac_delay_start+nu_v.vac_start-nu_v.t0).^nu_v.n);
+function vac_r=Vaccination_Function(t,nu_V)
+    vac_r=nu_V.vac_rate.*(t-nu_V.t0).^nu_V.n./((t-nu_V.t0).^nu_V.n+(nu_V.vac_delay_start+nu_V.vac_start-nu_V.t0).^nu_V.n);
 end

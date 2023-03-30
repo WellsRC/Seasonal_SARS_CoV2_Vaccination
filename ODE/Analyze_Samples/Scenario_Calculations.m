@@ -8,6 +8,8 @@ Output_Summary.PRCT.Cumulative_Count_Hospital=prctile(Model_Output.Hospital_Cumu
 Output_Summary.Average.Cumulative_Count_Hospital=mean(Model_Output.Hospital_Cumulative_Count,1);
 Output_Summary.PRCT.Cumulative_Count_Death=prctile(Model_Output.Death_Cumulative_Count,PRCT);
 Output_Summary.Average.Cumulative_Count_Death=mean(Model_Output.Death_Cumulative_Count,1);
+Output_Summary.PRCT.Cost=prctile(Model_Output.Cost,PRCT);
+Output_Summary.Average.Cost=mean(Model_Output.Cost,1);
     
 Output_Summary.PRCT.Incidence=prctile(Model_Output.Incidence,PRCT);
 Output_Summary.PRCT.Hospital_Burden=prctile(Model_Output.Hospital_Burden,PRCT);

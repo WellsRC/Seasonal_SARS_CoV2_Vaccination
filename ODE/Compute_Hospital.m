@@ -1,29 +1,16 @@
-function [Hospital_Admission,Hospital_Prevalence,Hospital_Count,Cumulative_Hospital_Age]=Compute_Hospital(Daily_Incidence_Unvaccinated,Daily_Incidence_Vaccinated,Parameters,T_Run,T_Month_Age)
-Daily_Incidence_Unvaccinated_Hospital=zeros(size(Daily_Incidence_Unvaccinated));
-Daily_Incidence_Vaccinated_Hospital=zeros(size(Daily_Incidence_Vaccinated));
+function [Hospital_Admission,Hospital_Prevalence]=Compute_Hospital(Daily_Hospital_Age,T_Run)
 
-A=length(Parameters.N);
+A=size(Daily_Hospital_Age,1);
 
-Cumulative_Hospital_Age=zeros(A,length(T_Month_Age));
 Hospital_Admission=zeros(A,length(T_Run)-1);
 Hospital_Prevalence=zeros(A,length(T_Run)-1);
-
-for a=1:A    
-   Daily_Incidence_Unvaccinated_Hospital(a,:)=Parameters.prob_H(a).*Daily_Incidence_Unvaccinated(a,:);
-   Daily_Incidence_Vaccinated_Hospital(a,:)=(1-Parameters.eps_H(a)).*Parameters.prob_H(a).*Daily_Incidence_Vaccinated(a,:);
-end
-
-temp_H=Daily_Incidence_Unvaccinated_Hospital+Daily_Incidence_Vaccinated_Hospital;
-for a=1:A
-    Cumulative_Hospital_Age(a,:)=pchip(T_Run(2:end),cumsum(temp_H(a,:)),T_Month_Age);
-end
 
 for t=1:(size(Hospital_Admission,2)-1)
     ta=[1:size(Hospital_Admission,2)-t];
     
     pdf_H=gamcdf(ta,3.667,3.029)-gamcdf(ta-1,3.667,3.029);
     for aa=1:A
-        Hospital_Admission(aa,t+ta)=Hospital_Admission(aa,t+ta)+temp_H(aa,t).*pdf_H;
+        Hospital_Admission(aa,t+ta)=Hospital_Admission(aa,t+ta)+Daily_Hospital_Age(aa,t).*pdf_H;
     end
 end
 
@@ -41,7 +28,6 @@ for t=1:(size(Hospital_Prevalence,2))
         Hospital_Prevalence(aa,t+ta)=Hospital_Prevalence(aa,t+ta)+Hospital_Admission(aa,t).*pdf_DOS;
     end
 end
-Hospital_Count=sum(temp_H,1);
 Hospital_Admission=sum(Hospital_Admission,1);
 Hospital_Prevalence=sum(Hospital_Prevalence,1);
 end

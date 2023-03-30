@@ -1,7 +1,7 @@
 function [T_Run,P] = Parameter_Sample(NS)
 
 P=cell(NS,1);
-lhs_samp=lhsdesign(NS,97);
+lhs_samp=lhsdesign(NS,98);
 T_Run=[datenum('September 1, 2022'):datenum('September 1, 2023')];
 
 parfor jj=1:NS
@@ -238,7 +238,7 @@ parfor jj=1:NS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Natural immunity waning rate 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    day_omega_R=(90+(730-90).*lhs_samp(jj,count)).*ones(A,1);
+    day_omega_R=(144+(267-144).*lhs_samp(jj,count)).*ones(A,1);
     count=count+1;
     Parameters.omega_R=1./day_omega_R;
     
@@ -246,11 +246,13 @@ parfor jj=1:NS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Vaccine waning rate
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    day_gamma_V=(30+(365-30).*lhs_samp(jj,count)).*ones(A,1);
+    day_gamma_V=(50+(350-50).*lhs_samp(jj,count)).*ones(A,1);
     count=count+1;
     Parameters.gamma_V=1./day_gamma_V;
 
-    
+    day_gamma_SD=(900+(1350-900).*lhs_samp(jj,count)).*ones(A,1);
+    count=count+1;
+    Parameters.gamma_SD=1./day_gamma_SD;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Probability of hospital admission
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -354,27 +356,12 @@ parfor jj=1:NS
     count=count+1;
 
     Parameters.prob_death_H=prob_death_H;
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Initial conditions
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    X0=zeros(15.*A,1);
-
     
-    span_A=15.*[0:(A-1)];
-
-    S_n=1+span_A;
-    S_i=2+span_A;
-
     
-    E_n=4+span_A;
-
-    I_n=7+span_A;
-
-    R_n=10+span_A;
-    R_i=11+span_A;
-
-
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Prior immunity
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
 
     Parameters.R0=zeros(A,1);
 
@@ -388,17 +375,8 @@ parfor jj=1:NS
     count=count+1;
     Parameters.R0(AC>=65)=0.322+(0.343-0.322).*lhs_samp(jj,count); 
     count=count+1;
-
-
-    X0(R_n)=Parameters.N.*Parameters.R0;
-
-    X0(I_n)=(Parameters.N.*Parameters.R0.*Parameters.omega_R./Parameters.delta_I);
-
-    X0(E_n)=Parameters.delta_I.*X0(I_n)./Parameters.sigma_E;
-   
-    X0(S_n)=Parameters.N-X0(R_n)-X0(I_n)-X0(E_n);
     
-    
+       
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
     % Influenza seasonal coverage
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
@@ -417,58 +395,41 @@ parfor jj=1:NS
     Parameters.vac_int_influenza(AC>=65)=0.596+(0.752-0.596).*lhs_samp(jj,count); 
     count=count+1;
 
-    X0(R_i)=X0(R_n).*Parameters.vac_int_influenza;
-    X0(R_n)=X0(R_n)-X0(R_i);
-    
-    X0(S_i)=X0(S_n).*Parameters.vac_int_influenza;
-    X0(S_n)=X0(S_n)-X0(S_i);
-    
-    Parameters.X0.Influenza_Campaign=X0;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
     % SARS CoV-2 coverage
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
     
-    X0=zeros(15.*A,1);
+    Parameters.vac_baseline=zeros(A,1);
     
-    X0(R_n)=Parameters.N.*Parameters.R0;
-
-    X0(I_n)=(Parameters.N.*Parameters.R0.*Parameters.omega_R./Parameters.delta_I);
-
-    X0(E_n)=Parameters.delta_I.*X0(I_n)./Parameters.sigma_E;
-   
-    X0(S_n)=Parameters.N-X0(R_n)-X0(I_n)-X0(E_n);
+    Parameters.vac_baseline(AC<=1)=0.0023.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=12 & AC<=15)=0.1253.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=16 & AC<=17)=0.1362.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=18 & AC<=24)=0.1453.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=2 & AC<=4)=0.0043.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=25 & AC<=39)=0.1325.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=40 & AC<=49)=0.1827.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=5 & AC<=11)=0.0523.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=50 & AC<=64)=0.2843.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=65 & AC<=74)=0.4943.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=75)=0.5127.*(1+0.05.*(0.5-lhs_samp(jj,count)));    
     
-    Parameters.vac_int_annual=zeros(A,1);
     
-    Parameters.vac_int_annual(AC<=1)=0.0023.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=12 & AC<=15)=0.1253.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=16 & AC<=17)=0.1362.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=18 & AC<=24)=0.1453.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=2 & AC<=4)=0.0043.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=25 & AC<=39)=0.1325.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=40 & AC<=49)=0.1827.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=5 & AC<=11)=0.0523.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=50 & AC<=64)=0.2843.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=65 & AC<=74)=0.4943.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_int_annual(AC>=75)=0.5127.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+    % Initial Conditions
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    X0(R_i)=X0(R_n).*Parameters.vac_int_annual;
-    X0(R_n)=X0(R_n)-X0(R_i);
-    
-    X0(S_i)=X0(S_n).*Parameters.vac_int_annual;
-    X0(S_n)=X0(S_n)-X0(S_i);
-    
-    Parameters.X0.SARSCoV2=X0;
+    Parameters.X0.Baseline_Campaign=Calc_Initial_Conditions('Baseline_Campaign',Parameters);
+    Parameters.X0.Influenza_Campaign=Calc_Initial_Conditions('Influenza_Campaign',Parameters);
     
     P{jj}=Parameters;
 end

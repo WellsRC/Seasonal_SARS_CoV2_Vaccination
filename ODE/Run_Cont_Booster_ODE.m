@@ -1,26 +1,32 @@
-function [T_Run,T_Month_Age,Y_Model] = Run_Cont_Booster_ODE(T_Run,Parameters)
+function [T_Run,Y_Model] = Run_Cont_Booster_ODE(T_Run,Parameters)
 
-opts = odeset('RelTol',1e-6,'AbsTol',1e-6,'NonNegative',1:length(Parameters.X0.SARSCoV2));
+opts = odeset('RelTol',1e-6,'AbsTol',1e-6,'NonNegative',1:length(Parameters.X0.Baseline_Campaign));
 
 
 pd=Parameters.prob_H.*Parameters.prob_death_H;
 pd_v=Parameters.prob_H.*(1-Parameters.eps_H).*Parameters.prob_death_H.*(1-Parameters.eps_DH);
-T_Month_Age=[datenum('October 1, 2022') datenum('November 1, 2022') datenum('December 1, 2022') datenum('January 1, 2023') datenum('February 1, 2023') datenum('March 1, 2023') datenum('April 1, 2023') datenum('May 1, 2023') datenum('June 1, 2023')  datenum('July 1, 2023')  datenum('August 1, 2023')  datenum('September 1, 2023')];
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% SARS C0V-2 Coverage: Continual booster campaign
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-vac_s=true; 
-[T,Y] = ode15s(@(t,x)SEIRVS(t,x,Parameters.beta_I,Parameters.sigma_E,Parameters.delta_I,Parameters.delta_V,Parameters.gamma_V,Parameters.omega_R,Parameters.eps_V,vac_s,Parameters.psi_V,Parameters.nu_V_SARSCoV2,Parameters.C,pd,pd_v), [min(T_Run) max(T_Run)],  Parameters.X0.SARSCoV2, opts);
-[Daily_Incidence_Continual_Booster_Low_Coverage,Daily_Death_Count_Continual_Booster_Low_Coverage,Daily_Incidence_Unvaccinated,Daily_Incidence_Vaccinated,Age_Cumulative_Incidence_Continual_Booster_Low_Coverage,Age_Cumulative_Death_Continual_Booster_Low_Coverage]=Compute_Daily_Incidence_Death(T,Y,T_Run,T_Month_Age,Parameters);
-[Hospital_Admission_Continual_Booster_Low_Coverage,Hospital_Prevalence_Continual_Booster_Low_Coverage,Hospital_Count_Continual_Booster_Low_Coverage,Age_Cumulative_Hospital_Continual_Booster_Low_Coverage]=Compute_Hospital(Daily_Incidence_Unvaccinated,Daily_Incidence_Vaccinated,Parameters,T_Run,T_Month_Age);
 
-Y_Model.Continual_Booster.Low_Coverage.Incidence=Daily_Incidence_Continual_Booster_Low_Coverage;
-Y_Model.Continual_Booster.Low_Coverage.Death=Daily_Death_Count_Continual_Booster_Low_Coverage;
-Y_Model.Continual_Booster.Low_Coverage.Age_Incidence=Age_Cumulative_Incidence_Continual_Booster_Low_Coverage;
-Y_Model.Continual_Booster.Low_Coverage.Age_Death=Age_Cumulative_Death_Continual_Booster_Low_Coverage;
-Y_Model.Continual_Booster.Low_Coverage.Hospital_Admission=Hospital_Admission_Continual_Booster_Low_Coverage;
-Y_Model.Continual_Booster.Low_Coverage.Hospital_Burden=Hospital_Prevalence_Continual_Booster_Low_Coverage;
-Y_Model.Continual_Booster.Low_Coverage.Hospital_Count=Hospital_Count_Continual_Booster_Low_Coverage;
-Y_Model.Continual_Booster.Low_Coverage.Age_Hospital=Age_Cumulative_Hospital_Continual_Booster_Low_Coverage;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Influenza coverage: Single booster campaign
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+[T,Y] = ode15s(@(t,x)Continual_SEIRVS(t,x,Parameters.beta_I,Parameters.sigma_E,Parameters.delta_I,Parameters.delta_V,Parameters.gamma_V,Parameters.gamma_SD,Parameters.omega_R,Parameters.eps_V,Parameters.psi_V,Parameters.nu_V_Influenza,Parameters.C,Parameters.prob_H,Parameters.prob_H.*(1-Parameters.eps_H),pd,pd_v), [min(T_Run) max(T_Run)],Parameters.X0.Baseline_Campaign, opts);
+A=length(pd);
+C_Incidence_NoVac=Y(:,16+19.*[0:(A-1)]);
+C_Incidence_Vac=Y(:,17+19.*[0:(A-1)]);
+C_Death=Y(:,18+19.*[0:(A-1)]);
+C_Hosp=Y(:,19+19.*[0:(A-1)]);
+
+[Daily_Incidence,Daily_Hospital,Daily_Death,Age_Cumulative_Incidence,Age_Cumulative_Hospital,Age_Cumulative_Death,Daily_Hospital_Age]=Compute_Daily_Incidence_Hospital_Death(T,C_Incidence_NoVac,C_Incidence_Vac,C_Death,C_Hosp,T_Run,Parameters);
+[Hospital_Admission,Hospital_Prevalence]=Compute_Hospital(Daily_Hospital_Age,T_Run);
+
+Y_Model.Incidence=Daily_Incidence;
+Y_Model.Death=Daily_Death;
+Y_Model.Hospital_Admission=Hospital_Admission;
+Y_Model.Hospital_Burden=Hospital_Prevalence;
+Y_Model.Hospital_Count=Daily_Hospital;
+Y_Model.Age_Incidence=Age_Cumulative_Incidence;
+Y_Model.Age_Death=Age_Cumulative_Death;
+Y_Model.Age_Hospital=Age_Cumulative_Hospital;
+
 end
 

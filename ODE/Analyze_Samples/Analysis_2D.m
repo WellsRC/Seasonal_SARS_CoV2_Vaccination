@@ -1,0 +1,22 @@
+clear;
+clc;
+
+Av=[0:84];
+ACg=[0 4; 5 12;13 17; 18 49; 50 64; 65 85];
+load(['Filtered_Outputs_scaled_influenza=100.mat'],'Baseline_Output_IVC_All','Baseline_Output_IVC_Large_Winter','Baseline_Output_IVC_Large_Summer');
+SA_Scenario.value=0;
+SA_Scenario.Variable='Two_Doses_65_plus_Baseline';
+[Filtered_Output_2D_Baseline_All,Filtered_Output_2D_Baseline_Large_Winter,Filtered_Output_2D_Baseline_Large_Summer] = SA_Output(SA_Scenario,Av,ACg);
+
+Comparison_Calculations(Filtered_Output_2D_Baseline_All.Annual_Booster.High_Coverage,Baseline_Output_IVC_All.Annual_Booster.High_Coverage,['All_Baseline_Alt-Two_Doses_vs_One_Dose_65_plus']);
+Comparison_Calculations(Filtered_Output_2D_Baseline_Large_Winter.Annual_Booster.High_Coverage,Baseline_Output_IVC_Large_Winter.Annual_Booster.High_Coverage,['Larger_Winter_Baseline_Alt-Two_Doses_vs_One_Dose_65_plus']);
+Comparison_Calculations(Filtered_Output_2D_Baseline_Large_Summer.Annual_Booster.High_Coverage,Baseline_Output_IVC_Large_Summer.Annual_Booster.High_Coverage,['Larger_Summer_Baseline_Alt-Two_Doses_vs_One_Dose_65_plus']);
+
+
+SA_Scenario.Variable='Two_Doses_65_plus_Influenza';
+load('Filtered_Outputs.mat','Filtered_Output_All','Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
+[Filtered_Output_2D_Influenza_All,Filtered_Output_2D_Influenza_Large_Winter,Filtered_Output_2D_Influenza_Large_Summer] = SA_Output(SA_Scenario,Av,ACg);
+
+Comparison_Calculations(Filtered_Output_2D_Influenza_All.Annual_Booster.High_Coverage,Filtered_Output_All.Annual_Booster.High_Coverage,['All_Seasonal_Influenza_Alt-Two_Doses_vs_One_Dose_65_plus']);
+Comparison_Calculations(Filtered_Output_2D_Influenza_Large_Winter.Annual_Booster.High_Coverage,Filtered_Output_Large_Winter.Annual_Booster.High_Coverage,['Larger_Winter_Seasonal_Influenza_Alt-Two_Doses_vs_One_Dose_65_plus']);
+Comparison_Calculations(Filtered_Output_2D_Influenza_Large_Summer.Annual_Booster.High_Coverage,Filtered_Output_Large_Summer.Annual_Booster.High_Coverage,['Larger_Summer_Seasonal_Influenza_Alt-Two_Doses_vs_One_Dose_65_plus']);
