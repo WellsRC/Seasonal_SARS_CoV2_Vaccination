@@ -13,7 +13,9 @@ Filtered_Output_All.Hospital_Cumulative_Count_Age=zeros(NG*NS,length(ACg(:,1)));
 Filtered_Output_All.Incidence_Cumulative_Count_Compliment_Age=zeros(NG*NS,length(ACg(:,1)));
 Filtered_Output_All.Death_Cumulative_Count_Compliment_Age=zeros(NG*NS,length(ACg(:,1)));
 Filtered_Output_All.Hospital_Cumulative_Count_Compliment_Age=zeros(NG*NS,length(ACg(:,1)));
-Filtered_Output_All.Cost=zeros(NG*NS,1);
+Filtered_Output_All.Cost_Total=zeros(NG*NS,1);
+Filtered_Output_All.Cost_Age=zeros(NG*NS,length(ACg(:,1)));
+Filtered_Output_All.Cost_Compliment_Age=zeros(NG*NS,length(ACg(:,1)));
 
 P_All=cell(NG*NS,1);
 
@@ -28,7 +30,7 @@ for gg=1:NG
         
         [Pks(ss+NS.*(gg-1)),Mag_Peaks(ss+NS.*(gg-1),:)]=Hospital_Admission_Peak(MO.Hospital_Admission,T_Run);
         
-        Filtered_Output_All.Cost(ss+NS.*(gg-1))=Calculate_Cost(MO.Age_Incidence(:,end),MO.Age_Hospital(:,end),MO.Age_Death(:,end));
+        [Filtered_Output_All.Cost_Total(ss+NS.*(gg-1)),Filtered_Output_All.Cost_Age(ss+NS.*(gg-1),:),Filtered_Output_All.Cost_Compliment_Age(ss+NS.*(gg-1),:)]=Calculate_Cost(MO.Age_Incidence(:,end),MO.Age_Hospital(:,end),MO.Age_Death(:,end),ACg,Av);
         Filtered_Output_All.Incidence(ss+NS.*(gg-1),:)=MO.Incidence;
         Filtered_Output_All.Hospital_Burden(ss+NS.*(gg-1),:)=MO.Hospital_Burden;
         Filtered_Output_All.Hospital_Admission(ss+NS.*(gg-1),:)=MO.Hospital_Admission;

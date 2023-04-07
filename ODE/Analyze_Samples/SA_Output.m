@@ -17,12 +17,15 @@ Filtered_Output_All.Hospital_Cumulative_Count_Age=zeros(NN,length(ACg(:,1)));
 Filtered_Output_All.Incidence_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
 Filtered_Output_All.Death_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
 Filtered_Output_All.Hospital_Cumulative_Count_Compliment_Age=zeros(NN,length(ACg(:,1)));
-Filtered_Output_All.Cost=zeros(NN,1);
+
+Filtered_Output_All.Cost_Total=zeros(NN,1);
+Filtered_Output_All.Cost_Age=zeros(NN,length(ACg(:,1)));
+Filtered_Output_All.Cost_Compliment_Age=zeros(NN,length(ACg(:,1)));
 
 for ss=1:NN 
     MO=Model_Output{ss};
     
-    Filtered_Output_All.Cost(ss)=Calculate_Cost(MO.Age_Incidence(:,end),MO.Age_Hospital(:,end),MO.Age_Death(:,end));
+    [Filtered_Output_All.Cost_Total(ss),Filtered_Output_All.Cost_Age(ss,:),Filtered_Output_All.Cost_Compliment_Age(ss,:)]=Calculate_Cost(MO.Age_Incidence(:,end),MO.Age_Hospital(:,end),MO.Age_Death(:,end),ACg,Av);
     
     Filtered_Output_All.Incidence(ss,:)=MO.Incidence;
     Filtered_Output_All.Hospital_Burden(ss,:)=MO.Hospital_Burden;

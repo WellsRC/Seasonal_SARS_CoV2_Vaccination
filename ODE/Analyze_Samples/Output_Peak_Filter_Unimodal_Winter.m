@@ -7,7 +7,9 @@ Filtered_Output_All.Death=Filtered_Output_All.Death(Peaks==1,:);
 Filtered_Output_All.Incidence_Cumulative_Count=Filtered_Output_All.Incidence_Cumulative_Count(Peaks==1,:);
 Filtered_Output_All.Hospital_Cumulative_Count=Filtered_Output_All.Hospital_Cumulative_Count(Peaks==1,:);
 Filtered_Output_All.Death_Cumulative_Count=Filtered_Output_All.Death_Cumulative_Count(Peaks==1,:);
-Filtered_Output_All.Cost=Filtered_Output_All.Cost(Peaks==1,:);
+Filtered_Output_All.Cost_Total=Filtered_Output_All.Cost_Total(Peaks==1);
+Filtered_Output_All.Cost_Age=Filtered_Output_All.Cost_Age(Peaks==1,:);
+Filtered_Output_All.Cost_Compliment_Age=Filtered_Output_All.Cost_Compliment_Age(Peaks==1,:);
 
 Filtered_Output_All.Incidence_Cumulative_Count_Age=Filtered_Output_All.Incidence_Cumulative_Count_Age(Peaks==1,:);
 Filtered_Output_All.Death_Cumulative_Count_Age=Filtered_Output_All.Death_Cumulative_Count_Age(Peaks==1,:);

@@ -2,13 +2,13 @@ function Age_Dist_Outcomes(Scenario)
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
 load([temp_cd 'Comparison_Summary_' Scenario '.mat']);
-xltxt={'incidence','hospitalizations','deaths'};
-CCv=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E')];
-figure('units','normalized','outerposition',[0.2 0.05 0.25 0.9]);
+xltxt={'incidence','hospitalizations','deaths','cost'};
+CCv=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
+figure('units','normalized','outerposition',[0.2 0.2 0.5 0.6]);
 AgeC={['0' char(8211) '4'],['5' char(8211) '12'],['13' char(8211) '17'],['18' char(8211) '49'],['50' char(8211) '64'],'65+'};
-for Scenario_Indx=1:3
+for Scenario_Indx=1:4
     
-    subplot('Position',[0.225,0.745-0.325.*(Scenario_Indx-1),0.72,0.235]);
+    subplot('Position',[0.105+0.5.*(rem(Scenario_Indx-1,2)),0.625-0.49.*(floor((Scenario_Indx-1)./2)),0.36,0.3525]);
     Per_Increase=zeros(1,6);
     Y=zeros(6,length(xbin_edges)-1);
     CC=CCv(Scenario_Indx,:);
@@ -27,6 +27,10 @@ for Scenario_Indx=1:3
         elseif(Scenario_Indx==3)    
             MM=max(Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:));
             Y(ss,:)=Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:)./MM;
+            Per_Increase(ss)=sum(Y(ss,xt>=0))./sum(Y(ss,:));
+        elseif(Scenario_Indx==4)    
+            MM=max(Comparison.Histogram.Cost_Age_rel(ss,:));
+            Y(ss,:)=Comparison.Histogram.Cost_Age_rel(ss,:)./MM;
             Per_Increase(ss)=sum(Y(ss,xt>=0))./sum(Y(ss,:));
         end
         min_x=min(min_x,min(xbin_edges(Y(ss,:)>0)));

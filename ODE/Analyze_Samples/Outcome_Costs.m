@@ -2,7 +2,7 @@ function [Incidence_Costs,Hospital_Costs,Death_Cost] = Outcome_Costs
 
 % https://academic.oup.com/ofid/article/8/12/ofab561/6470753
 Av=[0:84];
-Incidence_Costs=zeros(size(Av));
+
 Hospital_Costs=20674.*ones(size(Av));
 Death_Cost=27017.*ones(size(Av));
 
@@ -20,9 +20,7 @@ Death_Cost(Av>=60 & Av<=69)=9750+Death_Cost(Av>=60 & Av<=69);
 Death_Cost(Av>=70 & Av<=79)=8566+Death_Cost(Av>=70 & Av<=79);
 Death_Cost(Av>=80)=4482+Death_Cost(Av>=80);
 
-% https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9923935/
-% Used relative since it was different study
-Incidence_Costs(Av<18)=Hospital_Costs(Av<18)./9.47;
-Incidence_Costs(Av>=18)=Hospital_Costs(Av>=18)./3.18;
+% https://s3.amazonaws.com/media2.fairhealth.org/infographic/asset/COVID-19%20Medical%20Hospitalization%20Costs%20by%20State%20-%20FINAL_National.pdf
+Incidence_Costs=1008.*ones(size(Av));
 end
 

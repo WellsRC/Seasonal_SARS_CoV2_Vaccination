@@ -9,14 +9,14 @@ CCW=[hex2rgb('#2166ac')];
 % Larger winter peak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 load([temp_cd 'Comparison_Summary_Large_Winter_' Scenario '.mat']);
-xltxt={'incidence','hospitalizations','deaths'};
+xltxt={'incidence','hospitalizations','deaths','cost'};
 
-Per_Increase_W=zeros(6,3);
-YW=zeros(6,length(xbin_edges)-1,3);
+Per_Increase_W=zeros(6,4);
+YW=zeros(6,length(xbin_edges)-1,4);
 
     min_x=Inf;
     max_x=-Inf; 
-for Scenario_Indx=1:3    
+for Scenario_Indx=1:4    
     xt=(xbin_edges(1:end-1)+xbin_edges(2:end))./2;
     for ss=1:6
         if(Scenario_Indx==1)
@@ -31,6 +31,10 @@ for Scenario_Indx=1:3
             MM=max(Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:));
             YW(ss,:,Scenario_Indx)=Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:)./MM;
             Per_Increase_W(ss,Scenario_Indx)=sum(YW(ss,xt>=0,Scenario_Indx))./sum(YW(ss,:,Scenario_Indx));
+        elseif(Scenario_Indx==4)    
+            MM=max(Comparison.Histogram.Cost_Age_rel(ss,:));
+            YW(ss,:,Scenario_Indx)=Comparison.Histogram.Cost_Age_rel(ss,:)./MM;
+            Per_Increase_W(ss,Scenario_Indx)=sum(YW(ss,xt>=0,Scenario_Indx))./sum(YW(ss,:,Scenario_Indx));
         end
         min_x=min(min_x,min(xbin_edges(YW(ss,:,Scenario_Indx)>0)));
         max_x=max(max_x,max(xbin_edges(YW(ss,:,Scenario_Indx)>0)));
@@ -43,9 +47,9 @@ end
 load([temp_cd 'Comparison_Summary_Large_Summer_' Scenario '.mat']);
 
 
-Per_Increase_S=zeros(6,3);
-YS=zeros(6,length(xbin_edges)-1,3);
-for Scenario_Indx=1:3    
+Per_Increase_S=zeros(6,4);
+YS=zeros(6,length(xbin_edges)-1,4);
+for Scenario_Indx=1:4    
     xt=(xbin_edges(1:end-1)+xbin_edges(2:end))./2;
     for ss=1:6
         if(Scenario_Indx==1)
@@ -60,6 +64,10 @@ for Scenario_Indx=1:3
             MM=max(Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:));
             YS(ss,:,Scenario_Indx)=Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:)./MM;
             Per_Increase_S(ss,Scenario_Indx)=sum(YS(ss,xt>=0,Scenario_Indx))./sum(YS(ss,:,Scenario_Indx));
+        elseif(Scenario_Indx==4)    
+            MM=max(Comparison.Histogram.Cost_Age_rel(ss,:));
+            YS(ss,:,Scenario_Indx)=Comparison.Histogram.Cost_Age_rel(ss,:)./MM;
+            Per_Increase_S(ss,Scenario_Indx)=sum(YS(ss,xt>=0,Scenario_Indx))./sum(YS(ss,:,Scenario_Indx));
         end
         min_x=min(min_x,min(xbin_edges(YS(ss,:,Scenario_Indx)>0)));
         max_x=max(max_x,max(xbin_edges(YS(ss,:,Scenario_Indx)>0)));
@@ -68,10 +76,12 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Plot
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-figure('units','normalized','outerposition',[0.2 0.05 0.25 0.9]);
+
+figure('units','normalized','outerposition',[0.2 0.2 0.5 0.6]);
 AgeC={['0' char(8211) '4'],['5' char(8211) '12'],['13' char(8211) '17'],['18' char(8211) '49'],['50' char(8211) '64'],'65+'};
-for Scenario_Indx=1:3
-    subplot('Position',[0.225,0.745-0.325.*(Scenario_Indx-1),0.72,0.235]);
+for Scenario_Indx=1:4
+    
+    subplot('Position',[0.105+0.5.*(rem(Scenario_Indx-1,2)),0.625-0.49.*(floor((Scenario_Indx-1)./2)),0.36,0.3525]);
      plot([0 0],[0.5 6.5],'color',[0.7 0.7 0.7],'LineWidth',2); hold on;
     for ii=1:6
         patch(100.*([xt flip(xt)]),ii+[-0.45*YW(ii,:,Scenario_Indx) flip(0.*YW(ii,:,Scenario_Indx))], CCW,'LineStyle','none'); hold on; 
@@ -81,16 +91,16 @@ for Scenario_Indx=1:3
         text(-47.75,6.3,'Larger summer peak','color',CCS,'Fontsize',12);
         text(-47.75,5.8,'Larger winter peak','color',CCW,'Fontsize',12);
     end
-    ylim([0.5 6.5]);
-    xlim(100.*[-0.5 0.5]);
+    ylim([0.45 6.55]);
+    xlim(100.*[-0.5 0.25]);
     xtickformat('percentage');
     set(gca,'LineWidth',2,'Tickdir','out','YTick',[1:18],'YTickLabel',AgeC,'Yminortick','off','XTick',[-100:25:150],'Xminortick','off','Fontsize',16);
     xlabel(['Relative change in ' xltxt{Scenario_Indx}],'Fontsize',18);
     ylabel('Age class','Fontsize',18);
     box off;
     for ii=1:6
-       text(100.*(0.4),ii-0.21,['(' num2str(round(100.*Per_Increase_W(ii,Scenario_Indx),1)) '%)'],'color',CCW,'Fontsize',12,'HorizontalAlignment','center') 
-       text(100.*(0.4),ii+0.21,['(' num2str(round(100.*Per_Increase_S(ii,Scenario_Indx),1)) '%)'],'color',CCS,'Fontsize',12,'HorizontalAlignment','center') 
+       text(100.*(0.2),ii-0.21,['(' num2str(round(100.*Per_Increase_W(ii,Scenario_Indx),1)) '%)'],'color',CCW,'Fontsize',10,'HorizontalAlignment','center') 
+       text(100.*(0.2),ii+0.21,['(' num2str(round(100.*Per_Increase_S(ii,Scenario_Indx),1)) '%)'],'color',CCS,'Fontsize',10,'HorizontalAlignment','center') 
     end
     text(-0.278,1,char(64+Scenario_Indx),'Fontsize',24,'Units','normalized','fontweight','bold');
     
