@@ -10,125 +10,77 @@ Outcome={'Incidence','Hospitalizations','Deaths','Cost'};
 
 CC=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
 
-load([temp_cd 'Comparison_Summary_' Scenario '_Annual_Campaign_Influenza_Like_Coverage-Baseline_Continual_Vaccination.mat'],'xbin_edges');
-xt=(xbin_edges(1:end-1)+xbin_edges(2:end))./2;
-xt2=-xt; % took the negative as we are examining the reduction
+xt=linspace(-1,1,5001);
+xt2=-xt;
 t_day=[90:30:300];
 XTL={'90','120','150','180','210','240','270','300'};
 
 
 
-figure('units','normalized','outerposition',[0.1 0.06 0.45 1]);
-for State_Indx=1:4    
+figure('units','normalized','outerposition',[0.2 0.2 0.5 0.6]);
+for Scenario_Indx=1:4    
 
-    Per_Increase=zeros(3,length(XTL));
-    Y=zeros(3,length(xbin_edges)-1,length(XTL));
+    Per_Increase=zeros(1,length(XTL));
+    Y=zeros(2,length(xt),length(XTL));
 
     min_x=Inf;
     max_x=-Inf;
 
-    Age_Indx=6; 
     for mm=1:length(XTL)
         load([temp_cd 'Comparison_Summary_' Scenario '_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_65_and_older.mat']);
-        gg=1;
-        if(State_Indx==1)
-            MM=max(Comparison.Histogram.Compliment_Age_Cumulative_Count_Incidence_rel(Age_Indx,:));
-            Y(gg,:,mm)=Comparison.Histogram.Compliment_Age_Cumulative_Count_Incidence_rel(Age_Indx,:)./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        elseif(State_Indx==2)   
-            MM=max(Comparison.Histogram.Compliment_Age_Cumulative_Count_Hospital_rel(Age_Indx,:));
-            Y(gg,:,mm)=Comparison.Histogram.Compliment_Age_Cumulative_Count_Hospital_rel(Age_Indx,:)./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        elseif(State_Indx==3)   
-            MM=max(Comparison.Histogram.Compliment_Age_Cumulative_Count_Death_rel(Age_Indx,:));
-            Y(gg,:,mm)=Comparison.Histogram.Compliment_Age_Cumulative_Count_Death_rel(Age_Indx,:)./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        elseif(State_Indx==4)   
-            MM=max(Comparison.Histogram.Cost_Compliment_Age_rel(Age_Indx,:));
-            Y(gg,:,mm)=Comparison.Histogram.Cost_Compliment_Age_rel(Age_Indx,:)./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
+        if(Scenario_Indx==1)
+            MM=max(pdf(Comparison.Histogram.Cumulative_Count_Incidence_rel,xt));
+            Y(1,:,mm)=pdf(Comparison.Histogram.Cumulative_Count_Incidence_rel,xt)./MM;
+        elseif(Scenario_Indx==2)   
+            MM=max(pdf(Comparison.Histogram.Cumulative_Count_Hospital_rel,xt));
+            Y(1,:,mm)=pdf(Comparison.Histogram.Cumulative_Count_Hospital_rel,xt)./MM;
+        elseif(Scenario_Indx==3)   
+            MM=max(pdf(Comparison.Histogram.Cumulative_Count_Death_rel,xt));
+            Y(1,:,mm)=pdf(Comparison.Histogram.Cumulative_Count_Death_rel,xt)./MM;
+        elseif(Scenario_Indx==4)   
+            MM=max(pdf(Comparison.Histogram.Cost_rel,xt));
+            Y(1,:,mm)=pdf(Comparison.Histogram.Cost_rel,xt)./MM;
         end
-
-        gg=2;
-        if(State_Indx==1)
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel(Age_Indx,:));
-            Y(gg,:,mm)=Comparison.Histogram.Age_Cumulative_Count_Incidence_rel(Age_Indx,:)./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        elseif(State_Indx==2)   
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel(Age_Indx,:));
-            Y(gg,:,mm)=Comparison.Histogram.Age_Cumulative_Count_Hospital_rel(Age_Indx,:)./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        elseif(State_Indx==3)   
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Death_rel(Age_Indx,:));
-            Y(gg,:,mm)=Comparison.Histogram.Age_Cumulative_Count_Death_rel(Age_Indx,:)./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        elseif(State_Indx==4)   
-            MM=max(Comparison.Histogram.Cost_Age_rel(Age_Indx,:));
-            Y(gg,:,mm)=Comparison.Histogram.Cost_Age_rel(Age_Indx,:)./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        end
-
-        gg=3;
-        if(State_Indx==1)
-            MM=max(Comparison.Histogram.Cumulative_Count_Incidence_rel);
-            Y(gg,:,mm)=Comparison.Histogram.Cumulative_Count_Incidence_rel./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        elseif(State_Indx==2)   
-            MM=max(Comparison.Histogram.Cumulative_Count_Hospital_rel);
-            Y(gg,:,mm)=Comparison.Histogram.Cumulative_Count_Hospital_rel./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        elseif(State_Indx==3)   
-            MM=max(Comparison.Histogram.Cumulative_Count_Death_rel);
-            Y(gg,:,mm)=Comparison.Histogram.Cumulative_Count_Death_rel./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));    
-        elseif(State_Indx==4)   
-            MM=max(Comparison.Histogram.Cost_rel);
-            Y(gg,:,mm)=Comparison.Histogram.Cost_rel./MM;
-            Per_Increase(gg,mm)=sum(Y(gg,xt>=0,mm))./sum(Y(gg,:,mm));
-        end
-        min_x=min(min_x,min(xbin_edges(Y(gg,:,mm)>0)));
-        max_x=max(max_x,max(xbin_edges(Y(gg,:,mm)>0)));
-    end
-
-    % Need to take the negative as we computed based on increase and y-axis is
-    % represented in reduction
-    
-    subplot('Position',[0.605,0.8-0.245.*(State_Indx-1),0.365,0.18]);
-    plot([0 0],[0.45 length(XTL)+0.55],'color',[0.7 0.7 0.7],'LineWidth',2); hold on; 
-    Age_Indx=1;
-    for mm=1:length(XTL)
-        patch(100.*([xt2 flip(xt2)]),mm+[0.45.*Y(Age_Indx,:,mm) flip(-0.*Y(Age_Indx,:,mm))], CC(State_Indx,:),'LineStyle','none'); hold on; 
-        patch( 100.*([xt2 flip(xt2)]),mm+[0.*Y(Age_Indx+1,:,mm) flip(-0.45.*Y(Age_Indx+1,:,mm))],interp1([0 1],[1 1 1; CC(State_Indx,:)],0.45),'LineStyle','none'); hold on; 
-    end
-    text(-5.67,8.335,['Ages 0' char(8211) '64'],'Fontsize',12,'color',CC(State_Indx,:));
-    text(-5.67,7.52,['Ages 65+'],'Fontsize',12,'color',interp1([0 1],[1 1 1; CC(State_Indx,:)],0.45));
-    
-    box off;
-    set(gca,'LineWidth',2,'Tickdir','out','YTick',[1:length(XTL)],'YTickLabel',XTL,'Yminortick','off','XTick',[-6:2:10],'Xminortick','off','Fontsize',12);
-    xlim([-6 10])
-    ylim([0.45 length(XTL)+.55])
-    xtickformat('percentage');
-    xlabel({['Reduction in ' lower(Outcome{State_Indx})]},'Fontsize',14);
-    text(-0.3,1.04,char(64+2.*(State_Indx)),'Fontsize',22,'FontWeight','bold','Units','normalized');
-    ylabel({'Days to second','dose for 65+'},'Fontsize',14);
+        min_x=min(min_x,min(xt(Y(1,:,mm)>0)));
+        max_x=max(max_x,max(xt(Y(1,:,mm)>0)));
         
-    subplot('Position',[0.1165,0.8-0.245.*(State_Indx-1),0.365,0.18]);
+        load([temp_cd 'Comparison_Summary_' Scenario '_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_50_and_older.mat']);
+        if(Scenario_Indx==1)
+            MM=max(pdf(Comparison.Histogram.Cumulative_Count_Incidence_rel,xt));
+            Y(2,:,mm)=pdf(Comparison.Histogram.Cumulative_Count_Incidence_rel,xt)./MM;
+        elseif(Scenario_Indx==2)   
+            MM=max(pdf(Comparison.Histogram.Cumulative_Count_Hospital_rel,xt));
+            Y(2,:,mm)=pdf(Comparison.Histogram.Cumulative_Count_Hospital_rel,xt)./MM;
+        elseif(Scenario_Indx==3)   
+            MM=max(pdf(Comparison.Histogram.Cumulative_Count_Death_rel,xt));
+            Y(2,:,mm)=pdf(Comparison.Histogram.Cumulative_Count_Death_rel,xt)./MM;
+        elseif(Scenario_Indx==4)   
+            MM=max(pdf(Comparison.Histogram.Cost_rel,xt));
+            Y(2,:,mm)=pdf(Comparison.Histogram.Cost_rel,xt)./MM;
+        end
+        min_x=min(min_x,min(xt(Y(2,:,mm)>0)));
+        max_x=max(max_x,max(xt(Y(2,:,mm)>0)));
+    end
+
+    
+    subplot('Position',[0.115+0.5.*(rem(Scenario_Indx-1,2)),0.625-0.49.*(floor((Scenario_Indx-1)./2)),0.36,0.3525]);    
 
     
     plot([0 0],[0.45 length(XTL)+0.55],'color',[0.7 0.7 0.7],'LineWidth',2); hold on; 
-    Age_Indx=2;
     for mm=1:length(XTL)
-        patch(100.*([xt2 flip(xt2)]),mm+[-0.45.*Y(Age_Indx+1,:,mm) flip(0.45.*Y(Age_Indx+1,:,mm))], CC(State_Indx,:),'LineStyle','none'); hold on; 
-        text(-5.67,mm,['(' num2str(100.*Per_Increase(Age_Indx+1,mm),'%3.1f') '%)'],'fontsize',10);
+        patch(100.*([xt2 flip(xt2)]),mm+[-0.*Y(1,:,mm) flip(0.45.*Y(1,:,mm))], CC(Scenario_Indx,:),'LineStyle','none'); hold on; 
+        patch(100.*([xt2 flip(xt2)]),mm+[-0.45.*Y(2,:,mm) flip(0.*Y(2,:,mm))], interp1([0 1],[1 1 1;CC(Scenario_Indx,:)],0.5),'LineStyle','none'); hold on; 
     end
+    text(0.866,0.944,'65+','color',CC(Scenario_Indx,:),'Fontsize',16,'Units','normalize');
+    text(0.866,0.8367,'50+','color',interp1([0 1],[1 1 1;CC(Scenario_Indx,:)],0.5),'Fontsize',16,'Units','normalize');
     box off;
-    set(gca,'LineWidth',2,'Tickdir','out','YTick',[1:length(XTL)],'YTickLabel',XTL,'Yminortick','off','XTick',[-6:2:10],'Xminortick','off','Fontsize',12);
-    xlim([-6 10])
-    ylim([0.45 length(XTL)+.55])
+    set(gca,'LineWidth',2,'Tickdir','out','YTick',[1:length(XTL)],'YTickLabel',XTL,'Yminortick','off','XTick',[-6:1:10],'Xminortick','off','Fontsize',16);
+    xlim([-0.5 8])
+    ylim([0.4 length(XTL)+.6])
     xtickformat('percentage');
-    xlabel({['Reduction in ' lower(Outcome{State_Indx})]},'Fontsize',14);
-    ylabel({'Days to second','dose for 65+'},'Fontsize',14);
-    text(-0.3,1.04,char(65+2.*(State_Indx-1)),'Fontsize',22,'FontWeight','bold','Units','normalized');
+    xlabel({['Reduction in ' lower(Outcome{Scenario_Indx})]},'Fontsize',18);
+    ylabel({'Days to','second dose'},'Fontsize',18);
+    text(-0.3,1,char(64+Scenario_Indx),'Fontsize',24,'Units','normalized','fontweight','bold');
     
 end
 print(gcf,['Days_to_second_dose_65_' Scenario '.png'],'-dpng','-r300');

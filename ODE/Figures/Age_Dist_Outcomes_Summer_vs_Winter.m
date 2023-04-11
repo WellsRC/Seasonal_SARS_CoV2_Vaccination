@@ -10,34 +10,33 @@ CCW=[hex2rgb('#2166ac')];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 load([temp_cd 'Comparison_Summary_Large_Winter_' Scenario '.mat']);
 xltxt={'incidence','hospitalizations','deaths','cost'};
-
+xt=linspace(-1,1,5001);
 Per_Increase_W=zeros(6,4);
-YW=zeros(6,length(xbin_edges)-1,4);
+YW=zeros(6,length(xt),4);
 
     min_x=Inf;
     max_x=-Inf; 
 for Scenario_Indx=1:4    
-    xt=(xbin_edges(1:end-1)+xbin_edges(2:end))./2;
     for ss=1:6
         if(Scenario_Indx==1)
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel(ss,:));
-            YW(ss,:,Scenario_Indx)=Comparison.Histogram.Age_Cumulative_Count_Incidence_rel(ss,:)./MM;
-            Per_Increase_W(ss,Scenario_Indx)=sum(YW(ss,xt>=0,Scenario_Indx))./sum(YW(ss,:,Scenario_Indx));
+            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{ss},xt));
+            YW(ss,:,Scenario_Indx)=pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{ss},xt)./MM;
+            Per_Increase_W(ss,Scenario_Indx)=Comparison.Alternative_Worse.Age_Cumulative_Count_Incidence(ss);
         elseif(Scenario_Indx==2)    
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel(ss,:));
-            YW(ss,:,Scenario_Indx)=Comparison.Histogram.Age_Cumulative_Count_Hospital_rel(ss,:)./MM;
-            Per_Increase_W(ss,Scenario_Indx)=sum(YW(ss,xt>=0,Scenario_Indx))./sum(YW(ss,:,Scenario_Indx));
+            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{ss},xt));
+            YW(ss,:,Scenario_Indx)=pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{ss},xt)./MM;
+            Per_Increase_W(ss,Scenario_Indx)=Comparison.Alternative_Worse.Age_Cumulative_Count_Hospital(ss);
         elseif(Scenario_Indx==3)    
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:));
-            YW(ss,:,Scenario_Indx)=Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:)./MM;
-            Per_Increase_W(ss,Scenario_Indx)=sum(YW(ss,xt>=0,Scenario_Indx))./sum(YW(ss,:,Scenario_Indx));
+            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{ss},xt));
+            YW(ss,:,Scenario_Indx)=pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{ss},xt)./MM;
+            Per_Increase_W(ss,Scenario_Indx)=Comparison.Alternative_Worse.Age_Cumulative_Count_Death(ss);
         elseif(Scenario_Indx==4)    
-            MM=max(Comparison.Histogram.Cost_Age_rel(ss,:));
-            YW(ss,:,Scenario_Indx)=Comparison.Histogram.Cost_Age_rel(ss,:)./MM;
-            Per_Increase_W(ss,Scenario_Indx)=sum(YW(ss,xt>=0,Scenario_Indx))./sum(YW(ss,:,Scenario_Indx));
+            MM=max(pdf(Comparison.Histogram.Cost_Age_rel{ss},xt));
+            YW(ss,:,Scenario_Indx)=pdf(Comparison.Histogram.Cost_Age_rel{ss},xt)./MM;
+            Per_Increase_W(ss,Scenario_Indx)=Comparison.Alternative_Worse.Cost_Age(ss);
         end
-        min_x=min(min_x,min(xbin_edges(YW(ss,:,Scenario_Indx)>0)));
-        max_x=max(max_x,max(xbin_edges(YW(ss,:,Scenario_Indx)>0)));
+        min_x=min(min_x,min(xt(YW(ss,:,Scenario_Indx)>0)));
+        max_x=max(max_x,max(xt(YW(ss,:,Scenario_Indx)>0)));
     end   
 end
 
@@ -48,29 +47,28 @@ load([temp_cd 'Comparison_Summary_Large_Summer_' Scenario '.mat']);
 
 
 Per_Increase_S=zeros(6,4);
-YS=zeros(6,length(xbin_edges)-1,4);
+YS=zeros(6,length(xt),4);
 for Scenario_Indx=1:4    
-    xt=(xbin_edges(1:end-1)+xbin_edges(2:end))./2;
     for ss=1:6
         if(Scenario_Indx==1)
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel(ss,:));
-            YS(ss,:,Scenario_Indx)=Comparison.Histogram.Age_Cumulative_Count_Incidence_rel(ss,:)./MM;
-            Per_Increase_S(ss,Scenario_Indx)=sum(YS(ss,xt>=0,Scenario_Indx))./sum(YS(ss,:,Scenario_Indx));
+            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{ss},xt));
+            YS(ss,:,Scenario_Indx)=pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{ss},xt)./MM;
+            Per_Increase_S(ss,Scenario_Indx)=Comparison.Alternative_Worse.Age_Cumulative_Count_Incidence(ss);
         elseif(Scenario_Indx==2)    
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel(ss,:));
-            YS(ss,:,Scenario_Indx)=Comparison.Histogram.Age_Cumulative_Count_Hospital_rel(ss,:)./MM;
-            Per_Increase_S(ss,Scenario_Indx)=sum(YS(ss,xt>=0,Scenario_Indx))./sum(YS(ss,:,Scenario_Indx));
+            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{ss},xt));
+            YS(ss,:,Scenario_Indx)=pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{ss},xt)./MM;
+            Per_Increase_S(ss,Scenario_Indx)=Comparison.Alternative_Worse.Age_Cumulative_Count_Hospital(ss);
         elseif(Scenario_Indx==3)    
-            MM=max(Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:));
-            YS(ss,:,Scenario_Indx)=Comparison.Histogram.Age_Cumulative_Count_Death_rel(ss,:)./MM;
-            Per_Increase_S(ss,Scenario_Indx)=sum(YS(ss,xt>=0,Scenario_Indx))./sum(YS(ss,:,Scenario_Indx));
+            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{ss},xt));
+            YS(ss,:,Scenario_Indx)=pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{ss},xt)./MM;
+            Per_Increase_S(ss,Scenario_Indx)=Comparison.Alternative_Worse.Age_Cumulative_Count_Death(ss);
         elseif(Scenario_Indx==4)    
-            MM=max(Comparison.Histogram.Cost_Age_rel(ss,:));
-            YS(ss,:,Scenario_Indx)=Comparison.Histogram.Cost_Age_rel(ss,:)./MM;
-            Per_Increase_S(ss,Scenario_Indx)=sum(YS(ss,xt>=0,Scenario_Indx))./sum(YS(ss,:,Scenario_Indx));
+            MM=max(pdf(Comparison.Histogram.Cost_Age_rel{ss},xt));
+            YS(ss,:,Scenario_Indx)=pdf(Comparison.Histogram.Cost_Age_rel{ss},xt)./MM;
+            Per_Increase_S(ss,Scenario_Indx)=Comparison.Alternative_Worse.Cost_Age(ss);
         end
-        min_x=min(min_x,min(xbin_edges(YS(ss,:,Scenario_Indx)>0)));
-        max_x=max(max_x,max(xbin_edges(YS(ss,:,Scenario_Indx)>0)));
+        min_x=min(min_x,min(xt(YS(ss,:,Scenario_Indx)>0)));
+        max_x=max(max_x,max(xt(YS(ss,:,Scenario_Indx)>0)));
     end   
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5

@@ -16,17 +16,16 @@ Marginal_Benefit.PRCT.Hospitalization=prctile(Marginal_Benefit_Hospitalization,P
 Marginal_Benefit.PRCT.Death=prctile(Marginal_Benefit_Death,PRCT);
 Marginal_Benefit.PRCT.Cost=prctile(Marginal_Benefit_Cost,PRCT);
 
-xbin_edges=[0.755:0.01:1.155]-1;
 
-Marginal_Benefit.Histogram.Incidence=histcounts(Marginal_Benefit_Incidence,xbin_edges);
-Marginal_Benefit.Histogram.Hospitalization=histcounts(Marginal_Benefit_Hospitalization,xbin_edges);
-Marginal_Benefit.Histogram.Death=histcounts(Marginal_Benefit_Death,xbin_edges);
-Marginal_Benefit.Histogram.Cost=histcounts(Marginal_Benefit_Cost,xbin_edges);
+Marginal_Benefit.Histogram.Incidence=fitdist(Marginal_Benefit_Incidence,'Kernel','Kernel','epanechnikov');
+Marginal_Benefit.Histogram.Hospitalization=fitdist(Marginal_Benefit_Hospitalization,'Kernel','Kernel','epanechnikov');
+Marginal_Benefit.Histogram.Death=fitdist(Marginal_Benefit_Death,'Kernel','Kernel','epanechnikov');
+Marginal_Benefit.Histogram.Cost=fitdist(Marginal_Benefit_Cost,'Kernel','Kernel','epanechnikov');
 
-Marginal_Benefit.Less_than_zero.Incidence=sum(Marginal_Benefit_Incidence<0)./length(Marginal_Benefit_Incidence);
-Marginal_Benefit.Less_than_zero.Hospitalization=sum(Marginal_Benefit_Hospitalization<0)./length(Marginal_Benefit_Hospitalization);
-Marginal_Benefit.Less_than_zero.Death=sum(Marginal_Benefit_Death<0)./length(Marginal_Benefit_Death);
-Marginal_Benefit.Less_than_zero.Cost=sum(Marginal_Benefit_Cost<0)./length(Marginal_Benefit_Cost);
+Marginal_Benefit.Less_than_zero.Incidence=mean(Marginal_Benefit_Incidence<0);
+Marginal_Benefit.Less_than_zero.Hospitalization=mean(Marginal_Benefit_Hospitalization<0);
+Marginal_Benefit.Less_than_zero.Death=mean(Marginal_Benefit_Death<0);
+Marginal_Benefit.Less_than_zero.Cost=mean(Marginal_Benefit_Cost<0);
 
-save(['Marginal_Benefit_' SA_Scenario '.mat'],'Marginal_Benefit','PRCT','xbin_edges');
+save(['Marginal_Benefit_' SA_Scenario '.mat'],'Marginal_Benefit','PRCT');
 end
