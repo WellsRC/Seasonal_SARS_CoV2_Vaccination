@@ -250,7 +250,7 @@ parfor jj=1:NS
     count=count+1;
     Parameters.gamma_V=1./day_gamma_V;
 
-    day_gamma_SD=(900+(1350-900).*lhs_samp(jj,count)).*ones(A,1);
+    day_gamma_SD=(680+(1260-680).*lhs_samp(jj,count)).*ones(A,1);
     count=count+1;
     Parameters.gamma_SD=1./day_gamma_SD;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -334,7 +334,7 @@ parfor jj=1:NS
     Hd=29;
     md=binoinv(0.025,Hp,Hd/Hp)/Hp;
     Md=binoinv(0.975,Hp,Hd/Hp)/Hp;
-    prob_death_H(AC>=34 & AC<=49)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
+    prob_death_H(AC>=35 & AC<=49)=md+(Md-md).*lhs_samp(jj,count); count=count+1;
     
     Hp=3691;
     Hd=139;
