@@ -41,7 +41,7 @@ for State_Indx=1:4
 
            Outcome_Indirect(aa,1)=-Comparison.Average.Compliment_Age_Cumulative_Count_Incidence_dt(aa)./10000;
            
-           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Incidence_dt./10000;
+           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Incidence_dt(1:end-1)./10000;
        elseif State_Indx==2
            Outcome_All(aa,2)=-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5)./10000;
            Outcome_All(aa,3)=-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5)./10000;
@@ -59,7 +59,7 @@ for State_Indx=1:4
 
            Outcome_Indirect(aa,1)=-Comparison.Average.Compliment_Age_Cumulative_Count_Hospital_dt(aa)./10000;
            
-           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Hospital_dt./10000;
+           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Hospital_dt(1:end-1)./10000;
        elseif State_Indx==3
            Outcome_All(aa,2)=-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5)./10000;
            Outcome_All(aa,3)=-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5)./10000;
@@ -76,7 +76,7 @@ for State_Indx=1:4
            Outcome_Indirect(aa,5)=-Comparison.PRCT.Compliment_Age_Cumulative_Count_Death_dt(PRCT==75,aa)./10000;
 
            Outcome_Indirect(aa,1)=-Comparison.Average.Compliment_Age_Cumulative_Count_Death_dt(aa)./10000;
-           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Death_dt./10000;
+           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Death_dt(1:end-1)./10000;
        elseif State_Indx==4
            Outcome_All(aa,2)=-Comparison.PRCT.Cost_Total_dt(PRCT==2.5)./10000;
            Outcome_All(aa,3)=-Comparison.PRCT.Cost_Total_dt(PRCT==97.5)./10000;
@@ -94,7 +94,7 @@ for State_Indx=1:4
 
            Outcome_Indirect(aa,1)=-Comparison.Average.Cost_Compliment_Age_dt(aa)./10000;
            
-           Outcome_Matrix(:,aa)=-Comparison.Average.Cost_Age_dt./10000;
+           Outcome_Matrix(:,aa)=-Comparison.Average.Cost_Age_dt(1:end-1)./10000;
         end
     end
     hh=subplot('Position',[0.5,0.805-0.24.*(State_Indx-1),0.23,0.175]);

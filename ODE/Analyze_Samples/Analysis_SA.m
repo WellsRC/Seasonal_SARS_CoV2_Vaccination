@@ -3,7 +3,7 @@ clc;
 
 load('Baseline_Outputs.mat');
 
-SA_Scenario={'Annual_Campaign_Influenza_Like_Coverage'};
+SA_Scenario={'Annual_Campaign_Influenza_Like_Coverage','Two_Campaign_Influenza_Like_Coverage_180_days_65_and_older','Two_Campaign_Influenza_Like_Coverage_180_days_50_and_older'};
 
 for ss=1:length(SA_Scenario)
     load(['Output_SA_' SA_Scenario{ss} '.mat'],'Filtered_Output_All','Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
@@ -86,6 +86,21 @@ load(['Output_SA_Annual_Campaign_Influenza_Like_Coverage.mat'],'Filtered_Output_
 Baseline_Output_All=Filtered_Output_All;
 
 SA_Scenario={'Two_Campaign_Influenza_Like_Coverage_90_days','Two_Campaign_Influenza_Like_Coverage_120_days','Two_Campaign_Influenza_Like_Coverage_150_days','Two_Campaign_Influenza_Like_Coverage_180_days','Two_Campaign_Influenza_Like_Coverage_210_days','Two_Campaign_Influenza_Like_Coverage_240_days','Two_Campaign_Influenza_Like_Coverage_270_days','Two_Campaign_Influenza_Like_Coverage_300_days'};
+
+for ss=1:length(SA_Scenario)
+    load(['Output_SA_' SA_Scenario{ss} '_65_and_older.mat'],'Filtered_Output_All');
+    Filtered_Output_65=Filtered_Output_All;
+    load(['Output_SA_' SA_Scenario{ss} '_50_and_older.mat'],'Filtered_Output_All');
+    Filtered_Output_50=Filtered_Output_All;
+    load(['Output_SA_' SA_Scenario{ss} '_50_to_64.mat'],'Filtered_Output_All');
+    Filtered_Output_50_to_64=Filtered_Output_All;
+    
+    Marginal_Benefit_Second_Doses(Filtered_Output_65,Filtered_Output_50,Filtered_Output_50_to_64,Baseline_Output_All, SA_Scenario{ss});
+end
+
+load(['Output_SA_Annual_Campaign_Baseline_Coverage.mat'],'Filtered_Output_All');
+
+SA_Scenario={'Two_Campaign_Baseline_Coverage_90_days','Two_Campaign_Baseline_Coverage_120_days','Two_Campaign_Baseline_Coverage_150_days','Two_Campaign_Baseline_Coverage_180_days','Two_Campaign_Baseline_Coverage_210_days','Two_Campaign_Baseline_Coverage_240_days','Two_Campaign_Baseline_Coverage_270_days','Two_Campaign_Baseline_Coverage_300_days'};
 
 for ss=1:length(SA_Scenario)
     load(['Output_SA_' SA_Scenario{ss} '_65_and_older.mat'],'Filtered_Output_All');

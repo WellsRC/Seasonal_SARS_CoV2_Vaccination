@@ -16,6 +16,8 @@ C_Incidence_Vac=Y(:,15+17.*[0:(A-1)]);
 C_Death=Y(:,16+17.*[0:(A-1)]);
 C_Hosp=Y(:,17+17.*[0:(A-1)]);
 
+Y_Model.Rec_Age=Y([1 end],11+17.*[0:(A-1)])+Y([1 end],12+17.*[0:(A-1)])+Y([1 end],13+17.*[0:(A-1)]);
+
 [Daily_Incidence,Daily_Hospital,Daily_Death,Age_Cumulative_Incidence,Age_Cumulative_Hospital,Age_Cumulative_Death,Daily_Hospital_Age]=Compute_Daily_Incidence_Hospital_Death(T,C_Incidence_NoVac,C_Incidence_Vac,C_Death,C_Hosp,T_Run,Parameters);
 [Hospital_Admission,Hospital_Prevalence]=Compute_Hospital(Daily_Hospital_Age,T_Run);
 

@@ -1,4 +1,4 @@
-function Marginal_Benefit_Plot()
+function Marginal_Benefit_Plot(Scenario_Coverage)
 close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
@@ -12,7 +12,7 @@ for Scenario_Indx=1:4
     CC=CCv(Scenario_Indx,:);
     Outcome_All=zeros(8,5);
     for ss=1:8
-       load([temp_cd 'Marginal_Benefit_Two_Campaign_Influenza_Like_Coverage_' num2str(td(ss)) '_days.mat'])
+       load([temp_cd 'Marginal_Benefit_Two_Campaign_' Scenario_Coverage '_Coverage_' num2str(td(ss)) '_days.mat'])
        if Scenario_Indx==1
            Outcome_All(ss,2)=Marginal_Benefit.PRCT.Incidence(PRCT==2.5);
            Outcome_All(ss,3)=Marginal_Benefit.PRCT.Incidence(PRCT==97.5);
@@ -68,5 +68,5 @@ for Scenario_Indx=1:4
     text(-0.35,1.08,char(65+(Scenario_Indx-1)),'Fontsize',24,'FontWeight','bold','Units','normalized');
 end
 
-print(gcf,['Marginal_Benefit_Second_Dose_Plot.png'],'-dpng','-r300');    
+print(gcf,['Marginal_Benefit_Second_Dose_Plot_' Scenario_Coverage '.png'],'-dpng','-r300');    
 end
