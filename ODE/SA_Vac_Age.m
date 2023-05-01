@@ -1,7 +1,6 @@
 parpool(32);
 
 AC=[0:84];
-[T_Run,~] = Parameter_Sample(1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bimodal peaks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -10,7 +9,7 @@ ub_Age=[5 13 18 50 65 85];
 
 Total_Additional_Doses=10^4;
 for aa=1:6
-    load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_All','R_WP');
+    load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_All','T_Run','R_WP');
     NS=length(P_All);
     Model_Output=cell(NS,1);
 
@@ -46,7 +45,7 @@ for aa=1:6
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % One peak
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    load([pwd '/Analyze_Samples/Parameter_Filtered_Unimodal_Winter.mat'],'P_All')
+    load([pwd '/Analyze_Samples/Parameter_Filtered_Unimodal_Winter.mat'],'P_All','T_Run')
     NS=length(P_All);
     Model_Output=cell(NS,1);
 

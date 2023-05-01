@@ -18,7 +18,7 @@ C_Hosp=Y(:,17+17.*[0:(A-1)]);
 
 Y_Model.Rec_Age=Y([1 end],11+17.*[0:(A-1)])+Y([1 end],12+17.*[0:(A-1)])+Y([1 end],13+17.*[0:(A-1)]);
 
-[Daily_Incidence,Daily_Hospital,Daily_Death,Age_Cumulative_Incidence,Age_Cumulative_Hospital,Age_Cumulative_Death,Daily_Hospital_Age]=Compute_Daily_Incidence_Hospital_Death(T,C_Incidence_NoVac,C_Incidence_Vac,C_Death,C_Hosp,T_Run,Parameters);
+[Daily_Incidence,Daily_Hospital,Daily_Death,Age_Cumulative_Incidence,Age_Cumulative_Hospital,Age_Cumulative_Death,~,Daily_Hospital_Age,~]=Compute_Daily_Incidence_Hospital_Death(T,C_Incidence_NoVac,C_Incidence_Vac,C_Death,C_Hosp,T_Run,Parameters);
 [Hospital_Admission,Hospital_Prevalence]=Compute_Hospital(Daily_Hospital_Age,T_Run);
 
 Y_Model.Incidence=Daily_Incidence;
@@ -26,9 +26,10 @@ Y_Model.Death=Daily_Death;
 Y_Model.Hospital_Admission=Hospital_Admission;
 Y_Model.Hospital_Burden=Hospital_Prevalence;
 Y_Model.Hospital_Count=Daily_Hospital;
-Y_Model.Age_Incidence=Age_Cumulative_Incidence;
-Y_Model.Age_Death=Age_Cumulative_Death;
-Y_Model.Age_Hospital=Age_Cumulative_Hospital;
 
+Y_Model.Age_Cumulative_Incidence=Age_Cumulative_Incidence;
+Y_Model.Age_Cumulative_Death=Age_Cumulative_Death;
+Y_Model.Age_Cumulative_Hospital=Age_Cumulative_Hospital;
+Y_Model.T_Run=T_Run;
 end
 

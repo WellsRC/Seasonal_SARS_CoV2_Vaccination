@@ -1,11 +1,10 @@
 parpool(32);
 
 AC=[0:84];
-[T_Run,~] = Parameter_Sample(1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bimodal peaks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_All','R_WP');
+load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_All','T_Run','R_WP');
 NS=length(P_All);
 Model_Output=cell(NS,1);
 
@@ -28,7 +27,7 @@ save(['Annual_Campaign_Baseline_Coverage.mat'],'T_Run','Model_Output','R_WP');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % One peak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load([pwd '/Analyze_Samples/Parameter_Filtered_Unimodal_Winter.mat'],'P_All')
+load([pwd '/Analyze_Samples/Parameter_Filtered_Unimodal_Winter.mat'],'P_All','T_Run')
 NS=length(P_All);
 Model_Output=cell(NS,1);
 

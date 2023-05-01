@@ -1,11 +1,11 @@
-function Figure_1
+function Supplemental_Figure_4
 close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
-load([temp_cd 'Comparison_Summary_All_Annual_Campaign_Influenza_Like_Coverage-Baseline_Continual_Vaccination.mat']);
+load([temp_cd 'Comparison_Summary_Unimodal_Winter_Annual_Campaign_Influenza_Like_Coverage_Unimodal_Winter.mat']);
 Comparison_Single=Comparison;
 
-load([temp_cd 'Comparison_Summary_All_Two_Campaign_Influenza_Like_Coverage_180_days_65_and_older-Baseline_Continual_Vaccination.mat']);
+load([temp_cd 'Comparison_Summary_All_Two_Campaign_Influenza_Like_Coverage_180_days_65_and_older_Unimodal_Winter-Baseline.mat']);
 
 xltxt={'incidence','hospitalizations','deaths','cost'};
 CCv=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
@@ -132,5 +132,5 @@ for Scenario_Indx=1:4
     text(100.*(-0.59),ii-0.25+0.25,'Two-dose (65+)','color',interp1([0 1],[1 1 1;CC],0.5),'Fontsize',12);
 end
 
-print(gcf,['Figure_1.png'],'-dpng','-r300');    
+print(gcf,['Supplemental_Figure_4.png'],'-dpng','-r300');    
 end
