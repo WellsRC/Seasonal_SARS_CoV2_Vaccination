@@ -250,8 +250,9 @@ parfor jj=1:NS
     count=count+1;
     Parameters.gamma_V=1./day_gamma_V;
 
-    day_gamma_SD=(680+(1260-680).*lhs_samp(jj,count)).*ones(A,1);
+    temp=(680+(1260-680).*lhs_samp(jj,count)).*ones(A,1);
     count=count+1;
+    day_gamma_SD=temp-day_gamma_V; % Need to consider the duration in which the individual has already been protected for
     Parameters.gamma_SD=1./day_gamma_SD;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Probability of hospital admission

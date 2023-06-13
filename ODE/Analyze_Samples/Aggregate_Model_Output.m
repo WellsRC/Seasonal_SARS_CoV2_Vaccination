@@ -17,6 +17,14 @@ for tt=1:9
     end
 
 end
+
+% Age stratification
+for aa=1:length(ACg(:,1))
+    % Age classes
+    Filtered_Output_All.Recovered(ss+NS.*(gg-1),aa,:)=sum(MO.Rec_Age(:,ACg(aa,1)<=Av & Av<=ACg(aa,2)),2);
+    
+end
+
 Filtered_Output_All.Incidence(ss+NS.*(gg-1),:)=MO.Incidence;
 Filtered_Output_All.Hospital_Burden(ss+NS.*(gg-1),:)=MO.Hospital_Count;
 Filtered_Output_All.Hospital_Burden(ss+NS.*(gg-1),:)=MO.Hospital_Burden;

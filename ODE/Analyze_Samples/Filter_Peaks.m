@@ -1,5 +1,6 @@
-function [Filtered_Output_All,Filtered_Output_Large_Winter,Filtered_Output_Large_Summer] = Filter_Peaks(NG,NS,Av,ACg)
+function [Filtered_Output_Large_Winter,Filtered_Output_Large_Summer] = Filter_Peaks(NG,NS,Av,ACg)
 
+Filtered_Output_All.Recovered=zeros(NG*NS,6,2);
 Filtered_Output_All.Incidence=zeros(NG*NS,365);
 Filtered_Output_All.Hospital_Count=zeros(NG*NS,365);
 Filtered_Output_All.Hospital_Burden=zeros(NG*NS,365);
@@ -40,9 +41,7 @@ Mag_Peaks=Mag_Peaks(Pks==1,:);
 R_WP=(Mag_Peaks(:,1)./Mag_Peaks(:,2))-1;
 P_Large_Winter=P_All(R_WP>0);
 P_Large_Summer=P_All(R_WP<0);
-
 Filtered_Output_All=Output_Peak_Filter(Filtered_Output_All,Pks);
-
 Filtered_Output_Large_Winter=Output_Peak_Filter(Filtered_Output_All,R_WP>0);
 Filtered_Output_Large_Summer=Output_Peak_Filter(Filtered_Output_All,R_WP<0);
 

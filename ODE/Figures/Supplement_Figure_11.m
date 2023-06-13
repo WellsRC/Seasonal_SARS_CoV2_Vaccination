@@ -1,4 +1,4 @@
-function Supplemental_Figure_1
+function Supplement_Figure_11
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
 
@@ -103,5 +103,5 @@ for Scenario_Indx=1:4
     text(-0.278,1,char(64+Scenario_Indx),'Fontsize',24,'Units','normalized','fontweight','bold');
     
 end
-print(gcf,['Supplemental_Figure_1.png'],'-dpng','-r300');    
+print(gcf,['Supplement_Figure_11.png'],'-dpng','-r300');    
 end

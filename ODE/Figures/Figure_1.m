@@ -2,10 +2,10 @@ function Figure_1
 close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
-load([temp_cd 'Comparison_Summary_All_Annual_Campaign_Influenza_Like_Coverage-Baseline_Continual_Vaccination.mat']);
+load([temp_cd 'Comparison_Summary_Large_Winter_Annual_Campaign_Influenza_Like_Coverage-Baseline_Continual_Vaccination.mat']);
 Comparison_Single=Comparison;
 
-load([temp_cd 'Comparison_Summary_All_Two_Campaign_Influenza_Like_Coverage_180_days_65_and_older-Baseline_Continual_Vaccination.mat']);
+load([temp_cd 'Comparison_Summary_Large_Winter_Two_Campaign_Influenza_Like_Coverage_180_days_65_and_older-Baseline_Continual_Vaccination.mat']);
 
 xltxt={'incidence','hospitalizations','deaths','cost'};
 CCv=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
@@ -59,7 +59,7 @@ for Scenario_Indx=1:4
     elseif(Scenario_Indx==4)    
         MM=max(pdf(Comparison_Single.Histogram.Cost_rel,xt));
         Y(ss,:,1)=pdf(Comparison_Single.Histogram.Cost_rel,xt)./MM;
-        Per_Increase(1,ss)=Comparison_Single.Alternative_Worse.Cost_Total;
+        Per_Increase(1,ss)=Comparison_Single.Alternative_Worse.Cost_Total(end);
     end
     
     for ss=1:6
@@ -100,7 +100,7 @@ for Scenario_Indx=1:4
     elseif(Scenario_Indx==4)    
         MM=max(pdf(Comparison.Histogram.Cost_rel,xt));
         Y(ss,:,2)=pdf(Comparison.Histogram.Cost_rel,xt)./MM;
-        Per_Increase(2,ss)=Comparison.Alternative_Worse.Cost_Total;
+        Per_Increase(2,ss)=Comparison.Alternative_Worse.Cost_Total(end);
     end
     
     plot([0 0],[0.5 7.75],'color',[0.7 0.7 0.7],'LineWidth',2); hold on;

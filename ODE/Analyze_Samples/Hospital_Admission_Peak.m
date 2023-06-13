@@ -9,11 +9,11 @@ if((length(dt_pks)>=2))
     Summer_Peak=0;
     np=length(dt_pks);
     for pp=1:np
-       if(dt_pks(pp)>=datenum('December 1, 2022') && dt_pks(pp)<=datenum('January 15, 2023'))
+       if(dt_pks(pp)>=datenum('December 1, 2022') && dt_pks(pp)<=datenum('January 31, 2023'))
            Winter_Peak=1;
            Mag_Peaks(1)=max(m_pks(pp),Mag_Peaks(1));
        end
-       if(dt_pks(pp)>=datenum('July 1, 2023') && dt_pks(pp)<=datenum('August 15, 2023'))
+       if(dt_pks(pp)>=datenum('July 1, 2023') && dt_pks(pp)<=datenum('August 31, 2023'))
            Summer_Peak=1;
            Mag_Peaks(2)=max(m_pks(pp),Mag_Peaks(2));
        end

@@ -1,6 +1,5 @@
-function Supplemental_Figure_9
+function Supplement_Figure_16
 close all;
-Scenario='All';
 % close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
@@ -18,7 +17,7 @@ for Scenario_Indx=1:4
     xt=linspace(-1,1,5001);
     YM=zeros(length(xt),length(AgeC));
     PerLZ=zeros(1,length(AgeC));
-    load([temp_cd 'Marginal_Benefit_Two_Campaign_Baseline_Coverage_180_days.mat'])
+    load([temp_cd 'Marginal_Benefit_Second_Dose_50_to_64_Unimodal_Winter_Two_Campaign_Influenza_Like_Coverage_180_days.mat'])
     for aa=1:6
         if(Scenario_Indx==1)            
             MM=max(pdf(Marginal_Benefit.Histogram.Incidence_Age{aa},xt));
@@ -54,30 +53,30 @@ for Scenario_Indx=1:4
     elseif(Scenario_Indx==4)   
         MM=max(pdf(Marginal_Benefit.Histogram.Cost,xt));
         YM(:,aa)=pdf(Marginal_Benefit.Histogram.Cost,xt)./MM;
-        PerLZ(aa)=Marginal_Benefit.Less_than_zero.Cost;
+        PerLZ(aa)=Marginal_Benefit.Less_than_zero.Cost(end);
     end
     
-    plot([0 8],[0 0],'color',[0.7 0.7 0.7],'LineWidth',2); hold on;
+%     plot([0 8],[0 0],'color',[0.7 0.7 0.7],'LineWidth',2); hold on;
     for aa=1:6        
         t1=YM(:,aa)';
         patch(aa+[-0.45.*t1 0.45.*flip(t1)], 100.*([xt flip(xt)]),CC(Scenario_Indx,:),'LineStyle','none'); hold on; 
-        text(aa,-31,['(' num2str(100.*PerLZ(aa),'%3.1f') '%)'],'color',CC(Scenario_Indx,:),'Fontsize',10,'HorizontalAlignment','center');
+%         text(aa,-9.5,['(' num2str(100.*PerLZ(aa),'%3.1f') '%)'],'color',CC(Scenario_Indx,:),'Fontsize',10,'HorizontalAlignment','center');
     end
     aa=7;    
     t1=YM(:,aa)';
     patch(aa+0.25+[-0.45.*t1 0.45.*flip(t1)], 100.*([xt flip(xt)]),CC(Scenario_Indx,:),'LineStyle','none'); hold on; 
-    text(aa+0.25,-31,['(' num2str(100.*PerLZ(aa),'%3.1f') '%)'],'color',CC(Scenario_Indx,:),'Fontsize',10,'HorizontalAlignment','center');
-    plot(mean([6.5 6.75]).*[1 1],[-40 40],'-.','color',[0.7 0.7 0.7],'LineWidth',1.25);
+%     text(aa+0.25,-9.5,['(' num2str(100.*PerLZ(aa),'%3.1f') '%)'],'color',CC(Scenario_Indx,:),'Fontsize',10,'HorizontalAlignment','center');
+    plot(mean([6.5 6.75]).*[1 1],[0 100],'-.','color',[0.7 0.7 0.7],'LineWidth',1.25);
     box off;
     ytickformat('percentage');
     xtickangle(90);
-    set(gca,'LineWidth',2,'tickdir','out','XTick',[1:6 7.25],'XTickLabel',AgeC,'YTick',[-40:10:40],'Fontsize',16);
-    ylim([-35 35]);
+    set(gca,'LineWidth',2,'tickdir','out','XTick',[1:6 7.25],'XTickLabel',AgeC,'YTick',[0:10:100],'yminortick','on','Fontsize',16);
+    ylim([0 100]);
     xlim([0.5 7.75]);
     xlabel('Age class','Fontsize',18);
     ylabel([{'Marginal beneift',[lower(Outcome{Scenario_Indx})]}],'Fontsize',18);
     
     text(-0.35,0.985,char(64+Scenario_Indx),'Fontsize',24,'Units','normalized','fontweight','bold');
 end
-print(gcf,['Supplemental_Figure_9.png'],'-dpng','-r300');
+print(gcf,['Supplement_Figure_16.png'],'-dpng','-r300');
 end

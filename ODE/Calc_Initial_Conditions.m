@@ -39,11 +39,11 @@ elseif(strcmp('Two_Dose_Campaign_Influenza',Vac_Camp))
     S_n=1+span_A;
     S_i=2+span_A;
 
-    E_n=8+span_A;
-    I_n=13+span_A;
+    E_n=9+span_A;
+    I_n=14+span_A;
 
-    R_n=18+span_A;
-    R_i=19+span_A;
+    R_n=19+span_A;
+    R_i=20+span_A;
     
     vac_c=Parameters.vac_int_influenza;
 elseif(strcmp('Two_Dose_Campaign_Baseline',Vac_Camp))
@@ -54,11 +54,11 @@ elseif(strcmp('Two_Dose_Campaign_Baseline',Vac_Camp))
     S_n=1+span_A;
     S_i=2+span_A;
 
-    E_n=8+span_A;
-    I_n=13+span_A;
+    E_n=9+span_A;
+    I_n=14+span_A;
 
-    R_n=18+span_A;
-    R_i=19+span_A;
+    R_n=19+span_A;
+    R_i=20+span_A;
     
     vac_c=Parameters.vac_baseline;
 elseif(strcmp('SA_Annual_Campaign',Vac_Camp))
@@ -99,11 +99,29 @@ elseif(strcmp('SA_Two_Dose_Campaign',Vac_Camp))
     S_n=1+span_A;
     S_i=2+span_A;
 
-    E_n=8+span_A;
-    I_n=13+span_A;
+    E_n=9+span_A;
+    I_n=14+span_A;
 
-    R_n=18+span_A;
-    R_i=19+span_A;
+    R_n=19+span_A;
+    R_i=20+span_A;
+    vac_c=Parameters.vac_SA;
+elseif(strcmp('Delay_SA_Annual_Campaign',Vac_Camp))
+    X0=zeros(19.*A,1);
+
+    span_A=19.*[0:(A-1)];
+
+    S_n=1+span_A;
+    S_i=2+span_A;
+    dS_i=5+span_A;
+
+    E_n=6+span_A;
+    I_n=9+span_A;
+
+    R_n=12+span_A;
+    R_i=13+span_A;
+    dR_i=15+span_A;
+
+    vac_c=Parameters.vac_SA;
 end
 
 X0(R_n)=Parameters.N.*Parameters.R0;
@@ -115,11 +133,20 @@ X0(E_n)=Parameters.delta_I.*X0(I_n)./Parameters.sigma_E;
 X0(S_n)=Parameters.N-X0(R_n)-X0(I_n)-X0(E_n);
 
 
-X0(R_i)=X0(R_n).*vac_c;
-X0(R_n)=X0(R_n)-X0(R_i);
-
-X0(S_i)=X0(S_n).*vac_c;
-X0(S_n)=X0(S_n)-X0(S_i);
-
+if(strcmp('Delay',Vac_Camp(1:5)))
+    X0(R_i)=X0(R_n).*vac_c.*(1-Parameters.Prop_Delay);
+    X0(dR_i)=X0(R_n).*vac_c.*Parameters.Prop_Delay;
+    X0(R_n)=X0(R_n)-X0(R_i)-X0(dR_i);
+    
+    X0(S_i)=X0(S_n).*vac_c.*(1-Parameters.Prop_Delay);
+    X0(dS_i)=X0(S_n).*vac_c.*Parameters.Prop_Delay;
+    X0(S_n)=X0(S_n)-X0(S_i)-X0(dS_i);
+else
+    X0(R_i)=X0(R_n).*vac_c;
+    X0(R_n)=X0(R_n)-X0(R_i);
+    
+    X0(S_i)=X0(S_n).*vac_c;
+    X0(S_n)=X0(S_n)-X0(S_i);
+end
 end
     

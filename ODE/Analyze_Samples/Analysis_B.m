@@ -10,13 +10,12 @@ ACg=[0 4; 5 12;13 17; 18 49; 50 64; 65 85];
 
 load('Baseline_Outputs.mat');
 
-Scenario_Calculations(Baseline_Output_All,['All_Baseline_Continual_Vaccination']);
-Scenario_Calculations(Baseline_Output_Large_Winter,['Larger_Winter_Baseline_Continual_Vaccination']);
-Scenario_Calculations(Baseline_Output_Large_Summer,['Larger_Summer_Baseline_Continual_Vaccination']);
+Scenario_Calculations(Filtered_Output_Large_Winter,['Larger_Winter_Baseline_Continual_Vaccination']);
+Scenario_Calculations(Filtered_Output_Large_Summer,['Larger_Summer_Baseline_Continual_Vaccination']);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Baseline: One Peak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-load('Unimodal_Output.mat');
-Scenario_Calculations(Unimodal_Output_All,['Unimodal_Baseline_Continual_Vaccination']);
+load('Unimodal_Peak_Winter_Output.mat');
+Scenario_Calculations(Filtered_Output_Unimodal,['Unimodal_Baseline_Continual_Vaccination']);

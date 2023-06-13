@@ -1,4 +1,4 @@
-function Supplemental_Figure_3
+function Supplement_Figure_5
 close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
@@ -17,12 +17,14 @@ xt2=-xt;
 min_x=Inf;
 max_x=-Inf;
 
+M_0_4=zeros(2,3);
+
 t_day=[90:30:300];
 XTL={'90','120','150','180','210','240','270','300'};
 Y65=zeros(6,length(xt),length(XTL));
 Y50=zeros(6,length(xt),length(XTL));
 for mm=1:length(XTL)
-        load([temp_cd 'Comparison_Summary_All_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_65_and_older.mat']);
+        load([temp_cd 'Comparison_Summary_Large_Winter_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_65_and_older.mat']);
     
     for ss=1:6
         if(t_out(1))
@@ -37,10 +39,15 @@ for mm=1:length(XTL)
         elseif(t_out(4))   
             MM=max(pdf(Comparison.Histogram.Cost_Age_rel{ss},xt));
             Y65(ss,:,mm)=pdf(Comparison.Histogram.Cost_Age_rel{ss},xt)./MM;
+            if(mm==4)
+                M_0_4(1,1)=Comparison.PRCT.Cost_Age_rel(PRCT==50 ,1,end);
+                M_0_4(1,2)=Comparison.PRCT.Cost_Age_rel(PRCT==97.5,1,end);
+                M_0_4(1,3)=Comparison.PRCT.Cost_Age_rel(PRCT==2.5,1,end);
+            end
         end
     end
     
-    load([temp_cd 'Comparison_Summary_All_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_50_and_older.mat']);
+    load([temp_cd 'Comparison_Summary_Large_Winter_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_50_and_older.mat']);
     
     for ss=1:6
         if(t_out(1))
@@ -55,6 +62,11 @@ for mm=1:length(XTL)
         elseif(t_out(4))   
             MM=max(pdf(Comparison.Histogram.Cost_Age_rel{ss},xt));
             Y50(ss,:,mm)=pdf(Comparison.Histogram.Cost_Age_rel{ss},xt)./MM;
+            if(mm==4)
+                M_0_4(2,1)=Comparison.PRCT.Cost_Age_rel(PRCT==50 ,1,end);
+                M_0_4(2,2)=Comparison.PRCT.Cost_Age_rel(PRCT==97.5,1,end);
+                M_0_4(2,3)=Comparison.PRCT.Cost_Age_rel(PRCT==2.5,1,end);
+            end
         end
     end
 end
@@ -74,8 +86,8 @@ for ss=1:6
 
     end
     box off;
-    set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','off','YTick',[-5:5:25],'Xminortick','off','Fontsize',16);
-    ylim([-0.5 15])
+    set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[-2:2:10],'Xminortick','off','Fontsize',16);
+    ylim([-0.5 10])
     xlim([0.45 length(XTL)+.55])
     title(AgeC{ss})
     ytickformat('percentage');
@@ -85,5 +97,5 @@ for ss=1:6
     xlabel('Days to second dose','Fontsize',18);
     text(-0.204,1.046,char(64+ss),'fontweight','bold','units','normalized','Fontsize',24);  
 end
-print(gcf,['Supplemental_Figure_3.png'],'-dpng','-r300');
+print(gcf,['Supplement_Figure_5.png'],'-dpng','-r300');
 end

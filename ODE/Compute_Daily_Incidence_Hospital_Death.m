@@ -6,7 +6,7 @@ Daily_Incidence_Vaccinated=zeros(A,T_Run(end)-T_Run(1));
 Daily_Death=zeros(A,T_Run(end)-T_Run(1));
 Daily_Hospital=zeros(A,T_Run(end)-T_Run(1));
 
-T_Snap=T(1)+[90:30:300 T(end)-T(1)];
+T_Snap=T_Run(1)+[90:30:300 T_Run(end)-T_Run(1)];
 Age_Cumulative_Incidence=zeros(A,length(T_Snap));
 Age_Cumulative_Death=zeros(A,length(T_Snap));
 Age_Cumulative_Hospital=zeros(A,length(T_Snap));

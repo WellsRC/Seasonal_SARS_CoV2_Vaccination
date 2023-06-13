@@ -96,5 +96,5 @@ for t_d=1:8
         Pt.X0.Influenza_Campaign=Calc_Initial_Conditions(Vac_Camp,Pt);
         [~,Model_Output{jj}] = Run_Two_Dose_ODE(T_Run,Pt);
     end
-    save(['Two_Campaign_Baseline_Coverage_' num2str(Time_Dose) '_days_65_and_older_Unimodal_Winter.mat'],'T_Run','Model_Output','R_WP');
+    save(['Two_Campaign_Baseline_Coverage_' num2str(Time_Dose) '_days_65_and_older_Unimodal_Winter.mat'],'T_Run','Model_Output');
 end

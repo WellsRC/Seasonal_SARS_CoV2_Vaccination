@@ -1,5 +1,6 @@
 function [Filtered_Output_All] = Filter_Unimodal_Peak_Winter(NG,NS,Av,ACg)
 
+Filtered_Output_All.Recovered=zeros(NG*NS,6,2);
 Filtered_Output_All.Incidence=zeros(NG*NS,365);
 Filtered_Output_All.Hospital_Count=zeros(NG*NS,365);
 Filtered_Output_All.Hospital_Burden=zeros(NG*NS,365);

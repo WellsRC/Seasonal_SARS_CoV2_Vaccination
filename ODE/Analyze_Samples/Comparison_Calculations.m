@@ -6,15 +6,37 @@ PRCT=sort([1:99 2.5 97.5]);
 % Add 0-49 in the analysis for main text (Just in the age not in the
 % compliement
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Alt_Model.Incidence_Cumulative_Count_Age=[Alt_Model.Incidence_Cumulative_Count_Age  sum(Alt_Model.Incidence_Cumulative_Count_Age(:,1:end-2),2)];
-Alt_Model.Hospital_Cumulative_Count_Age=[Alt_Model.Hospital_Cumulative_Count_Age  sum(Alt_Model.Hospital_Cumulative_Count_Age(:,1:end-2),2)];
-Alt_Model.Death_Cumulative_Count_Age=[Alt_Model.Death_Cumulative_Count_Age  sum(Alt_Model.Death_Cumulative_Count_Age(:,1:end-2),2)];
-Alt_Model.Cost_Age=[Alt_Model.Cost_Age  sum(Alt_Model.Cost_Age(:,1:end-2),2)];
 
-Base_Model.Incidence_Cumulative_Count_Age=[Base_Model.Incidence_Cumulative_Count_Age  sum(Base_Model.Incidence_Cumulative_Count_Age(:,1:end-2),2)];
-Base_Model.Hospital_Cumulative_Count_Age=[Base_Model.Hospital_Cumulative_Count_Age  sum(Base_Model.Hospital_Cumulative_Count_Age(:,1:end-2),2)];
-Base_Model.Death_Cumulative_Count_Age=[Base_Model.Death_Cumulative_Count_Age  sum(Base_Model.Death_Cumulative_Count_Age(:,1:end-2),2)];
-Base_Model.Cost_Age=[Base_Model.Cost_Age  sum(Base_Model.Cost_Age(:,1:end-2),2)];
+Temp_A.Incidence_Cumulative_Count_Age=zeros(size(Alt_Model.Incidence_Cumulative_Count_Age,1),size(Alt_Model.Incidence_Cumulative_Count_Age,2)+1,size(Alt_Model.Incidence_Cumulative_Count_Age,3));
+Temp_A.Hospital_Cumulative_Count_Age=Temp_A.Incidence_Cumulative_Count_Age;
+Temp_A.Death_Cumulative_Count_Age=Temp_A.Incidence_Cumulative_Count_Age;
+Temp_A.Cost_Age=Temp_A.Incidence_Cumulative_Count_Age;
+
+Temp_B.Incidence_Cumulative_Count_Age=Temp_A.Incidence_Cumulative_Count_Age;
+Temp_B.Hospital_Cumulative_Count_Age=Temp_A.Incidence_Cumulative_Count_Age;
+Temp_B.Death_Cumulative_Count_Age=Temp_A.Incidence_Cumulative_Count_Age;
+Temp_B.Cost_Age=Temp_A.Incidence_Cumulative_Count_Age;
+
+for tt=1:9
+    Temp_A.Incidence_Cumulative_Count_Age(:,:,tt)=[Alt_Model.Incidence_Cumulative_Count_Age(:,:,tt)  sum(Alt_Model.Incidence_Cumulative_Count_Age(:,1:end-2,tt),2)];
+    Temp_A.Hospital_Cumulative_Count_Age(:,:,tt)=[Alt_Model.Hospital_Cumulative_Count_Age(:,:,tt)  sum(Alt_Model.Hospital_Cumulative_Count_Age(:,1:end-2,tt),2)];
+    Temp_A.Death_Cumulative_Count_Age(:,:,tt)=[Alt_Model.Death_Cumulative_Count_Age(:,:,tt)  sum(Alt_Model.Death_Cumulative_Count_Age(:,1:end-2,tt),2)];
+    Temp_A.Cost_Age(:,:,tt)=[Alt_Model.Cost_Age(:,:,tt)  sum(Alt_Model.Cost_Age(:,1:end-2,tt),2)];
+    
+    Temp_B.Incidence_Cumulative_Count_Age(:,:,tt)=[Base_Model.Incidence_Cumulative_Count_Age(:,:,tt)  sum(Base_Model.Incidence_Cumulative_Count_Age(:,1:end-2,tt),2)];
+    Temp_B.Hospital_Cumulative_Count_Age(:,:,tt)=[Base_Model.Hospital_Cumulative_Count_Age(:,:,tt)  sum(Base_Model.Hospital_Cumulative_Count_Age(:,1:end-2,tt),2)];
+    Temp_B.Death_Cumulative_Count_Age(:,:,tt)=[Base_Model.Death_Cumulative_Count_Age(:,:,tt)  sum(Base_Model.Death_Cumulative_Count_Age(:,1:end-2,tt),2)];
+    Temp_B.Cost_Age(:,:,tt)=[Base_Model.Cost_Age(:,:,tt)  sum(Base_Model.Cost_Age(:,1:end-2,tt),2)];
+end
+Alt_Model.Incidence_Cumulative_Count_Age=Temp_A.Incidence_Cumulative_Count_Age;
+Alt_Model.Hospital_Cumulative_Count_Age=Temp_A.Hospital_Cumulative_Count_Age;
+Alt_Model.Death_Cumulative_Count_Age=Temp_A.Death_Cumulative_Count_Age;
+Alt_Model.Cost_Age=Temp_A.Cost_Age;
+
+Base_Model.Incidence_Cumulative_Count_Age=Temp_B.Incidence_Cumulative_Count_Age;
+Base_Model.Hospital_Cumulative_Count_Age=Temp_B.Hospital_Cumulative_Count_Age;
+Base_Model.Death_Cumulative_Count_Age=Temp_B.Death_Cumulative_Count_Age;
+Base_Model.Cost_Age=Temp_B.Cost_Age;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Conduct calculations
@@ -114,17 +136,17 @@ xbin_edges=[-1.00:0.01:1.50];
 Comparison.Histogram.Cumulative_Count_Incidence_rel = fitdist(Cumulative_Count_Incidence_rel,'Kernel','Kernel','epanechnikov');
 Comparison.Histogram.Cumulative_Count_Hospital_rel = fitdist(Cumulative_Count_Hospital_rel,'Kernel','Kernel','epanechnikov');
 Comparison.Histogram.Cumulative_Count_Death_rel = fitdist(Cumulative_Count_Death_rel,'Kernel','Kernel','epanechnikov');
-Comparison.Histogram.Cost_rel = fitdist(Cost_Total_rel,'Kernel','Kernel','epanechnikov');
+Comparison.Histogram.Cost_rel = fitdist(Cost_Total_rel(:,end),'Kernel','Kernel','epanechnikov');
 
-Comparison.Histogram.Age_Cumulative_Count_Incidence_rel=cell(length(Age_Cumulative_Count_Incidence_rel(1,:)),1);
-Comparison.Histogram.Age_Cumulative_Count_Hospital_rel=cell(length(Age_Cumulative_Count_Hospital_rel(1,:)),1);
-Comparison.Histogram.Age_Cumulative_Count_Death_rel=cell(length(Age_Cumulative_Count_Death_rel(1,:)),1);
-Comparison.Histogram.Cost_Age_rel=cell(length(Cost_Age_rel(1,:)),1);
+Comparison.Histogram.Age_Cumulative_Count_Incidence_rel=cell(length(Age_Cumulative_Count_Incidence_rel(1,:,1)),1);
+Comparison.Histogram.Age_Cumulative_Count_Hospital_rel=cell(length(Age_Cumulative_Count_Hospital_rel(1,:,1)),1);
+Comparison.Histogram.Age_Cumulative_Count_Death_rel=cell(length(Age_Cumulative_Count_Death_rel(1,:,1)),1);
+Comparison.Histogram.Cost_Age_rel=cell(length(Cost_Age_rel(1,:,1)),1);
 
-Comparison.Histogram.Compliment_Age_Cumulative_Count_Incidence_rel=cell(length(Compliment_Age_Cumulative_Count_Incidence_rel(1,:)),1);
-Comparison.Histogram.Compliment_Age_Cumulative_Count_Hospital_rel=cell(length(Compliment_Age_Cumulative_Count_Hospital_rel(1,:)),1);
-Comparison.Histogram.Compliment_Age_Cumulative_Count_Death_rel=cell(length(Compliment_Age_Cumulative_Count_Death_rel(1,:)),1);
-Comparison.Histogram.Cost_Compliment_Age_rel=cell(length(Cost_Compliment_Age_rel(1,:)),1);
+Comparison.Histogram.Compliment_Age_Cumulative_Count_Incidence_rel=cell(length(Compliment_Age_Cumulative_Count_Incidence_rel(1,:,1)),1);
+Comparison.Histogram.Compliment_Age_Cumulative_Count_Hospital_rel=cell(length(Compliment_Age_Cumulative_Count_Hospital_rel(1,:,1)),1);
+Comparison.Histogram.Compliment_Age_Cumulative_Count_Death_rel=cell(length(Compliment_Age_Cumulative_Count_Death_rel(1,:,1)),1);
+Comparison.Histogram.Cost_Compliment_Age_rel=cell(length(Cost_Compliment_Age_rel(1,:,1)),1);
 
 
 Comparison.Alternative_Worse.Cumulative_Count_Incidence=mean(Cumulative_Count_Incidence_dt>0);
@@ -145,28 +167,28 @@ Comparison.Alternative_Worse.Cost_Compliment_Age=zeros(1,size(Cost_Compliment_Ag
 
 for aa=1:size(Age_Cumulative_Count_Incidence_rel,2)
     
-    Comparison.Alternative_Worse.Age_Cumulative_Count_Incidence(aa)=mean(Age_Cumulative_Count_Incidence_dt(:,aa)>0);
-    Comparison.Alternative_Worse.Age_Cumulative_Count_Hospital(aa)=mean(Age_Cumulative_Count_Hospital_dt(:,aa)>0);
-    Comparison.Alternative_Worse.Age_Cumulative_Count_Death(aa)=mean(Age_Cumulative_Count_Death_dt(:,aa)>0);
-    Comparison.Alternative_Worse.Cost_Age(aa)=mean(Cost_Age_dt(:,aa)>0);
+    Comparison.Alternative_Worse.Age_Cumulative_Count_Incidence(aa)=mean(Age_Cumulative_Count_Incidence_dt(:,aa,end)>0);
+    Comparison.Alternative_Worse.Age_Cumulative_Count_Hospital(aa)=mean(Age_Cumulative_Count_Hospital_dt(:,aa,end)>0);
+    Comparison.Alternative_Worse.Age_Cumulative_Count_Death(aa)=mean(Age_Cumulative_Count_Death_dt(:,aa,end)>0);
+    Comparison.Alternative_Worse.Cost_Age(aa)=mean(Cost_Age_dt(:,aa,end)>0);
     
     
-    Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{aa} = fitdist(Age_Cumulative_Count_Incidence_rel(:,aa),'Kernel','Kernel','epanechnikov');
-    Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{aa} = fitdist(Age_Cumulative_Count_Hospital_rel(:,aa),'Kernel','Kernel','epanechnikov');
-    Comparison.Histogram.Age_Cumulative_Count_Death_rel{aa} = fitdist(Age_Cumulative_Count_Death_rel(:,aa),'Kernel','Kernel','epanechnikov');
-    Comparison.Histogram.Cost_Age_rel{aa} = fitdist(Cost_Age_rel(:,aa),'Kernel','Kernel','epanechnikov');
+    Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{aa} = fitdist(Age_Cumulative_Count_Incidence_rel(:,aa,end),'Kernel','Kernel','epanechnikov');
+    Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{aa} = fitdist(Age_Cumulative_Count_Hospital_rel(:,aa,end),'Kernel','Kernel','epanechnikov');
+    Comparison.Histogram.Age_Cumulative_Count_Death_rel{aa} = fitdist(Age_Cumulative_Count_Death_rel(:,aa,end),'Kernel','Kernel','epanechnikov');
+    Comparison.Histogram.Cost_Age_rel{aa} = fitdist(Cost_Age_rel(:,aa,end),'Kernel','Kernel','epanechnikov');
 end
 for aa=1:size(Compliment_Age_Cumulative_Count_Incidence_rel,2)
-    Comparison.Alternative_Worse.Compliment_Age_Cumulative_Count_Incidence(aa)=mean(Compliment_Age_Cumulative_Count_Incidence_dt(:,aa)>0);
-    Comparison.Alternative_Worse.Compliment_Age_Cumulative_Count_Hospital(aa)=mean(Compliment_Age_Cumulative_Count_Hospital_dt(:,aa)>0);
-    Comparison.Alternative_Worse.Compliment_Age_Cumulative_Count_Death(aa)=mean(Compliment_Age_Cumulative_Count_Death_dt(:,aa)>0);
-    Comparison.Alternative_Worse.Cost_Compliment_Age(aa)=mean(Cost_Compliment_Age_dt(:,aa)>0);
+    Comparison.Alternative_Worse.Compliment_Age_Cumulative_Count_Incidence(aa)=mean(Compliment_Age_Cumulative_Count_Incidence_dt(:,aa,end)>0);
+    Comparison.Alternative_Worse.Compliment_Age_Cumulative_Count_Hospital(aa)=mean(Compliment_Age_Cumulative_Count_Hospital_dt(:,aa,end)>0);
+    Comparison.Alternative_Worse.Compliment_Age_Cumulative_Count_Death(aa)=mean(Compliment_Age_Cumulative_Count_Death_dt(:,aa,end)>0);
+    Comparison.Alternative_Worse.Cost_Compliment_Age(aa)=mean(Cost_Compliment_Age_dt(:,aa,end)>0);
     
-    Comparison.Histogram.Compliment_Age_Cumulative_Count_Incidence_rel{aa} = fitdist(Compliment_Age_Cumulative_Count_Incidence_rel(:,aa),'Kernel','Kernel','epanechnikov');
-    Comparison.Histogram.Compliment_Age_Cumulative_Count_Hospital_rel{aa} = fitdist(Compliment_Age_Cumulative_Count_Hospital_rel(:,aa),'Kernel','Kernel','epanechnikov');
-    Comparison.Histogram.Compliment_Age_Cumulative_Count_Death_rel{aa} = fitdist(Compliment_Age_Cumulative_Count_Death_rel(:,aa),'Kernel','Kernel','epanechnikov');
-    Comparison.Histogram.Cost_Compliment_Age_rel{aa} = fitdist(Cost_Compliment_Age_rel(:,aa),'Kernel','Kernel','epanechnikov');
+    Comparison.Histogram.Compliment_Age_Cumulative_Count_Incidence_rel{aa} = fitdist(Compliment_Age_Cumulative_Count_Incidence_rel(:,aa,end),'Kernel','Kernel','epanechnikov');
+    Comparison.Histogram.Compliment_Age_Cumulative_Count_Hospital_rel{aa} = fitdist(Compliment_Age_Cumulative_Count_Hospital_rel(:,aa,end),'Kernel','Kernel','epanechnikov');
+    Comparison.Histogram.Compliment_Age_Cumulative_Count_Death_rel{aa} = fitdist(Compliment_Age_Cumulative_Count_Death_rel(:,aa,end),'Kernel','Kernel','epanechnikov');
+    Comparison.Histogram.Cost_Compliment_Age_rel{aa} = fitdist(Cost_Compliment_Age_rel(:,aa,end),'Kernel','Kernel','epanechnikov');
 end
 
-save(['Comparison_Summary_' Scenario_Name '.mat'],'Comparison','PRCT');
+save([pwd '/Files/Comparison_Summary_' Scenario_Name '.mat'],'Comparison','PRCT');
 end

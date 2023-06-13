@@ -1,4 +1,4 @@
-function Figure_3()
+function Supplement_Figure_9
 close all;
 Scenario='Large_Winter';
 % close all;
@@ -18,9 +18,6 @@ AgeV=[65 50];
 Age_Text={['0' char(8211) '49'],['50' char(8211) '64'],'65+'};
 aa_indx=[7 5 6];
 
-Delay_65_Older=cell(length(t_day),1);
-Delay_Under_50=cell(length(t_day),2);
-
 figure('units','normalized','outerposition',[0.1 0.05 0.75 1]);
 for Scenario_Indx=1:4    
     Y=zeros(3,2,length(xt),length(XTL));
@@ -30,7 +27,7 @@ for Scenario_Indx=1:4
 
     for mm=1:length(XTL)
         for vv=1:2
-            load([temp_cd 'Comparison_Summary_' Scenario '_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_' num2str(AgeV(vv)) '_and_older.mat']);
+            load([temp_cd 'Comparison_Summary_' Scenario '_Two_Campaign_Baseline_Coverage_' num2str(t_day(mm)) '_days_' num2str(AgeV(vv)) '_and_older.mat']);
             for aav=1:3
                 aa=aa_indx(aav);
                 if(Scenario_Indx==1)
@@ -45,11 +42,6 @@ for Scenario_Indx=1:4
                 elseif(Scenario_Indx==4)   
                     MM=max(pdf(Comparison.Histogram.Cost_Age_rel{aa},xt));
                     Y(aav,vv,:,mm)=pdf(Comparison.Histogram.Cost_Age_rel{aa},xt)./MM;
-                    if(vv==1 && aav==3)
-                        Delay_65_Older{mm}=[num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==50,aa,end),'%3.1f') '%(95% PI:' num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==97.5,aa,end),'%3.1f') '%' char(8211) num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==2.5,aa,end),'%3.1f') '%)'];
-                    elseif(aav==1)
-                        Delay_Under_50{mm,vv}=[num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==50,aa,end),'%3.1f') '%(95% PI:' num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==97.5,aa,end),'%3.1f') '%' char(8211) num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==2.5,aa,end),'%3.1f') '%)'];
-                    end
                 end
                 min_x=min(min_x,min(xt(Y(aav,vv,:,mm)>0)));
                 max_x=max(max_x,max(xt(Y(aav,vv,:,mm)>0)));
@@ -71,8 +63,8 @@ for Scenario_Indx=1:4
         text(0.866,0.944,'65+','color',CC(Scenario_Indx,:),'Fontsize',16,'Units','normalize');
         text(0.866,0.8367,'50+','color',interp1([0 1],[1 1 1;CC(Scenario_Indx,:)],0.5),'Fontsize',16,'Units','normalize');
         box off;
-        set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[-0:5:15],'Xminortick','off','Fontsize',16);
-        ylim([-0.5 10])
+        set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[-0:1:6],'Xminortick','off','Fontsize',16);
+        ylim([-0.5 6])
         xlim([0.4 length(XTL)+.6])
         ytickformat('percentage');
         ylabel({'Reduction in', lower(Outcome{Scenario_Indx})},'Fontsize',18);
@@ -86,8 +78,5 @@ for Scenario_Indx=1:4
     end
 %     
 end
-print(gcf,['Figure_3.png'],'-dpng','-r300');
-delay_v=XTL';
-table(delay_v,Delay_65_Older)
-table(delay_v,Delay_Under_50)
+print(gcf,['Supplement_Figure_9.png'],'-dpng','-r300');
 end

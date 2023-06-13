@@ -1,6 +1,6 @@
-function Supplemental_Figure_8
+function Supplement_Figure_15
 close all;
-Scenario='All';
+Scenario='Unimodal_Winter';
 % close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
@@ -27,7 +27,7 @@ for Scenario_Indx=1:4
 
     for mm=1:length(XTL)
         for vv=1:2
-            load([temp_cd 'Comparison_Summary_' Scenario '_Two_Campaign_Baseline_Coverage_' num2str(t_day(mm)) '_days_' num2str(AgeV(vv)) '_and_older.mat']);
+            load([temp_cd 'Comparison_Summary_' Scenario '_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_' num2str(AgeV(vv)) '_and_older.mat']);
             for aav=1:3
                 aa=aa_indx(aav);
                 if(Scenario_Indx==1)
@@ -63,8 +63,8 @@ for Scenario_Indx=1:4
         text(0.866,0.944,'65+','color',CC(Scenario_Indx,:),'Fontsize',16,'Units','normalize');
         text(0.866,0.8367,'50+','color',interp1([0 1],[1 1 1;CC(Scenario_Indx,:)],0.5),'Fontsize',16,'Units','normalize');
         box off;
-        set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[-0:5:15],'Xminortick','off','Fontsize',16);
-        ylim([-0.5 15])
+        set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[-0:2:10],'Xminortick','off','Fontsize',16);
+        ylim([-0.5 10])
         xlim([0.4 length(XTL)+.6])
         ytickformat('percentage');
         ylabel({'Reduction in', lower(Outcome{Scenario_Indx})},'Fontsize',18);
@@ -72,11 +72,11 @@ for Scenario_Indx=1:4
            title(['Ages ' Age_Text{aa}]);
         end
         if(Scenario_Indx==4)
-            xlabel({'Days to second dose'},'Fontsize',18);
+            xlabel({'Days to second dose'},'Fontsize',18,'Units','Normalized','Position',[0.500000476837158,-0.27,0]);
         end
         text(-0.32,1,char(64+aa+ 3.*(Scenario_Indx-1)),'Fontsize',24,'Units','normalized','fontweight','bold'); 
     end
 %     
 end
-print(gcf,['Supplemental_Figure_8.png'],'-dpng','-r300');
+print(gcf,['Supplement_Figure_15.png'],'-dpng','-r300');
 end
