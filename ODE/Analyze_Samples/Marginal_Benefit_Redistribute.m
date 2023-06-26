@@ -1,5 +1,5 @@
 function Marginal_Benefit_Redistribute(Filtered_Output_65,Filtered_Output_50,Filtered_Output_Redistributed, SA_Scenario)
-PRCT=sort([1:99 2.5 97.5]);
+PRCT=sort([50 2.5 25 75 97.5]);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Add 0-49 for main text
@@ -57,65 +57,54 @@ Filtered_Output_50.Cost_Age=Temp_C.Cost_Age;
 % Conduct calculations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Marginal_Benefit_Incidence=(Filtered_Output_65.Incidence_Cumulative_Count-Filtered_Output_Redistributed.Incidence_Cumulative_Count)./(Filtered_Output_65.Incidence_Cumulative_Count-Filtered_Output_50.Incidence_Cumulative_Count)-1;
-Marginal_Benefit_Hospitalization=(Filtered_Output_65.Hospital_Cumulative_Count-Filtered_Output_Redistributed.Hospital_Cumulative_Count)./(Filtered_Output_65.Hospital_Cumulative_Count-Filtered_Output_50.Hospital_Cumulative_Count)-1;
-Marginal_Benefit_Death=(Filtered_Output_65.Death_Cumulative_Count-Filtered_Output_Redistributed.Death_Cumulative_Count)./(Filtered_Output_65.Death_Cumulative_Count-Filtered_Output_50.Death_Cumulative_Count)-1;
-Marginal_Benefit_Cost=(Filtered_Output_65.Cost_Total-Filtered_Output_Redistributed.Cost_Total)./(Filtered_Output_65.Cost_Total-Filtered_Output_50.Cost_Total)-1;
+Marginal_Benefit_Incidence=1-(Filtered_Output_65.Incidence_Cumulative_Count-Filtered_Output_Redistributed.Incidence_Cumulative_Count)./(Filtered_Output_65.Incidence_Cumulative_Count-Filtered_Output_50.Incidence_Cumulative_Count);
+Marginal_Benefit_Hospitalization=1-(Filtered_Output_65.Hospital_Cumulative_Count-Filtered_Output_Redistributed.Hospital_Cumulative_Count)./(Filtered_Output_65.Hospital_Cumulative_Count-Filtered_Output_50.Hospital_Cumulative_Count);
+Marginal_Benefit_Death=1-(Filtered_Output_65.Death_Cumulative_Count-Filtered_Output_Redistributed.Death_Cumulative_Count)./(Filtered_Output_65.Death_Cumulative_Count-Filtered_Output_50.Death_Cumulative_Count);
+Marginal_Benefit_Cost=1-(Filtered_Output_65.Cost_Total-Filtered_Output_Redistributed.Cost_Total)./(Filtered_Output_65.Cost_Total-Filtered_Output_50.Cost_Total);
 
 
-Marginal_Benefit_Incidence_Age=(Filtered_Output_65.Incidence_Cumulative_Count_Age-Filtered_Output_Redistributed.Incidence_Cumulative_Count_Age)./(Filtered_Output_65.Incidence_Cumulative_Count_Age-Filtered_Output_50.Incidence_Cumulative_Count_Age)-1;
-Marginal_Benefit_Hospitalization_Age=(Filtered_Output_65.Hospital_Cumulative_Count_Age-Filtered_Output_Redistributed.Hospital_Cumulative_Count_Age)./(Filtered_Output_65.Hospital_Cumulative_Count_Age-Filtered_Output_50.Hospital_Cumulative_Count_Age)-1;
-Marginal_Benefit_Death_Age=(Filtered_Output_65.Death_Cumulative_Count_Age-Filtered_Output_Redistributed.Death_Cumulative_Count_Age)./(Filtered_Output_65.Death_Cumulative_Count_Age-Filtered_Output_50.Death_Cumulative_Count_Age)-1;
-Marginal_Benefit_Cost_Age=(Filtered_Output_65.Cost_Age-Filtered_Output_Redistributed.Cost_Age)./(Filtered_Output_65.Cost_Age-Filtered_Output_50.Cost_Age)-1;
+Marginal_Benefit_Incidence_Age=1-(Filtered_Output_65.Incidence_Cumulative_Count_Age-Filtered_Output_Redistributed.Incidence_Cumulative_Count_Age)./(Filtered_Output_65.Incidence_Cumulative_Count_Age-Filtered_Output_50.Incidence_Cumulative_Count_Age);
+Marginal_Benefit_Hospitalization_Age=1-(Filtered_Output_65.Hospital_Cumulative_Count_Age-Filtered_Output_Redistributed.Hospital_Cumulative_Count_Age)./(Filtered_Output_65.Hospital_Cumulative_Count_Age-Filtered_Output_50.Hospital_Cumulative_Count_Age);
+Marginal_Benefit_Death_Age=1-(Filtered_Output_65.Death_Cumulative_Count_Age-Filtered_Output_Redistributed.Death_Cumulative_Count_Age)./(Filtered_Output_65.Death_Cumulative_Count_Age-Filtered_Output_50.Death_Cumulative_Count_Age);
+Marginal_Benefit_Cost_Age=1-(Filtered_Output_65.Cost_Age-Filtered_Output_Redistributed.Cost_Age)./(Filtered_Output_65.Cost_Age-Filtered_Output_50.Cost_Age);
 
-Marginal_Benefit.Average.Incidence=mean(Marginal_Benefit_Incidence);
-Marginal_Benefit.Average.Hospitalization=mean(Marginal_Benefit_Hospitalization);
-Marginal_Benefit.Average.Death=mean(Marginal_Benefit_Death);
-Marginal_Benefit.Average.Cost=mean(Marginal_Benefit_Cost);
+dim_2=size(Marginal_Benefit_Cost_Age,2);
+dim_3=size(Marginal_Benefit_Cost_Age,3);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Statistical summary
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
-Marginal_Benefit.Average.Incidence_Age=mean(Marginal_Benefit_Incidence_Age,1);
-Marginal_Benefit.Average.Hospitalization_Age=mean(Marginal_Benefit_Hospitalization_Age,1);
-Marginal_Benefit.Average.Death_Age=mean(Marginal_Benefit_Death_Age,1);
-Marginal_Benefit.Average.Cost_Age=mean(Marginal_Benefit_Cost_Age,1);
+boot_s=bootstrp(2500,@mean,Marginal_Benefit_Incidence);
+Marginal_Benefit.Average.Incidence=mean(boot_s);
+Marginal_Benefit.PRCT.Incidence=prctile(boot_s,PRCT);
 
-Marginal_Benefit.PRCT.Incidence=prctile(Marginal_Benefit_Incidence,PRCT);
-Marginal_Benefit.PRCT.Hospitalization=prctile(Marginal_Benefit_Hospitalization,PRCT);
-Marginal_Benefit.PRCT.Death=prctile(Marginal_Benefit_Death,PRCT);
-Marginal_Benefit.PRCT.Cost=prctile(Marginal_Benefit_Cost,PRCT);
+boot_s=bootstrp(2500,@mean,Marginal_Benefit_Hospitalization);
+Marginal_Benefit.Average.Hospitalization=mean(boot_s);
+Marginal_Benefit.PRCT.Hospitalization=prctile(boot_s,PRCT);
 
+boot_s=bootstrp(2500,@mean,Marginal_Benefit_Death);
+Marginal_Benefit.Average.Death=mean(boot_s);
+Marginal_Benefit.PRCT.Death=prctile(boot_s,PRCT);
 
-Marginal_Benefit.PRCT.Incidence_Age=prctile(Marginal_Benefit_Incidence_Age,PRCT,1);
-Marginal_Benefit.PRCT.Hospitalization_Age=prctile(Marginal_Benefit_Hospitalization_Age,PRCT,1);
-Marginal_Benefit.PRCT.Death_Age=prctile(Marginal_Benefit_Death_Age,PRCT,1);
-Marginal_Benefit.PRCT.Cost_Age=prctile(Marginal_Benefit_Cost_Age,PRCT,1);
+boot_s=bootstrp(2500,@mean,Marginal_Benefit_Cost);
+Marginal_Benefit.Average.Cost=mean(boot_s);
+Marginal_Benefit.PRCT.Cost=prctile(boot_s,PRCT);
 
+boot_s=reshape(bootstrp(2500,@mean,Marginal_Benefit_Incidence_Age),2500,dim_2,dim_3);
+Marginal_Benefit.Average.Incidence_Age=mean(boot_s,1);
+Marginal_Benefit.PRCT.Incidence_Age=prctile(boot_s,PRCT);
 
-Marginal_Benefit.Histogram.Incidence=fitdist(Marginal_Benefit_Incidence,'Kernel','Kernel','epanechnikov');
-Marginal_Benefit.Histogram.Hospitalization=fitdist(Marginal_Benefit_Hospitalization,'Kernel','Kernel','epanechnikov');
-Marginal_Benefit.Histogram.Death=fitdist(Marginal_Benefit_Death,'Kernel','Kernel','epanechnikov');
-Marginal_Benefit.Histogram.Cost=fitdist(Marginal_Benefit_Cost(:,end),'Kernel','Kernel','epanechnikov');
+boot_s=reshape(bootstrp(2500,@mean,Marginal_Benefit_Hospitalization_Age),2500,dim_2,dim_3);
+Marginal_Benefit.Average.Hospitalization_Age=mean(boot_s,1);
+Marginal_Benefit.PRCT.Hospitalization_Age=prctile(boot_s,PRCT);
 
-Marginal_Benefit.Histogram.Incidence_Age=cell(length(Marginal_Benefit_Cost_Age(1,:,1)),1);
-Marginal_Benefit.Histogram.Hospitalization_Age=cell(length(Marginal_Benefit_Cost_Age(1,:,1)),1);
-Marginal_Benefit.Histogram.Death_Age=cell(length(Marginal_Benefit_Cost_Age(1,:,1)),1);
-Marginal_Benefit.Histogram.Cost_Age=cell(length(Marginal_Benefit_Cost_Age(1,:,1)),1);
+boot_s=reshape(bootstrp(2500,@mean,Marginal_Benefit_Death_Age),2500,dim_2,dim_3);
+Marginal_Benefit.Average.Death_Age=mean(boot_s,1);
+Marginal_Benefit.PRCT.Death_Age=prctile(boot_s,PRCT);
 
-for aa=1:length(Marginal_Benefit_Cost_Age(1,:,1))
-    Marginal_Benefit.Histogram.Incidence_Age{aa}=fitdist(Marginal_Benefit_Incidence_Age(:,aa,end),'Kernel','Kernel','epanechnikov');
-    Marginal_Benefit.Histogram.Hospitalization_Age{aa}=fitdist(Marginal_Benefit_Hospitalization_Age(:,aa,end),'Kernel','Kernel','epanechnikov');
-    Marginal_Benefit.Histogram.Death_Age{aa}=fitdist(Marginal_Benefit_Death_Age(:,aa,end),'Kernel','Kernel','epanechnikov');
-    Marginal_Benefit.Histogram.Cost_Age{aa}=fitdist(Marginal_Benefit_Cost_Age(:,aa,end),'Kernel','Kernel','epanechnikov');
-end
-
-Marginal_Benefit.Less_than_zero.Incidence=mean(Marginal_Benefit_Incidence<0);
-Marginal_Benefit.Less_than_zero.Hospitalization=mean(Marginal_Benefit_Hospitalization<0);
-Marginal_Benefit.Less_than_zero.Death=mean(Marginal_Benefit_Death<0);
-Marginal_Benefit.Less_than_zero.Cost=mean(Marginal_Benefit_Cost<0);
-
-Marginal_Benefit.Less_than_zero.Incidence_Age=mean(Marginal_Benefit_Incidence_Age(:,:,end)<0,1);
-Marginal_Benefit.Less_than_zero.Hospitalization_Age=mean(Marginal_Benefit_Hospitalization_Age(:,:,end)<0,1);
-Marginal_Benefit.Less_than_zero.Death_Age=mean(Marginal_Benefit_Death_Age(:,:,end)<0,1);
-Marginal_Benefit.Less_than_zero.Cost_Age=mean(Marginal_Benefit_Cost_Age(:,:,end)<0,1);
+boot_s=reshape(bootstrp(2500,@mean,Marginal_Benefit_Cost_Age),2500,dim_2,dim_3);
+Marginal_Benefit.Average.Cost_Age=mean(boot_s,1);
+Marginal_Benefit.PRCT.Cost_Age=prctile(boot_s,PRCT);
 
 save([pwd '/Files/Marginal_Benefit_Redistributre_Second_Dose_50_to_64_' SA_Scenario '.mat'],'Marginal_Benefit','PRCT');
 end

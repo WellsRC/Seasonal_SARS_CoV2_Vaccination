@@ -122,7 +122,26 @@ elseif(strcmp('Delay_SA_Annual_Campaign',Vac_Camp))
     dR_i=15+span_A;
 
     vac_c=Parameters.vac_SA;
+elseif(strcmp('Delay_SA_Two_Dose_Campaign',Vac_Camp))
+    X0=zeros(45.*A,1);
+
+    span_A=45.*[0:(A-1)];
+
+    S_n=1+span_A;
+    S_i=2+span_A;
+    dS_i=10+span_A;
+    
+    E_n=17+span_A;
+    
+    I_n=26+span_A;
+    
+    R_n=35+span_A;
+    R_i=36+span_A;
+    dR_i=39+span_A;
+
+    vac_c=Parameters.vac_SA;
 end
+    
 
 X0(R_n)=Parameters.N.*Parameters.R0;
 

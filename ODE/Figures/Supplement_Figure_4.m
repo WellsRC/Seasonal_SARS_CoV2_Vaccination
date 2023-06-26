@@ -49,6 +49,7 @@ for Scenario_Indx=1:4
     
     text(-0.35,1.08,char(65+(Scenario_Indx-1)),'Fontsize',24,'FontWeight','bold','Units','normalized');
 end
+% table()
 print(gcf,['Supplement_Figure_4.png'],'-dpng','-r300');    
 end
 

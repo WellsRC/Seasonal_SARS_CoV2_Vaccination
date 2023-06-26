@@ -1,93 +1,62 @@
 function Figure_3()
 close all;
-Scenario='Large_Winter';
 % close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
 
-Outcome={'Incidence','Hospitalizations','Deaths','Cost'};
+Outcome={'Incidence','Hospitalization','Deaths','Cost'};
 
 
 CC=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
+AgeC={['0' char(8211) '4'],['5' char(8211) '12'],['13' char(8211) '17'],['18' char(8211) '49'],['50' char(8211) '64'],'65+','All'};
 
-xt=linspace(-1,1,5001);
-xt2=-xt;
-t_day=[90:30:300];
-XTL={'90','120','150','180','210','240','270','300'};
-AgeV=[65 50];
-Age_Text={['0' char(8211) '49'],['50' char(8211) '64'],'65+'};
-aa_indx=[7 5 6];
+figure('units','normalized','outerposition',[0.2 0.2 0.5 0.75]);
 
-Delay_65_Older=cell(length(t_day),1);
-Delay_Under_50=cell(length(t_day),2);
-
-figure('units','normalized','outerposition',[0.1 0.05 0.75 1]);
-for Scenario_Indx=1:4    
-    Y=zeros(3,2,length(xt),length(XTL));
-
-    min_x=Inf;
-    max_x=-Inf;
-
-    for mm=1:length(XTL)
-        for vv=1:2
-            load([temp_cd 'Comparison_Summary_' Scenario '_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_' num2str(AgeV(vv)) '_and_older.mat']);
-            for aav=1:3
-                aa=aa_indx(aav);
-                if(Scenario_Indx==1)
-                    MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{aa},xt));
-                    Y(aav,vv,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{aa},xt)./MM;
-                elseif(Scenario_Indx==2)   
-                    MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{aa},xt));
-                    Y(aav,vv,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{aa},xt)./MM;
-                elseif(Scenario_Indx==3)   
-                    MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{aa},xt));
-                    Y(aav,vv,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{aa},xt)./MM;
-                elseif(Scenario_Indx==4)   
-                    MM=max(pdf(Comparison.Histogram.Cost_Age_rel{aa},xt));
-                    Y(aav,vv,:,mm)=pdf(Comparison.Histogram.Cost_Age_rel{aa},xt)./MM;
-                    if(vv==1 && aav==3)
-                        Delay_65_Older{mm}=[num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==50,aa,end),'%3.1f') '%(95% PI:' num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==97.5,aa,end),'%3.1f') '%' char(8211) num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==2.5,aa,end),'%3.1f') '%)'];
-                    elseif(aav==1)
-                        Delay_Under_50{mm,vv}=[num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==50,aa,end),'%3.1f') '%(95% PI:' num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==97.5,aa,end),'%3.1f') '%' char(8211) num2str(-100.*Comparison.PRCT.Cost_Age_rel(PRCT==2.5,aa,end),'%3.1f') '%)'];
-                    end
-                end
-                min_x=min(min_x,min(xt(Y(aav,vv,:,mm)>0)));
-                max_x=max(max_x,max(xt(Y(aav,vv,:,mm)>0)));
-            end
+for Scenario_Indx=1:4
+    subplot('Position',[0.135+0.5.*(rem(Scenario_Indx-1,2)),0.64-0.495.*(floor((Scenario_Indx-1)./2)),0.36,0.3475]);
+    xt=linspace(-1,1,5001);
+    YM=zeros(1,length(AgeC));
+    load([temp_cd 'Marginal_Benefit_Second_Dose_50_to_64_Large_Winter_Two_Campaign_Influenza_Like_Coverage_180_days.mat'])
+    for aa=1:6
+        if(Scenario_Indx==1)            
+            Marginal_Benefit.Average.Incidence_Age=reshape(Marginal_Benefit.Average.Incidence_Age,7,9);
+            YM(aa)=Marginal_Benefit.Average.Incidence_Age(aa,end);
+        elseif(Scenario_Indx==2)               
+            Marginal_Benefit.Average.Hospitalization_Age=reshape(Marginal_Benefit.Average.Hospitalization_Age,7,9);
+            YM(aa)=Marginal_Benefit.Average.Hospitalization_Age(aa,end);
+        elseif(Scenario_Indx==3)   
+            Marginal_Benefit.Average.Death_Age=reshape(Marginal_Benefit.Average.Death_Age,7,9);
+            YM(aa)=Marginal_Benefit.Average.Death_Age(aa,end);
+        elseif(Scenario_Indx==4)   
+            Marginal_Benefit.Average.Cost_Age=reshape(Marginal_Benefit.Average.Cost_Age,7,9);
+            YM(aa)=Marginal_Benefit.Average.Cost_Age(aa,end);
         end
     end
-
-    for aa=1:3
-        subplot('Position',[0.08+0.33.*(aa-1),0.785-0.235.*(Scenario_Indx-1),0.24,0.18]);
-
-%     
-        plot([0.45 length(XTL)+0.55],[0 0],'color',[0.7 0.7 0.7],'LineWidth',2); hold on; 
-        for mm=1:length(XTL)
-            t1=squeeze(Y(aa,1,:,mm))';
-            t2=squeeze(Y(aa,2,:,mm))';
-            patch(mm+[-0.45.*t1 flip(0.*t1)], 100.*([xt2 flip(xt2)]),CC(Scenario_Indx,:),'LineStyle','none'); hold on; 
-            patch(mm+[-0.*t2 flip(0.45.*t2)], 100.*([xt2 flip(xt2)]),interp1([0 1],[1 1 1;CC(Scenario_Indx,:)],0.5),'LineStyle','none'); hold on; 
-        end
-        text(0.866,0.944,'65+','color',CC(Scenario_Indx,:),'Fontsize',16,'Units','normalize');
-        text(0.866,0.8367,'50+','color',interp1([0 1],[1 1 1;CC(Scenario_Indx,:)],0.5),'Fontsize',16,'Units','normalize');
-        box off;
-        set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[-0:5:15],'Xminortick','off','Fontsize',16);
-        ylim([-0.5 10])
-        xlim([0.4 length(XTL)+.6])
-        ytickformat('percentage');
-        ylabel({'Reduction in', lower(Outcome{Scenario_Indx})},'Fontsize',18);
-        if(Scenario_Indx==1)
-           title(['Ages ' Age_Text{aa}]);
-        end
-        if(Scenario_Indx==4)
-            xlabel({'Days to second dose'},'Fontsize',18,'Units','Normalized','Position',[0.500000476837158,-0.27,0]);
-        end
-        text(-0.32,1,char(64+aa+ 3.*(Scenario_Indx-1)),'Fontsize',24,'Units','normalized','fontweight','bold'); 
+    aa=7;
+    if(Scenario_Indx==1)            
+        YM(aa)=Marginal_Benefit.Average.Incidence;
+    elseif(Scenario_Indx==2)               
+        YM(aa)=Marginal_Benefit.Average.Hospitalization;
+    elseif(Scenario_Indx==3)   
+        YM(aa)=Marginal_Benefit.Average.Death;
+    elseif(Scenario_Indx==4)   
+        YM(aa)=Marginal_Benefit.Average.Cost(end);
     end
-%     
+    YM=100.*YM;
+    plot(mean([6.5 6.75]).*[1 1],[-1 100],'-.','color',[0.7 0.7 0.7],'LineWidth',1.25); hold on;
+    bar([1:6 7.25],YM,'LineStyle','none','FaceColor',CC(Scenario_Indx,:));
+    box off;
+  
+    box off;
+    ytickformat('percentage');
+    xtickangle(90);
+    set(gca,'LineWidth',2,'tickdir','out','XTick',[1:6 7.25],'XTickLabel',AgeC,'YTick',[0:10:80],'Yminortick','on','Fontsize',16);
+    ylim([0 80]);
+    xlim([0.5 7.75]);
+    xlabel('Age class','Fontsize',18);
+    ylabel([{'Marginal beneift',[lower(Outcome{Scenario_Indx})]}],'Fontsize',18);
+    
+    text(-0.35,0.985,char(64+Scenario_Indx),'Fontsize',24,'Units','normalized','fontweight','bold');
 end
 print(gcf,['Figure_3.png'],'-dpng','-r300');
-delay_v=XTL';
-table(delay_v,Delay_65_Older)
-table(delay_v,Delay_Under_50)
 end

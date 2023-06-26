@@ -37,7 +37,7 @@ for Scenario_Indx=1:4
         elseif(Scenario_Indx==4)    
             MM=max(pdf(Comparison_Single.Histogram.Cost_Age_rel{ss},xt));
             Y(ss,:,1)=pdf(Comparison_Single.Histogram.Cost_Age_rel{ss},xt)./MM;
-            Per_Increase(1,ss)=Comparison_Single.Alternative_Worse.Cost_Age(ss);
+            Per_Increase(1,ss)=Comparison_Single.Alternative_Worse.Cost_Age(ss);            
         end
         min_x=min(min_x,min(xt(Y(ss,:,1)>0)));
         max_x=max(max_x,max(xt(Y(ss,:,1)>0)));
@@ -79,6 +79,9 @@ for Scenario_Indx=1:4
             MM=max(pdf(Comparison.Histogram.Cost_Age_rel{ss},xt));
             Y(ss,:,2)=pdf(Comparison.Histogram.Cost_Age_rel{ss},xt)./MM;
             Per_Increase(2,ss)=Comparison.Alternative_Worse.Cost_Age(ss);
+            if(ss==6)
+                Comp_Cost_65=-[Comparison.PRCT.Cost_Age_rel(PRCT==50,ss,end) Comparison.PRCT.Cost_Age_rel(PRCT==97.5,ss,end) Comparison.PRCT.Cost_Age_rel(PRCT==2.5,ss,end)];
+            end
         end
         min_x=min(min_x,min(xt(Y(ss,:,2)>0)));
         max_x=max(max_x,max(xt(Y(ss,:,2)>0)));
