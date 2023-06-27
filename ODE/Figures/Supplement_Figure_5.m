@@ -21,73 +21,42 @@ M_0_4=zeros(2,3);
 
 t_day=[90:30:300];
 XTL={'90','120','150','180','210','240','270','300'};
-Y65=zeros(6,length(xt),length(XTL));
-Y50=zeros(6,length(xt),length(XTL));
-for mm=1:length(XTL)
-        load([temp_cd 'Comparison_Summary_Large_Winter_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_65_and_older.mat']);
-    
-    for ss=1:6
-        if(t_out(1))
-            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{ss},xt));
-            Y65(ss,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{ss},xt)./MM;
-        elseif(t_out(2))   
-            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{ss},xt));
-            Y65(ss,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{ss},xt)./MM;
-        elseif(t_out(3))   
-            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{ss},xt));
-            Y65(ss,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{ss},xt)./MM;
-        elseif(t_out(4))   
-            MM=max(pdf(Comparison.Histogram.Cost_Age_rel{ss},xt));
-            Y65(ss,:,mm)=pdf(Comparison.Histogram.Cost_Age_rel{ss},xt)./MM;
-            if(mm==4)
-                M_0_4(1,1)=Comparison.PRCT.Cost_Age_rel(PRCT==50 ,1,end);
-                M_0_4(1,2)=Comparison.PRCT.Cost_Age_rel(PRCT==97.5,1,end);
-                M_0_4(1,3)=Comparison.PRCT.Cost_Age_rel(PRCT==2.5,1,end);
-            end
-        end
-    end
-    
-    load([temp_cd 'Comparison_Summary_Large_Winter_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_50_and_older.mat']);
-    
-    for ss=1:6
-        if(t_out(1))
-            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{ss},xt));
-            Y50(ss,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Incidence_rel{ss},xt)./MM;
-        elseif(t_out(2))   
-            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{ss},xt));
-            Y50(ss,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Hospital_rel{ss},xt)./MM;
-        elseif(t_out(3))   
-            MM=max(pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{ss},xt));
-            Y50(ss,:,mm)=pdf(Comparison.Histogram.Age_Cumulative_Count_Death_rel{ss},xt)./MM;
-        elseif(t_out(4))   
-            MM=max(pdf(Comparison.Histogram.Cost_Age_rel{ss},xt));
-            Y50(ss,:,mm)=pdf(Comparison.Histogram.Cost_Age_rel{ss},xt)./MM;
-            if(mm==4)
-                M_0_4(2,1)=Comparison.PRCT.Cost_Age_rel(PRCT==50 ,1,end);
-                M_0_4(2,2)=Comparison.PRCT.Cost_Age_rel(PRCT==97.5,1,end);
-                M_0_4(2,3)=Comparison.PRCT.Cost_Age_rel(PRCT==2.5,1,end);
+Y_Red=zeros(6,length(XTL),2);
+for vv=1:2
+    for mm=1:length(XTL)
+            load([temp_cd 'Comparison_Summary_Large_Winter_Two_Campaign_Influenza_Like_Coverage_' num2str(t_day(mm)) '_days_' num2str(65-15.*(vv-1)) '_and_older.mat']);
+            Comparison.Average.Age_Cumulative_Count_Incidence_rel=reshape(Comparison.Average.Age_Cumulative_Count_Incidence_rel,7,9);
+            Comparison.Average.Age_Cumulative_Count_Hospital_rel=reshape(Comparison.Average.Age_Cumulative_Count_Hospital_rel,7,9);
+            Comparison.Average.Age_Cumulative_Count_Death_rel=reshape(Comparison.Average.Age_Cumulative_Count_Death_rel,7,9);
+            Comparison.Average.Cost_Age_rel=reshape(Comparison.Average.Cost_Age_rel,7,9);
+        for ss=1:6
+            if(t_out(1))
+                Y_Red(ss,mm,vv)=Comparison.Average.Age_Cumulative_Count_Incidence_rel(ss,end);
+            elseif(t_out(2))   
+                Y_Red(ss,mm,vv)=Comparison.Average.Age_Cumulative_Count_Hospital_rel(ss,end);
+            elseif(t_out(3))   
+                Y_Red(ss,mm,vv)=Comparison.Average.Age_Cumulative_Count_Death_rel(ss,end);
+            elseif(t_out(4))   
+                Y_Red(ss,mm,vv)=Comparison.Average.Cost_Age_rel(ss,end);
             end
         end
     end
 end
-
+Y_Red=-100.*Y_Red;
 % Need to take the negative as we computed based on increase and y-axis is
 % represented in reduction
-xt=-xt;
+
 
 figure('units','normalized','outerposition',[0 0.025 0.8 0.9]);
 
 for ss=1:6
     subplot('Position',[0.06+rem((ss-1),3).*0.33,0.59-floor(ss./4).*0.49,0.27,0.375]);  
-    plot([0.45 length(XTL)+.55],[0 0],'color',[0.7 0.7 0.7],'LineWidth',2); hold on;
-    for mm=1:length(XTL)
-        patch(mm+[-0.45.*Y65(ss,:,mm) flip(0.*Y65(ss,:,mm))], 100.*([xt2 flip(xt2)]),CC(t_out,:),'LineStyle','none'); hold on; 
-        patch(mm+[-0.*Y50(ss,:,mm) flip(0.45.*Y50(ss,:,mm))], 100.*([xt2 flip(xt2)]),interp1([0 1],[1 1 1;CC(t_out,:)],0.5),'LineStyle','none'); hold on; 
-
-    end
+    b=bar([1:8],squeeze(Y_Red(ss,:,:)),'LineStyle','none');
+    b(1).FaceColor=CC(t_out,:);
+    b(2).FaceColor=interp1([0 1],[1 1 1;CC(t_out,:)],0.5);
     box off;
-    set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[-2:2:10],'Xminortick','off','Fontsize',16);
-    ylim([-0.5 10])
+    set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[0:4],'Xminortick','off','Fontsize',16);
+    ylim([0 4])
     xlim([0.45 length(XTL)+.55])
     title(AgeC{ss})
     ytickformat('percentage');

@@ -1,6 +1,5 @@
 function Figure_3()
 close all;
-% close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
 
