@@ -6,7 +6,7 @@ AC=[0:84];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 t_delay=28;
 pd=2;
-Time_Dose=210;
+Time_Dose=180;
 load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_All','T_Run','R_WP');
 NS=length(P_All);
 Model_Output=cell(NS,1);
@@ -30,7 +30,7 @@ save(['Two_Campaign_Influenza_Like_Coverage_180_days_50_and_older_Proportion_Del
 
 t_delay=28;
 pd=2;
-Time_Dose=210;
+Time_Dose=180;
 load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_All','T_Run','R_WP');
 NS=length(P_All);
 
@@ -59,7 +59,7 @@ save(['Two_Campaign_Baseline_Coverage_180_days_50_and_older_Proportion_Delay_' n
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 t_delay=28;
 pd=2;  
-Time_Dose=210;
+Time_Dose=180;
 load([pwd '/Analyze_Samples/Parameter_Filtered_Unimodal_Winter.mat'],'P_All','T_Run');
 NS=length(P_All);
 Model_Output=cell(NS,1);
@@ -83,7 +83,7 @@ save(['Two_Campaign_Influenza_Like_Coverage_180_days_50_and_older_Proportion_Del
 
 t_delay=28;
 pd=2;  
-Time_Dose=210;
+Time_Dose=180;
 load([pwd '/Analyze_Samples/Parameter_Filtered_Unimodal_Winter.mat'],'P_All','T_Run');
 NS=length(P_All);
 

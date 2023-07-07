@@ -17,15 +17,15 @@ for Scenario_Indx=1:4
     
     subplot('Position',[0.135+0.5.*(rem(Scenario_Indx-1,2)),0.635-0.49.*(floor((Scenario_Indx-1)./2)),0.36,0.315]);
     for ss=1:8         
-        load([temp_cd 'Marginal_Benefit_50_and_older_Large_Winter_Two_Campaign_Baseline_Coverage_' num2str(90+30.*(ss-1)) '_days.mat'])
+        load([temp_cd 'Marginal_Benefit_50_and_older_Large_Winter_Two_Campaign_Influenza_Like_Coverage_' num2str(90+30.*(ss-1)) '_days.mat'])
         
         Y(ss)=100.*[Marginal_Benefit.Average.Cost];        
     end
     bar(Y,'LineStyle','none','FaceColor',CCv(Scenario_Indx,:));
-    ylim([0 3]);
+    ylim([0 4]);
     xlim([0.5 8.5]);
     box off
-    set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:8],'XTickLabel',xtl,'Yminortick','on','YTick',[0:3],'Xminortick','off','Fontsize',16);
+    set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:8],'XTickLabel',xtl,'Yminortick','on','YTick',[0:4],'Xminortick','off','Fontsize',16);
     ytickformat('percentage');
     xlabel('Days to second doses','Fontsize',18,'Units','normalized','position',[0.5 -0.27 0]);
     ylabel([{'Marginal benefit', state_out{Scenario_Indx}}],'Fontsize',18);

@@ -1,6 +1,6 @@
 function Supplement_Figure_15
 close all;
-Scenario='Unimodal_Winter';
+Scenario='Large_Summer';
 % close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];

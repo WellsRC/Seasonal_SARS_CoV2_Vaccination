@@ -1,176 +1,126 @@
 function Supplement_Figure_14
 close all;
-close all;
-
-CCv=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
-
-
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
+load([temp_cd 'Comparison_Summary_Large_Summer_Annual_Campaign_Influenza_Like_Coverage-Baseline_Continual_Vaccination.mat']);
+Comparison_Single=Comparison;
 
-Outcome={'Incidence','Hospitalizations','Deaths','Cost'};
+load([temp_cd 'Comparison_Summary_Large_Summer_Two_Campaign_Influenza_Like_Coverage_180_days_50_and_older-Baseline_Continual_Vaccination.mat']);
 
+xltxt={'incidence','hospitalizations','deaths','cost'};
+CCv=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
+figure('units','normalized','outerposition',[0.2 0.2 0.5 0.6]);
+AgeC={['0' char(8211) '4'],['5' char(8211) '12'],['13' char(8211) '17'],['18' char(8211) '49'],['50' char(8211) '64'],'65+','All'};
+for Scenario_Indx=1:4
+    
+    subplot('Position',[0.105+0.5.*(rem(Scenario_Indx-1,2)),0.625-0.49.*(floor((Scenario_Indx-1)./2)),0.36,0.3525]);
+    xt=linspace(-1,1,5001);
+    Y=zeros(7,2);
+    CC=CCv(Scenario_Indx,:);
+    
+    % Single-dose
+    for ss=1:6
+        if(Scenario_Indx==1)
+            Comparison_Single.PRCT.Age_Cumulative_Count_Incidence_rel=reshape(Comparison_Single.PRCT.Age_Cumulative_Count_Incidence_rel,length(PRCT),7,9);
+            Comparison_Single.Average.Age_Cumulative_Count_Incidence_rel=reshape(Comparison_Single.Average.Age_Cumulative_Count_Incidence_rel,7,9);
+            Out_P=[Comparison_Single.Average.Age_Cumulative_Count_Incidence_rel(ss,end);Comparison_Single.PRCT.Age_Cumulative_Count_Incidence_rel(ismember(PRCT,[2.5 97.5]),ss,end)];
 
-lb_Age=[0 5 13 18 50 65];
-ub_Age=[5 13 18 50 65 85];
-
-AgeC={['0' char(8211) '4'],['5' char(8211) '12'],['13' char(8211) '17'],['18' char(8211) '49'],['50' char(8211) '64'],'65+'};
-
-l_yb=[0 0.16; 0 0.02; 0 0.002; 0 500];
-m_yb=[0 0.07; 0 0.0012; 0 0.00005; 0 35];
-l_dy=[0.02 0.005 0.0005 100];
-m_dy=[0.01 0.0003 0.00001 5];
-figure('units','normalized','outerposition',[0.1 0.06 0.675 1]);
-Direct_I=cell(6,1);
-Direct_H=cell(6,1);
-Direct_D=cell(6,1);
-Direct_C=cell(6,1);
-
-Indirect_I=cell(6,1);
-Indirect_H=cell(6,1);
-Indirect_D=cell(6,1);
-Indirect_C=cell(6,1);
-for State_Indx=1:4    
-    CC=CCv(State_Indx,:);
-    Outcome_Matrix=zeros(length(lb_Age));
-    Outcome_All=zeros(length(lb_Age),1);
-    Outcome_Indirect=zeros(length(lb_Age),1);
-    for aa=1:6
-       load([temp_cd 'Comparison_Summary_Unimodal_Winter_Annual_Campaign_Influenza_Like_Coverage_Indirect_10000_Additional_Doses_Ages_' num2str(lb_Age(aa)) '_to_' num2str(ub_Age(aa)-1) '.mat'],'Comparison','PRCT');
-       Comparison.Average.Age_Cumulative_Count_Incidence_dt=reshape(Comparison.Average.Age_Cumulative_Count_Incidence_dt,7,9);
-       Comparison.Average.Age_Cumulative_Count_Hospital_dt=reshape(Comparison.Average.Age_Cumulative_Count_Hospital_dt,7,9);
-       Comparison.Average.Age_Cumulative_Count_Death_dt=reshape(Comparison.Average.Age_Cumulative_Count_Death_dt,7,9);
-       Comparison.Average.Cost_Age_dt=reshape(Comparison.Average.Cost_Age_dt,7,9);
-
-       Comparison.Average.Compliment_Age_Cumulative_Count_Incidence_dt=reshape(Comparison.Average.Compliment_Age_Cumulative_Count_Incidence_dt,6,9);
-       Comparison.Average.Compliment_Age_Cumulative_Count_Hospital_dt=reshape(Comparison.Average.Compliment_Age_Cumulative_Count_Hospital_dt,6,9);
-       Comparison.Average.Compliment_Age_Cumulative_Count_Death_dt=reshape(Comparison.Average.Compliment_Age_Cumulative_Count_Death_dt,6,9);
-       Comparison.Average.Cost_Compliment_Age_dt=reshape(Comparison.Average.Cost_Compliment_Age_dt,6,9);
-
-       if State_Indx==1
-           Outcome_All(aa)=-Comparison.Average.Cumulative_Count_Incidence_dt./10000;
-
-           Outcome_Indirect(aa)=-Comparison.Average.Compliment_Age_Cumulative_Count_Incidence_dt(aa,end)./10000;
-           
-           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Incidence_dt(1:end-1,end)./10000;
-
-           Direct_I{aa}=[num2str(-Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==50)./10000,'%3.2f') '(95% PI:' num2str(-Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==97.5)./10000,'%3.2f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==2.5)./10000,'%3.2f') ')'];
-           Indirect_I{aa}=[num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Incidence_dt(PRCT==50,aa,end)./10000,'%4.3f') '(95% PI:' num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Incidence_dt(PRCT==97.5,aa,end)./10000,'%4.3f') char(8211) num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Incidence_dt(PRCT==2.5,aa,end)./10000,'%4.3f') ')'];
-       elseif State_Indx==2
-           Outcome_All(aa)=-Comparison.Average.Cumulative_Count_Hospital_dt./10000;
-
-           Outcome_Indirect(aa)=-Comparison.Average.Compliment_Age_Cumulative_Count_Hospital_dt(aa,end)./10000;
-           
-           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Hospital_dt(1:end-1,end)./10000;
-
-           Direct_H{aa}=[num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==50)./10000,'%4.3f') '(95% PI:' num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5)./10000,'%4.3f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5)./10000,'%4.3f') ')'];
-           Indirect_H{aa}=[num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Hospital_dt(PRCT==50,aa,end)./10000,'%5.4f') '(95% PI:' num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Hospital_dt(PRCT==97.5,aa,end)./10000,'%5.4f') char(8211) num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Hospital_dt(PRCT==2.5,aa,end)./10000,'%5.4f') ')'];
-
-       elseif State_Indx==3
-           Outcome_All(aa)=-Comparison.Average.Cumulative_Count_Death_dt./10000;
-           
-           Outcome_Indirect(aa)=-Comparison.Average.Compliment_Age_Cumulative_Count_Death_dt(aa,end)./10000;
-           Outcome_Matrix(:,aa)=-Comparison.Average.Age_Cumulative_Count_Death_dt(1:end-1,end)./10000;
-
-
-           Direct_D{aa}=[num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==50)./10000,'%5.4f') '(95% PI:' num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5)./10000,'%5.4f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5)./10000,'%5.4f') ')'];
-           Indirect_D{aa}=[num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Death_dt(PRCT==50,aa,end)./10000,'%6.5f') '(95% PI:' num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Death_dt(PRCT==97.5,aa,end)./10000,'%6.5f') char(8211) num2str(-Comparison.PRCT.Compliment_Age_Cumulative_Count_Death_dt(PRCT==2.5,aa,end)./10000,'%6.5f') ')'];
-
-       elseif State_Indx==4
-
-           Outcome_All(aa)=-Comparison.Average.Cost_Total_dt(end)./10000;
-
-           Outcome_Indirect(aa)=-Comparison.Average.Cost_Compliment_Age_dt(aa,end)./10000;
-           
-           Outcome_Matrix(:,aa)=-Comparison.Average.Cost_Age_dt(1:end-1,end)./10000;
-
-           Direct_C{aa}=[num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==50,end)./10000,'%4.1f') '(95% PI:' num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10000,'%4.1f') char(8211) num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10000,'%4.1f') ')'];
-           Indirect_C{aa}=[num2str(-Comparison.PRCT.Cost_Compliment_Age_dt(PRCT==50,aa,end)./10000,'%4.1f') '(95% PI:' num2str(-Comparison.PRCT.Cost_Compliment_Age_dt(PRCT==97.5,aa,end)./10000,'%4.1f') char(8211) num2str(-Comparison.PRCT.Cost_Compliment_Age_dt(PRCT==2.5,aa,end)./10000,'%4.1f') ')'];
-
+        elseif(Scenario_Indx==2)                
+            Comparison_Single.PRCT.Age_Cumulative_Count_Hospital_rel=reshape(Comparison_Single.PRCT.Age_Cumulative_Count_Hospital_rel,length(PRCT),7,9);
+            Comparison_Single.Average.Age_Cumulative_Count_Hospital_rel=reshape(Comparison_Single.Average.Age_Cumulative_Count_Hospital_rel,7,9);
+            Out_P=[Comparison_Single.Average.Age_Cumulative_Count_Hospital_rel(ss,end);Comparison_Single.PRCT.Age_Cumulative_Count_Hospital_rel(ismember(PRCT,[2.5 97.5]),ss,end)];
+        elseif(Scenario_Indx==3)    
+            Comparison_Single.PRCT.Age_Cumulative_Count_Death_rel=reshape(Comparison_Single.PRCT.Age_Cumulative_Count_Death_rel,length(PRCT),7,9);
+            Comparison_Single.Average.Age_Cumulative_Count_Death_rel=reshape(Comparison_Single.Average.Age_Cumulative_Count_Death_rel,7,9);
+            Out_P=[Comparison_Single.Average.Age_Cumulative_Count_Death_rel(ss,end);Comparison_Single.PRCT.Age_Cumulative_Count_Death_rel(ismember(PRCT,[2.5 97.5]),ss,end)];
+        elseif(Scenario_Indx==4)    
+            Comparison_Single.PRCT.Cost_Age_rel=reshape(Comparison_Single.PRCT.Cost_Age_rel,length(PRCT),7,9);
+            Comparison_Single.Average.Cost_Age_rel=reshape(Comparison_Single.Average.Cost_Age_rel,7,9);
+            Out_P=[Comparison_Single.Average.Cost_Age_rel(ss,end);Comparison_Single.PRCT.Cost_Age_rel(ismember(PRCT,[2.5 97.5]),ss,end)];
         end
+        Y(ss,1)=Out_P(1);
     end
-    hh=subplot('Position',[0.51,0.805-0.24.*(State_Indx-1),0.23,0.175]);
+    ss=7;
+    if(Scenario_Indx==1)
+        Out_P=[Comparison_Single.Average.Cumulative_Count_Incidence_rel Comparison_Single.PRCT.Cumulative_Count_Incidence_rel(ismember(PRCT,[2.5 97.5]))];
 
-    N_O=Outcome_Matrix;
-    for aa=1:6
-        N_O(aa,aa)=-Inf;
+    elseif(Scenario_Indx==2)                
+        Out_P=[Comparison_Single.Average.Cumulative_Count_Hospital_rel Comparison_Single.PRCT.Cumulative_Count_Hospital_rel(ismember(PRCT,[2.5 97.5]))];
+    elseif(Scenario_Indx==3)    
+        Out_P=[Comparison_Single.Average.Cumulative_Count_Death_rel Comparison_Single.PRCT.Cumulative_Count_Death_rel(ismember(PRCT,[2.5 97.5]))];
+    elseif(Scenario_Indx==4)    
+        Out_P=[Comparison_Single.Average.Cost_Total_rel(end);Comparison_Single.PRCT.Cost_Total_rel(ismember(PRCT,[2.5 97.5]),end)];
     end
-    N_O=(N_O-min(N_O(N_O>-Inf)))./(max(N_O(:))-min(N_O(N_O>-Inf)));
-    for aa=1:6
-        for vv=1:6
-            if(aa~=vv)
-                patch(vv+[-0.5 -0.5 0.5 0.5],aa+[-0.5 0.5 0.5 -0.5],interp1([0 1],[1 1 1; CC],N_O(aa,vv)),'LineStyle','none'); hold on
-            else
-                patch(vv+[-0.5 -0.5 0.5 0.5],aa+[-0.5 0.5 0.5 -0.5],[0.45 0.45 0.45],'LineStyle','none'); hold on
-            end
+    Y(ss,1)=Out_P(1);
+    % Two-dose for 50+
+    for ss=1:6        
+        if(Scenario_Indx==1)
+            Comparison.PRCT.Age_Cumulative_Count_Incidence_rel=reshape(Comparison.PRCT.Age_Cumulative_Count_Incidence_rel,length(PRCT),7,9);
+            Comparison.Average.Age_Cumulative_Count_Incidence_rel=reshape(Comparison.Average.Age_Cumulative_Count_Incidence_rel,7,9);
+            Out_P=[Comparison.Average.Age_Cumulative_Count_Incidence_rel(ss,end);Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(ismember(PRCT,[2.5 97.5]),ss,end)];
+
+        elseif(Scenario_Indx==2)                
+            Comparison.PRCT.Age_Cumulative_Count_Hospital_rel=reshape(Comparison.PRCT.Age_Cumulative_Count_Hospital_rel,length(PRCT),7,9);
+            Comparison.Average.Age_Cumulative_Count_Hospital_rel=reshape(Comparison.Average.Age_Cumulative_Count_Hospital_rel,7,9);
+            Out_P=[Comparison.Average.Age_Cumulative_Count_Hospital_rel(ss,end);Comparison.PRCT.Age_Cumulative_Count_Hospital_rel(ismember(PRCT,[2.5 97.5]),ss,end)];
+        elseif(Scenario_Indx==3)    
+            Comparison.PRCT.Age_Cumulative_Count_Death_rel=reshape(Comparison.PRCT.Age_Cumulative_Count_Death_rel,length(PRCT),7,9);
+            Comparison.Average.Age_Cumulative_Count_Death_rel=reshape(Comparison.Average.Age_Cumulative_Count_Death_rel,7,9);
+            Out_P=[Comparison.Average.Age_Cumulative_Count_Death_rel(ss,end);Comparison.PRCT.Age_Cumulative_Count_Death_rel(ismember(PRCT,[2.5 97.5]),ss,end)];
+        elseif(Scenario_Indx==4)    
+            Comparison.PRCT.Cost_Age_rel=reshape(Comparison.PRCT.Cost_Age_rel,length(PRCT),7,9);
+            Comparison.Average.Cost_Age_rel=reshape(Comparison.Average.Cost_Age_rel,7,9);
+            Out_P=[Comparison.Average.Cost_Age_rel(ss,end);Comparison.PRCT.Cost_Age_rel(ismember(PRCT,[2.5 97.5]),ss,end)];
         end
+        Y(ss,2)=Out_P(1);
     end
-    set(gca,'LineWidth',2,'tickdir','out','XTick',[1:6],'YTick',[1:6],'XTickLabel',AgeC,'YTickLabel',AgeC,'Fontsize',12)
-    xlim([0.49 6.5]);
-    ylim([0.49 6.5]);
-    box off;
-    xtickangle(90);
-    
-    if(State_Indx==4)
-        xlabel('Age class receiving additional doses','Fontsize',14);
-    end
-    ylabel({'Age class','receiving benefit'},'Fontsize',14);
-    
-    text(-0.325,1.04,char(64+3.*(State_Indx)),'Fontsize',22,'FontWeight','bold','Units','normalized');
+    ss=7;
+    if(Scenario_Indx==1)
+        Out_P=[Comparison.Average.Cumulative_Count_Incidence_rel Comparison.PRCT.Cumulative_Count_Incidence_rel(ismember(PRCT,[2.5 97.5]))];
 
-    subplot('Position',[0.9475,0.805-0.24.*(State_Indx-1),0.01,0.175]);
-    for ii=1:101
-        patch([-0.5 -0.5 0.5 0.5],ii+[-0.5 0.5 0.5 -0.5],interp1([0 1],[1 1 1; CC],(ii-1)./100),'LineStyle','none'); hold on
+    elseif(Scenario_Indx==2)                
+        Out_P=[Comparison.Average.Cumulative_Count_Hospital_rel Comparison.PRCT.Cumulative_Count_Hospital_rel(ismember(PRCT,[2.5 97.5]))];
+    elseif(Scenario_Indx==3)    
+        Out_P=[Comparison.Average.Cumulative_Count_Death_rel Comparison.PRCT.Cumulative_Count_Death_rel(ismember(PRCT,[2.5 97.5]))];
+    elseif(Scenario_Indx==4)    
+        Out_P=[Comparison.Average.Cost_Total_rel(end);Comparison.PRCT.Cost_Total_rel(ismember(PRCT,[2.5 97.5]),end)];
     end
-    box on;
-    % axis off;
-    set(gca,'LineWidth',2,'XTick',[],'YTick',[]);
-    xlim([-0.5 0.5]);
-    ylim([0.5 100.5]);
+    Y(ss,2)=Out_P(1);
 
-    text(3,50,'Relative benefit','Rotation',270,'horizontalAlignment','center','Fontsize',14);
-    text(3,0.5,'Low','horizontalAlignment','center','Fontsize',14);
-    text(3,100,'High','horizontalAlignment','center','Fontsize',14);
+    Y=100.*Y;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Plot
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    plot([0 0],[0.5 7.75],'color',[0.7 0.7 0.7],'LineWidth',2); hold on;
+    plot([-100 100],[6.625 6.625],'-.','color',[0.7 0.7 0.7],'LineWidth',1.25); hold on;
+    bh=barh([1:6 7.25],Y,'LineStyle','none');
+    bh(2).FaceColor=CC;
+    bh(1).FaceColor=interp1([0 1],[1 1 1;CC],0.5);
+%     for ii=1:6
+%         scatter(Y(ii,1,1),ii+0.2,40,CC,'filled'); hold on
+%         plot([Y(ii,2,1) Y(ii,3,1)],[ii+0.2 ii+0.2],'color',CC,'LineWidth',2);
+%         scatter(Y(ii,1,2),ii-0.2,40,interp1([0 1],[1 1 1;CC],0.5),'filled'); hold on 
+%         plot([Y(ii,2,2) Y(ii,3,2)],[ii-0.2 ii-0.2],'color',interp1([0 1],[1 1 1;CC],0.5),'LineWidth',2);
+%     end
+%     ii=7;
+% 
+%         scatter(Y(ii,1,1),ii+0.25+0.2,40,CC,'filled'); hold on
+%         plot([Y(ii,2,1) Y(ii,3,1)],[ii+0.2 ii+0.2]+0.25,'color',CC,'LineWidth',2);
+%         scatter(Y(ii,1,2),ii+0.25-0.2,40,interp1([0 1],[1 1 1;CC],0.5),'filled'); hold on
+%         plot([Y(ii,2,2) Y(ii,3,2)],[ii-0.2 ii-0.2]+0.25,'color',interp1([0 1],[1 1 1;CC],0.5),'LineWidth',2);
 
-    hh.Position=[0.715,0.805-0.24.*(State_Indx-1),0.23,0.175];
-    
-    subplot('Position',[0.09,0.805-0.24.*(State_Indx-1),0.22,0.175]);
-    bar([1:6],Outcome_All,'LineStyle','none','FaceColor',CC);
-    grid on;
-    set(gca,'LineWidth',2,'tickdir','out','XTick',[1:6],'XTickLabel',AgeC,'Fontsize',12,'YTick',[l_yb(State_Indx,1):l_dy(State_Indx):l_yb(State_Indx,2)])
-    xlim([0.49 6.5]);
-    
-    ylim([l_yb(State_Indx,1) l_yb(State_Indx,2)]);
+    ylim([0.4 7.8]);
+    xlim(100.*[-0.4 0.1]);
+    xtickformat('percentage');
+    set(gca,'LineWidth',2,'Tickdir','out','YTick',[1:6 7.25],'YTickLabel',AgeC,'Yminortick','off','XTick',[-40:10:10],'Xminortick','on','Fontsize',16);
+    xlabel(['Relative change in ' xltxt{Scenario_Indx}],'Fontsize',18);
+    ylabel('Age class','Fontsize',18);
+    xtickangle(0);
     box off;
-    xtickangle(90);
-    ax=gca;
-    ax.YAxis.Exponent = 0;
-    if(State_Indx==4)
-        xlabel('Age class receiving additional doses','Fontsize',14);
-    end
-    
-    ylabel([{Outcome{State_Indx} ,'averted per vaccine'}],'Fontsize',14);
-    text(-0.405,1.04,char(62+3.*(State_Indx)),'Fontsize',22,'FontWeight','bold','Units','normalized');
-    
-    subplot('Position',[0.41,0.805-0.24.*(State_Indx-1),0.22,0.175]);
-    
-    bar([1:6],Outcome_Indirect,'LineStyle','none','FaceColor',CC);
-    grid on;
-    set(gca,'LineWidth',2,'tickdir','out','XTick',[1:6],'XTickLabel',AgeC,'Fontsize',12,'YTick',[m_yb(State_Indx,1):m_dy(State_Indx):m_yb(State_Indx,2)])
-    xlim([0.49 6.5]);
-    
-    ylim([m_yb(State_Indx,1) m_yb(State_Indx,2)]);
-    box off;
-    xtickangle(90);
-    ax=gca;
-    ax.YAxis.Exponent = 0;
-    if(State_Indx==4)
-        xlabel('Age class receiving additional doses','Fontsize',14);
-    end
-    
-    ylabel([{['Indirect ' lower(Outcome{State_Indx})] ,'averted per vaccine'}],'Fontsize',14);
-    text(-0.44,1.04,char(63+3.*(State_Indx)),'Fontsize',22,'FontWeight','bold','Units','normalized');
+    text(-0.278,1,char(64+Scenario_Indx),'Fontsize',24,'Units','normalized','fontweight','bold');
+
+    text(0.025,0.975,'Two-dose (50+)','color',CC,'Fontsize',12,'Units','normalized');
+    text(0.025,0.9,'Single dose','color',interp1([0 1],[1 1 1;CC],0.5),'Fontsize',12,'Units','normalized');
 end
-print(gcf,['Supplement_Figure_14.png'],'-dpng','-r300');
+print(gcf,['Supplement_Figure_14.png'],'-dpng','-r300');    
 end
-

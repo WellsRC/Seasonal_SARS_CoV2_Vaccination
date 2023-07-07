@@ -15,7 +15,7 @@ for Scenario_Indx=1:4
     subplot('Position',[0.135+0.5.*(rem(Scenario_Indx-1,2)),0.64-0.495.*(floor((Scenario_Indx-1)./2)),0.36,0.3475]);
     xt=linspace(-1,1,5001);
     YM=zeros(1,length(AgeC));
-    load([temp_cd 'Marginal_Benefit_Second_Dose_50_to_64_Large_Winter_Two_Campaign_Baseline_Coverage_180_days.mat'])
+    load([temp_cd 'Marginal_Benefit_Second_Dose_50_to_64_Unimodal_Winter_Two_Campaign_Influenza_Like_Coverage_180_days.mat'])
     for aa=1:6
         if(Scenario_Indx==1)            
             Marginal_Benefit.Average.Incidence_Age=reshape(Marginal_Benefit.Average.Incidence_Age,7,9);

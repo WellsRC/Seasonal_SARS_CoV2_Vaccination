@@ -103,7 +103,7 @@ fprintf(['Average reduction in total direct costs: ' num2str(MA(end),'%4.1f') '%
 % Costs 65+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-M=-reshape(100.*Comparison.PRCT.Cost_Age_rel,3,7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+M=-reshape(100.*Comparison.PRCT.Cost_Age_rel,length(PRCT),7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
 MA=-reshape(100.*Comparison.Average.Cost_Age_rel,7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
 fprintf(['Average reduction in total direct costs for 65+: ' num2str(MA(6,end),'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5,6,end),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5,6,end),'%4.1f') '%%) \n']);
 
@@ -146,7 +146,7 @@ fprintf(['Average reduction in total direct costs: ' num2str(MA(end),'%4.1f') '%
 % Costs 65+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-M=-reshape(100.*Comparison.PRCT.Cost_Age_rel,3,7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+M=-reshape(100.*Comparison.PRCT.Cost_Age_rel,length(PRCT),7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
 MA=-reshape(100.*Comparison.Average.Cost_Age_rel,7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
 fprintf(['Average reduction in total direct costs for 65+: ' num2str(MA(6,end),'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5,6,end),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5,6,end),'%4.1f') '%%) \n']);
 
@@ -356,6 +356,10 @@ YP=100.*reshape(Comparison.PRCT.Age_Cumulative_Count_Incidence_rel,length(PRCT),
 fprintf(['Incidence relative change among 65+ due delaying second dose 28 days:' num2str(YA(6,end),'%4.2f') '%% (95%% CI:' num2str(YP(PRCT==2.5,6,end),'%4.2f') '%%' char(8211) num2str(YP(PRCT==97.5,6,end),'%4.2f') '%%) \n']);
 
 
+YA=100.*reshape(Comparison.Average.Age_Cumulative_Count_Hospital_rel,7,9);
+YP=100.*reshape(Comparison.PRCT.Age_Cumulative_Count_Hospital_rel,length(PRCT),7,9);
+fprintf(['Hospitalization relative change among 65+ due delaying second dose 28 days:' num2str(YA(6,end),'%4.2f') '%% (95%% CI:' num2str(YP(PRCT==2.5,6,end),'%4.2f') '%%' char(8211) num2str(YP(PRCT==97.5,6,end),'%4.2f') '%%) \n']);
+
 YA=100.*reshape(Comparison.Average.Age_Cumulative_Count_Death_rel,7,9);
 YP=100.*reshape(Comparison.PRCT.Age_Cumulative_Count_Death_rel,length(PRCT),7,9);
 fprintf(['Death relative change among 65+ due delaying second dose 28 days:' num2str(YA(6,end),'%4.2f') '%% (95%% CI:' num2str(YP(PRCT==2.5,6,end),'%4.2f') '%%' char(8211) num2str(YP(PRCT==97.5,6,end),'%4.2f') '%%) \n']);
@@ -399,7 +403,121 @@ fprintf(['Average reduction in total direct costs: ' num2str(MA(end),'%4.1f') '%
 % Costs 65+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-M=-reshape(100.*Comparison.PRCT.Cost_Age_rel,3,7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+M=-reshape(100.*Comparison.PRCT.Cost_Age_rel,length(PRCT),7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+MA=-reshape(100.*Comparison.Average.Cost_Age_rel,7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+fprintf(['Average reduction in total direct costs for 65+: ' num2str(MA(6,end),'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5,6,end),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5,6,end),'%4.1f') '%%) \n']);
+
+
+
+
+fprintf('=========================================================================== \n');
+fprintf(['Unimodal single vs two dose dose\n']);
+fprintf('===========================================================================\n');
+
+XTL={'180'};
+AgeV=[65 50];
+Age_Text={['0' char(8211) '49'],['50' char(8211) '64'],'65+'};
+aa_indx=[7 5 6];
+
+Y=zeros(1,3);
+load([temp_cd 'Comparison_Summary_Unimodal_Winter_Two_Campaign_Influenza_Like_Coverage_180_days_50_and_older.mat']);
+Comparison.Average.Cost_Age_rel=reshape(Comparison.Average.Cost_Age_rel,7,9);
+Comparison.PRCT.Cost_Age_rel=reshape(Comparison.PRCT.Cost_Age_rel,length(PRCT),7,9);
+
+fprintf(['Specifying 6-month period between doses, the average reduction in overall total direct costs: ' num2str(-100.*Comparison.Average.Cost_Total_rel(end),'%4.2f') '%% (95%% CI:' num2str(-100.*Comparison.PRCT.Cost_Total_rel(PRCT==97.5,end),'%4.2f') '%%' char(8211) num2str(-100.*Comparison.PRCT.Cost_Total_rel(PRCT==2.5,end),'%4.2f') '%%) \n']);
+
+for aav=1:3
+    aa=aa_indx(aav);
+        Y(1)=Comparison.Average.Cost_Age_rel(aa,end);
+        Y(3)=Comparison.PRCT.Cost_Age_rel(PRCT==2.5,aa,end);
+        Y(2)=Comparison.PRCT.Cost_Age_rel(PRCT==97.5,aa,end);
+    Y=-100.*Y;
+    fprintf(['Specifying 6-month period between doses, the average reduction in total direct costs for ' Age_Text{aav} ': ' num2str(Y(1),'%4.2f') '%% (95%% CI:' num2str(Y(2),'%4.2f') '%%' char(8211) num2str(Y(3),'%4.2f') '%%) \n']);
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Comparison between low coverage continual and hogh coverage two dose summer peak
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Scenario_Out='Large_Summer_Annual_Campaign_Influenza_Like_Coverage-Baseline_Continual_Vaccination';
+fprintf('=========================================================================== \n');
+fprintf(['Comparison:' Scenario_Out '\n']);
+fprintf('===========================================================================\n');
+
+
+load([temp_cd 'Comparison_Summary_' Scenario_Out '.mat'])
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hospitalizations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+M=-100.*Comparison.PRCT.Cumulative_Count_Hospital_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+MA=-100.*Comparison.Average.Cumulative_Count_Hospital_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+fprintf(['Average reduction in hospitalizations: ' num2str(MA,'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5),'%4.1f') '%%) \n']);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Deaths
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+M=-100.*Comparison.PRCT.Cumulative_Count_Death_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+MA=-100.*Comparison.Average.Cumulative_Count_Death_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+fprintf(['Average reduction in deaths: ' num2str(MA,'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5),'%4.1f') '%%) \n']);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Costs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+M=-100.*Comparison.PRCT.Cost_Total_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+MA=-100.*Comparison.Average.Cost_Total_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+fprintf(['Average reduction in total direct costs: ' num2str(MA(end),'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5,end),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5,end),'%4.1f') '%%) \n']);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Costs 65+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+M=-reshape(100.*Comparison.PRCT.Cost_Age_rel,length(PRCT),7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+MA=-reshape(100.*Comparison.Average.Cost_Age_rel,7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+fprintf(['Average reduction in total direct costs for 65+: ' num2str(MA(6,end),'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5,6,end),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5,6,end),'%4.1f') '%%) \n']);
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Comparison between low coverage continual and hogh coverage two dose summer peak
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Scenario_Out='Large_Summer_Two_Campaign_Influenza_Like_Coverage_180_days_50_and_older-Baseline_Continual_Vaccination';
+fprintf('=========================================================================== \n');
+fprintf(['Comparison:' Scenario_Out '\n']);
+fprintf('===========================================================================\n');
+
+
+load([temp_cd 'Comparison_Summary_' Scenario_Out '.mat'])
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hospitalizations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+M=-100.*Comparison.PRCT.Cumulative_Count_Hospital_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+MA=-100.*Comparison.Average.Cumulative_Count_Hospital_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+fprintf(['Average reduction in hospitalizations: ' num2str(MA,'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5),'%4.1f') '%%) \n']);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Deaths
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+M=-100.*Comparison.PRCT.Cumulative_Count_Death_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+MA=-100.*Comparison.Average.Cumulative_Count_Death_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+fprintf(['Average reduction in deaths: ' num2str(MA,'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5),'%4.1f') '%%) \n']);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Costs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+M=-100.*Comparison.PRCT.Cost_Total_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+MA=-100.*Comparison.Average.Cost_Total_rel; % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
+fprintf(['Average reduction in total direct costs: ' num2str(MA(end),'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5,end),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5,end),'%4.1f') '%%) \n']);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Costs 65+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+M=-reshape(100.*Comparison.PRCT.Cost_Age_rel,length(PRCT),7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
 MA=-reshape(100.*Comparison.Average.Cost_Age_rel,7,9); % NEED TO TAKE THE NEGATIVE BASED ON HOW THE CALCULATION WAS CONDUCTED
 fprintf(['Average reduction in total direct costs for 65+: ' num2str(MA(6,end),'%4.1f') '%% (95%% CI:' num2str(M(PRCT==97.5,6,end),'%4.1f') '%%' char(8211) num2str(M(PRCT==2.5,6,end),'%4.1f') '%%) \n']);
 
