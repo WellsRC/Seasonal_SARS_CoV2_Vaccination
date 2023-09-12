@@ -10,12 +10,31 @@ temp_cd=temp_cd(1:end-11);
 Pop_S=load([temp_cd 'Contact_Matrix/Contact_USA_85.mat'],'N');
 Pop_S=sum(Pop_S.N);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% comaprison of annual to Baseline 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
               
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% comaprison of single dose to two-dose
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+fprintf('=========================================================================== \n');
+fprintf(['Abstract: Comparison of Single dose and Two-doses for 50+ in annual campaign\n']);
+fprintf('===========================================================================\n');
+
+
+load([temp_cd 'Comparison_Summary_Large_Winter_Two_Campaign_Influenza_Like_Coverage_180_days_50_and_older.mat']);
+
+fprintf(['Specifying 6-month period between doses, the average reduction in hospitalizations:' num2str(-100.*Comparison.Average.Cumulative_Count_Hospital_rel,'%2.1f') '%%) \n']);
+fprintf(['Specifying 6-month period between doses, the average reduction in deaths:' num2str(-100.*Comparison.Average.Cumulative_Count_Death_rel,'%2.1f') '%%) \n']);
+fprintf(['Specifying 6-month period between doses, the average reduction in total direct costs:' num2str(-100.*Comparison.Average.Cost_Total_rel(end),'%2.1f') '%%) \n']);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% comaprison of annual to Baseline 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Scenario_Out='Large_Winter_Continual_Vaccination_Baseline_Coverage';
 load([temp_cd 'Model_Output_Summary_' Scenario_Out '.mat']);
 
