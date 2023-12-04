@@ -1,12 +1,21 @@
 function [T_Run,P] = Parameter_Sample(NS)
 
+temp_cd=pwd;
+temp_cd=temp_cd(1:end-3);
+
 P=cell(NS,1);
-lhs_samp=lhsdesign(NS,98);
+lhs_samp=lhsdesign(NS,86);
 T_Run=[datenum('September 1, 2022'):datenum('September 1, 2023')];
+load([temp_cd 'Immunity/Sample_Under_18_Vaccine_Immunity.mat'],'par_samp_vi_U18');
+load([temp_cd 'Immunity/Sample_18_to_59_Vaccine_Immunity.mat'],'par_samp_vi_18_59');
+load([temp_cd 'Immunity/Sample_60_plus_Vaccine_Immunity.mat'],'par_samp_vi_60p');
+load([temp_cd 'Immunity/Sample_Natural_Immunity.mat'],'par_samp_ni','stratify_recovered');
+rs_vi_U18=randi([1 size(par_samp_vi_U18,1)],NS,1);
+rs_vi_18_59=randi([1 size(par_samp_vi_18_59,1)],NS,1);
+rs_vi_60p=randi([1 size(par_samp_vi_60p,1)],NS,1);
+rs_ni=randi([1 size(par_samp_ni,1)],NS,1);
 
 parfor jj=1:NS
-    temp_cd=pwd;
-    temp_cd=temp_cd(1:end-3);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Load population and contact matrix
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,9 +35,9 @@ parfor jj=1:NS
     day_delta_I=zeros(A,1);
     day_delta_I(AC<30)=9.0+(10.6-9.0).*lhs_samp(jj,count);
     count=count+1;
-    day_delta_I(AC>=30 & AC<50)=8.7+(11.6-8.7).*lhs_samp(jj,count);
+    day_delta_I(AC>=30 & AC<=50)=8.7+(11.6-8.7).*lhs_samp(jj,count);
     count=count+1;
-    day_delta_I(AC>=50)=9.6+(17.5-9.6).*lhs_samp(jj,count);
+    day_delta_I(AC>50)=9.6+(17.5-9.6).*lhs_samp(jj,count);
     count=count+1;
     Parameters.delta_I=1./day_delta_I;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,68 +46,122 @@ parfor jj=1:NS
     day_delta_V=zeros(A,1);
     day_delta_V(AC<30)=10.5+(12.4-10.5).*lhs_samp(jj,count);
     count=count+1;
-    day_delta_V(AC>=30 & AC<50)=11.7+(13.4-11.7).*lhs_samp(jj,count);
+    day_delta_V(AC>=30 & AC<=50)=11.7+(13.4-11.7).*lhs_samp(jj,count);
     count=count+1;
-    day_delta_V(AC>=50)=12.2+(15.0-12.2).*lhs_samp(jj,count);
+    day_delta_V(AC>50)=12.2+(15.0-12.2).*lhs_samp(jj,count);
     count=count+1;
     Parameters.delta_V=1./day_delta_V;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Vaccine effectiveness
+    % Vaccine waning immunity compartmental
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    eps_V=zeros(A,1);
-    eps_V(AC<=17)=0.45+(0.59-0.45).*lhs_samp(jj,count);
-    count=count+1;
-    eps_V(AC>=18 & AC<=49)=0.49+(0.52-0.49).*lhs_samp(jj,count);
-    count=count+1;
-    eps_V(AC>=50 & AC<=64)=0.40+(0.43-0.40).*lhs_samp(jj,count);
-    count=count+1;
-    eps_V(AC>=65)=0.37+(0.43-0.37).*lhs_samp(jj,count);
-    count=count+1;
-    Parameters.eps_V=eps_V;
+    eps_V1=zeros(A,1);    
+    eps_V2=zeros(A,1);  
+    eps_V3=zeros(A,1); 
+    q1_sd=zeros(A,1); 
+    q2_sd=zeros(A,1); 
+    q3_sd=zeros(A,1); 
+    gammaV_1=zeros(A,1); 
+    gammaV_2=zeros(A,1); 
+    gammaV_3=zeros(A,1);
+    kappaV_1=zeros(A,1); 
+    kappaV_2=zeros(A,1); 
+
+    eps_V1(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),1);    
+    eps_V2(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),2);  
+    eps_V3(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),3); 
+    gammaV_1(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),4); 
+    gammaV_2(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),5); 
+    gammaV_3(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),6);
+    kappaV_1(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),7);
+    kappaV_2(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),8);
+    q1_sd(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),9); 
+    q2_sd(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),10); 
+    q3_sd(AC<18)=par_samp_vi_U18(rs_vi_U18(jj),11); 
+
+    eps_V1(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),1);    
+    eps_V2(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),2);  
+    eps_V3(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),3); 
+    gammaV_1(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),4); 
+    gammaV_2(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),5); 
+    gammaV_3(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),6);
+    kappaV_1(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),7);
+    kappaV_2(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),8);
+    q1_sd(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),9); 
+    q2_sd(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),10); 
+    q3_sd(AC>=18 & AC<60)=par_samp_vi_18_59(rs_vi_18_59(jj),11); 
+
+    eps_V1(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),1);    
+    eps_V2(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),2);  
+    eps_V3(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),3); 
+    gammaV_1(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),4); 
+    gammaV_2(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),5); 
+    gammaV_3(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),6);
+    kappaV_1(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),7);
+    kappaV_2(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),8);
+    q1_sd(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),9); 
+    q2_sd(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),10); 
+    q3_sd(AC>=60)=par_samp_vi_60p(rs_vi_60p(jj),11); 
+
+    Parameters.eps_V1=eps_V1;
+    Parameters.eps_V2=eps_V2;
+    Parameters.eps_V3=eps_V3;
+    Parameters.q1_sd=q1_sd;
+    Parameters.q2_sd=q2_sd;
+    Parameters.q3_sd=q3_sd;
+    Parameters.gammaV_1=gammaV_1;
+    Parameters.gammaV_2=gammaV_2;
+    Parameters.gammaV_3=gammaV_3;
+    Parameters.kappaV_1=kappaV_1;
+    Parameters.kappaV_2=kappaV_2;
     
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % natural waning immunity compartmental
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Vaccine effectiveness Hospitalization
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    eps_H=ones(A,1).*(0.13+(0.6-0.13).*lhs_samp(jj,count));
-    count=count+1;
-    Parameters.eps_H=eps_H;
+    p1_inf=zeros(A,1); 
+    p2_inf=zeros(A,1);     
+    p3_inf=zeros(A,1); 
+    p1_sd=zeros(A,1);     
+    p2_sd=zeros(A,1);     
+    omega_R1=zeros(A,1); 
+    omega_R2=zeros(A,1); 
+    omega_R3=zeros(A,1);
+    omega_R4=zeros(A,1); 
+    omega_R5=zeros(A,1); 
+    alpha_R1=zeros(A,1); 
+    alpha_R2=zeros(A,1); 
+    alpha_R4=zeros(A,1);
     
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Vaccine effectiveness death given Hospitalization
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    eps_DH=zeros(A,1);
+    omega_R1(:)=par_samp_ni(rs_ni(jj),1);
+    omega_R2(:)=par_samp_ni(rs_ni(jj),2);
+    omega_R3(:)=par_samp_ni(rs_ni(jj),3);
+    alpha_R1(:)=par_samp_ni(rs_ni(jj),4);
+    alpha_R2(:)=par_samp_ni(rs_ni(jj),5);
+    p1_inf(:)=par_samp_ni(rs_ni(jj),6);
+    p2_inf(:)=par_samp_ni(rs_ni(jj),7);
+    p3_inf(:)=par_samp_ni(rs_ni(jj),8);
+
+    omega_R4(:)=par_samp_ni(rs_ni(jj),9);
+    omega_R5(:)=par_samp_ni(rs_ni(jj),10);
+    alpha_R4(:)=par_samp_ni(rs_ni(jj),11);
+    p1_sd(:)=par_samp_ni(rs_ni(jj),12);
+    p2_sd(:)=par_samp_ni(rs_ni(jj),13);
     
-    %Under 65
-    % Sample probability of death given hopsitalization under no booster
-    No_Booster=binoinv([0.025 0.975],948,496/948)/948;
-    pn=No_Booster(1)+(No_Booster(2)-No_Booster(1)).*lhs_samp(jj,count);
-    count=count+1;
-    
-    % Sample probability of death given hopsitalization with booster
-    Booster=binoinv([0.025 0.975],57,17/57)/57;
-    pb=Booster(1)+(Booster(2)-Booster(1)).*lhs_samp(jj,count);
-    count=count+1;
-    
-    % Determine the level of reduction 
-    eps_DH(AC<65)=1-pb./pn;
-    
-    % OVer 65
-    % Sample probability of death given hopsitalization under no booster
-    No_Booster=binoinv([0.025 0.975],717,437/717)/717;
-    pn=No_Booster(1)+(No_Booster(2)-No_Booster(1)).*lhs_samp(jj,count);
-    count=count+1;
-    % Sample probability of death given hopsitalization with booster
-    
-    Booster=binoinv([0.025 0.975],53,14/53)/53;
-    pb=Booster(1)+(Booster(2)-Booster(1)).*lhs_samp(jj,count);
-    count=count+1;
-    
-    % Determine the level of reduction 
-    eps_DH(AC>=65)=1-pb./pn;
-    
-    Parameters.eps_DH=eps_DH;
-    
+    Parameters.p1_inf=p1_inf;
+    Parameters.p2_inf=p2_inf;
+    Parameters.p3_inf=p3_inf;
+    Parameters.p1_sd=p1_sd;
+    Parameters.p2_sd=p2_sd;
+    Parameters.q3_sd=q3_sd;
+    Parameters.omega_R1=omega_R1;
+    Parameters.omega_R2=omega_R2;
+    Parameters.omega_R3=omega_R3;
+    Parameters.omega_R4=omega_R4;
+    Parameters.omega_R5=omega_R5;
+    Parameters.alpha_R1=alpha_R1;
+    Parameters.alpha_R2=alpha_R2;
+    Parameters.alpha_R4=alpha_R4;
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Reduction transmission    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -108,11 +171,11 @@ parfor jj=1:NS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Transmission
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Parameters.beta_I.beta_max=(0.025+(0.075-0.025).*lhs_samp(jj,count));
+    Parameters.beta_I.beta_max=(0.03+(0.05-0.03).*lhs_samp(jj,count));
     count=count+1;
-    Parameters.beta_I.beta_min=(0.005+(0.025-0.005).*lhs_samp(jj,count));
+    Parameters.beta_I.beta_min=(0.015+(0.025-0.015).*lhs_samp(jj,count));
     count=count+1;
-    Parameters.beta_I.phi_t=lhs_samp(jj,count);
+    Parameters.beta_I.phi_t=0.25+(0.75+0.25).*lhs_samp(jj,count);
     count=count+1;
     Parameters.beta_I.scale_t=365.*(0.4+(1-0.4).*lhs_samp(jj,count));
     count=count+1;
@@ -235,25 +298,6 @@ parfor jj=1:NS
     Parameters.nu_V_SARSCoV2.vac_delay_start=Parameters.nu_V_Influenza.vac_delay_start;
     Parameters.nu_V_SARSCoV2.t0=Parameters.nu_V_Influenza.t0;
     
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Natural immunity waning rate 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    day_omega_R=(144+(267-144).*lhs_samp(jj,count)).*ones(A,1);
-    count=count+1;
-    Parameters.omega_R=1./day_omega_R;
-    
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Vaccine waning rate
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    day_gamma_V=(50+(350-50).*lhs_samp(jj,count)).*ones(A,1);
-    count=count+1;
-    Parameters.gamma_V=1./day_gamma_V;
-
-    temp=(680+(1260-680).*lhs_samp(jj,count)).*ones(A,1);
-    count=count+1;
-    day_gamma_SD=temp-day_gamma_V; % Need to consider the duration in which the individual has already been protected for
-    Parameters.gamma_SD=1./day_gamma_SD;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Probability of hospital admission
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -404,19 +448,19 @@ parfor jj=1:NS
     
     Parameters.vac_baseline(AC<=1)=0.0023.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
+    Parameters.vac_baseline(AC>=2 & AC<=4)=0.0043.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    Parameters.vac_baseline(AC>=5 & AC<=11)=0.0523.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
     Parameters.vac_baseline(AC>=12 & AC<=15)=0.1253.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     Parameters.vac_baseline(AC>=16 & AC<=17)=0.1362.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     Parameters.vac_baseline(AC>=18 & AC<=24)=0.1453.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
-    Parameters.vac_baseline(AC>=2 & AC<=4)=0.0043.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
     Parameters.vac_baseline(AC>=25 & AC<=39)=0.1325.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     Parameters.vac_baseline(AC>=40 & AC<=49)=0.1827.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    Parameters.vac_baseline(AC>=5 & AC<=11)=0.0523.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     Parameters.vac_baseline(AC>=50 & AC<=64)=0.2843.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
@@ -429,9 +473,8 @@ parfor jj=1:NS
     % Initial Conditions
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    Parameters.X0.Baseline_Campaign=Calc_Initial_Conditions('Baseline_Campaign',Parameters);
-    Parameters.X0.Influenza_Campaign=Calc_Initial_Conditions('Influenza_Campaign',Parameters);
-    
+    Parameters.X0.Baseline_Campaign=Calc_Initial_Conditions('Continual',Parameters,Parameters.vac_baseline,stratify_recovered(rs_ni(jj),:));
+        
     P{jj}=Parameters;
 end
 end

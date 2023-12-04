@@ -2,8 +2,6 @@ function [Filtered_Output_Large_Winter,Filtered_Output_Large_Summer] = Filter_Pe
 
 Filtered_Output_All.Recovered=zeros(NG*NS,6,2);
 Filtered_Output_All.Incidence=zeros(NG*NS,365);
-Filtered_Output_All.Hospital_Count=zeros(NG*NS,365);
-Filtered_Output_All.Hospital_Burden=zeros(NG*NS,365);
 Filtered_Output_All.Hospital_Admission=zeros(NG*NS,365);
 Filtered_Output_All.Death=zeros(NG*NS,365);
 Filtered_Output_All.Incidence_Cumulative_Count=zeros(NG*NS,1);

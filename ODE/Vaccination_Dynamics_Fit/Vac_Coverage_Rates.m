@@ -24,8 +24,7 @@ for jj=1:length(Age_C)
             VC(jj,ii)=Vac_t(end);
             options = optimoptions('surrogateopt','PlotFcn','surrogateoptplot','MaxFunctionEvaluations',500,'UseParallel',true);
             [par_f,fval]=surrogateopt (@(x)Fit_Vac_Timing(x,T_Run,Vac_t,T_Eval(ismember(T_Month,T_temp.Month))),[log10(0.01) -3 -1],[log10(0.06) 2 2],options);
-            par_A(jj,ii,:)=par_f;
-            
+            par_A(jj,ii,:)=par_f;            
         end
     end
 end

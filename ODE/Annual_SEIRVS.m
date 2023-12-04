@@ -45,7 +45,7 @@ lambda_FI=beta_t.*(C*I_tot_FI);
 dxdt(S_n)=omega_R.*x(R_n)+gamma_SD.*x(S_p)-lambda_FI.*x(S_n);
 dxdt(E_n)=lambda_FI.*x(S_n)+lambda_FI.*x(S_i)-sigma_E.*x(E_n);
 dxdt(I_n)=sigma_E.*x(E_n)-delta_I.*x(I_n);
-dxdt(R_n)=(1-pd).*delta_I.*x(I_n)-omega_R.*x(R_n)+gamma_SD.*x(R_p);
+dxdt(R_n)=(1-pd).*delta_I.*x(I_n)-omega_R.*x(R_n);
 
 % Intent to vaccinate
 dxdt(S_i)=omega_R.*x(R_i)-lambda_FI.*x(S_i)-vac_R.*x(S_i);
