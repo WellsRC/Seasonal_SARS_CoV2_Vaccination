@@ -1,4 +1,4 @@
-function F = Likelihood_Vaccine_Immunity_60_plus(x,a_boost,b_boost,t_boost,a_sd,b_sd,t_sd,a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_range_sd,b_range_sd,t_range_sd,N_State)
+function F = Likelihood_Vaccine_Immunity_60_plus(x,a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_lbnd_sd,b_lbnd_sd,x_ref,a_range_sd,b_range_sd,t_range_sd,N_State)
 
 eps_0=x(1);
 if(N_State>1)
@@ -33,6 +33,12 @@ for ii=1:length(var_lbnd_sd)
     y_model=pchip(T,y_raw,t_lbnd_sd(ii,1):t_lbnd_sd(ii,2));
     b_symp=y_model(:).*(1-y_model(:)).^2./var_lbnd_sd(ii)-(1-y_model(:));
     a_symp=b_symp(:).*y_model(:)./(1-y_model(:));
+    f_neg=find(a_symp<0 | b_symp<0);
+    
+    if(~isempty(f_neg))
+       a_symp(f_neg)=pchip(x_ref,a_lbnd_sd(ii,:),y_model(f_neg));
+       b_symp(f_neg)=pchip(x_ref,b_lbnd_sd(ii,:),y_model(f_neg));
+    end
     F_ubnd(ii)=-mean(log(betacdf(y_lbnd_sd(ii),a_symp(:),b_symp(:))-betacdf(0,a_symp(:),b_symp(:))));
 end
 
@@ -41,16 +47,22 @@ for ii=1:length(var_lbnd_sd)
     y_model=pchip(T,sum(Y,2),t_lbnd_sd(ii,1):t_lbnd_sd(ii,2));
     b_symp=y_model(:).*(1-y_model(:)).^2./var_lbnd_sd(ii)-(1-y_model(:));
     a_symp=b_symp(:).*y_model(:)./(1-y_model(:));
+    f_neg=find(a_symp<0 | b_symp<0);
+    
+    if(~isempty(f_neg))
+       a_symp(f_neg)=pchip(x_ref,a_lbnd_sd(ii,:),y_model(f_neg));
+       b_symp(f_neg)=pchip(x_ref,b_lbnd_sd(ii,:),y_model(f_neg));
+    end
     F_lbnd_sd(ii)=-mean(log(betacdf(1,a_symp(:),b_symp(:))-betacdf(y_lbnd_sd(ii),a_symp(:),b_symp(:))));
 end
 
 
-y_boost=pchip(T,y_raw,t_boost);
-F_boost=-sum(log(betapdf(y_boost,a_boost,b_boost)));
+% y_boost=pchip(T,y_raw,t_boost);
+% F_boost=-sum(log(betapdf(y_boost,a_boost,b_boost)));
 
-y_sd=pchip(T,sum(Y,2),t_sd);
-F_sd=-(log(betapdf(y_sd,a_sd,b_sd)));
-F_sd(isnan(b_sd))=log(y_sd(isnan(b_sd)));
+% y_sd=pchip(T,sum(Y,2),t_sd);
+% F_sd=-(log(betapdf(y_sd,a_sd,b_sd)));
+% F_sd(isnan(b_sd))=log(y_sd(isnan(b_sd)));
 
 F_range=zeros(size(a_range));
 for ii=1:length(F_range)
@@ -64,6 +76,6 @@ for ii=1:length(F_range_sd)
     F_range_sd(ii)=-mean(log(betapdf(y_range_sd,a_range_sd(ii),b_range_sd(ii))));
 end
 
-F=sum(F_lbnd_sd(:))+sum(F_ubnd(:))+F_boost+sum(F_range(:))+sum(F_range_sd(:))+sum(F_sd(:));
+F=sum(F_lbnd_sd(:))+sum(F_ubnd(:))+sum(F_range(:))+sum(F_range_sd(:));
 end
 

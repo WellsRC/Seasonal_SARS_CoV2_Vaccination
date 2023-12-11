@@ -4,18 +4,6 @@ parpool(32)
 % Only have data that can properly inform the efficacy and not the severe
 % disease efficacy for this specified age group 
 
-Data_Table=readtable("Immunity_Data.xlsx","Sheet","Age_60_plus_Booster_infection_3");
-
-data_t=[Data_Table.val Data_Table.lower Data_Table.upper];
-t_boost=Data_Table.DaysPost_vaccination;
-
-a_boost=zeros(size(t_boost));
-b_boost=zeros(size(t_boost));
-for ii=1:length(t_boost)
-    b_boost(ii)=lsqnonlin(@(x)100.*betainv([0.025 0.975],x.*data_t(ii,1)./(1-data_t(ii,1)),x)-100.*data_t(ii,2:3),2);
-    a_boost(ii)=b_boost(ii).*data_t(ii,1)./(1-data_t(ii,1));
-end
-
 Data_Table=readtable("Immunity_Data.xlsx","Sheet","Age_60_plus_Booster_Infection_1");
 
 data_t=[Data_Table.val Data_Table.lower Data_Table.upper];
@@ -48,21 +36,7 @@ for ii=1:length(a_range)
     a_range(ii)=b_range(ii).*data_t(ii,1)./(1-data_t(ii,1));
 end
 
-% Will base the severe disease aspect on those under 50
-Data_Table=readtable("Immunity_Data.xlsx","Sheet","Age_60_plus_Booster_SD_1");
 
-t_sd=[Data_Table.DaysPost_vaccination];
-data_t=[Data_Table.val Data_Table.lower Data_Table.upper];
-y_sd=[Data_Table.val];
-
-a_sd=zeros(size(t_sd));
-b_sd=NaN.*zeros(size(t_sd));
-for ii=1:length(t_sd)
-    if(data_t(ii,1)<1)
-    b_sd(ii)=lsqnonlin(@(x)100.*betainv([0.025 0.975],x.*data_t(ii,1)./(1-data_t(ii,1)),x)-100.*data_t(ii,2:3),2);
-    a_sd(ii)=b_sd(ii).*data_t(ii,1)./(1-data_t(ii,1));
-    end
-end
 
 Data_Table=readtable("Immunity_Data.xlsx","Sheet","Age_65_plus_Booster_Symptom_1");
 
@@ -78,6 +52,19 @@ for ii=1:size(t_lbnd_sd,1)
 end
 
 [~,var_lbnd_sd]=betastat(a_lbnd_sd,b_lbnd_sd);
+
+
+a_lbnd_sd=zeros(length(var_lbnd_sd),1001);
+b_lbnd_sd=zeros(length(var_lbnd_sd),1001);
+x_ref=10.^linspace(-16,0,1001);
+
+for ii=1:length(var_lbnd_sd)
+    parfor jj=1:1001
+        [est]=lsqnonlin(@(z)([z(1)./sum(z) (z(1).*z(2))./((sum(z)+1).*sum(z).^2) ]- [x_ref(jj) var_lbnd_sd(ii)]),[3.*x_ref(jj)./(1-x_ref(jj)) 3],[0 0],[1000 1000]);
+        a_lbnd_sd(ii,jj)=est(1);
+        b_lbnd_sd(ii,jj)=est(2);
+    end
+end
 
 Data_Table=readtable("Immunity_Data.xlsx","Sheet","Age_65_plus_Booster_SD_1");
 
@@ -112,19 +99,21 @@ for ii=1:length(a_range_sd)
 end
 
 N_State=3;
-
-
 % % Initial
-lb=[0 0 0 -4 -4 -4 -2 -2  0 0 0];
-ub=[1 1 1  0  0  0  0  0  1 1 1];
+
+% lt=[0 0 0 1 1 1 1 1 0 0 0];
+lb=[0.6   0.8    0.7 -5 -1.2 -4 -1.1 -5 0.85 0.9 0.4];
+ub=[0.7 1 1 -4 -0.8 -2 -0.9 -1 0.95 1 0.6];
+
 rng('shuffle');
 for jj=1:500
     Log_L=zeros(50000,1);
 
     x=repmat(lb,50000,1)+repmat(ub-lb,50000,1).*lhsdesign(50000,length(lb));
+%     x(:,lt==1)=log10(x(:,lt==1));
     x(:,3)=x(:,3).*x(:,2); % the efficacy needs to reduce over time
     parfor ii=1:50000
-        Log_L(ii,:)=-Likelihood_Vaccine_Immunity_60_plus(x(ii,:),a_boost,b_boost,t_boost,a_sd,b_sd,t_sd,a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_range_sd,b_range_sd,t_range_sd,N_State);
+        Log_L(ii,:)=-Likelihood_Vaccine_Immunity_60_plus(x(ii,:),a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_lbnd_sd,b_lbnd_sd,x_ref,a_range_sd,b_range_sd,t_range_sd,N_State);
     end
     ct=1;
     while isfile(['Vaccine_Immunity_60_plus_Sample_' num2str(ct) '.mat'])

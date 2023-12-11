@@ -1,4 +1,4 @@
-function F = Likelihood_Vaccine_Immunity_Under_18(x,a_boost,b_boost,t_boost,a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_range_sd,b_range_sd,t_range_sd,N_State)
+function F = Likelihood_Vaccine_Immunity_Under_18(x,a_boost,b_boost,t_boost,a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_lbnd_sd,b_lbnd_sd,x_ref,a_range_sd,b_range_sd,t_range_sd,N_State)
 
 eps_0=x(1);
 if(N_State>1)
@@ -33,6 +33,11 @@ for ii=1:length(var_lbnd_sd)
     y_model=pchip(T,y_raw,t_lbnd_sd(ii,1):t_lbnd_sd(ii,2));
     b_symp=y_model(:).*(1-y_model(:)).^2./var_lbnd_sd(ii)-(1-y_model(:));
     a_symp=b_symp(:).*y_model(:)./(1-y_model(:));
+    f_neg=find(a_symp<0 | b_symp<0);
+    if(~isempty(f_neg))
+       a_symp(f_neg)=pchip(x_ref,a_lbnd_sd(ii,:),y_model(f_neg));
+       b_symp(f_neg)=pchip(x_ref,b_lbnd_sd(ii,:),y_model(f_neg));
+    end
     F_ubnd(ii)=-mean(log(betacdf(y_lbnd_sd(ii),a_symp(:),b_symp(:))-betacdf(0,a_symp(:),b_symp(:))));
 end
 
@@ -41,6 +46,11 @@ for ii=1:length(var_lbnd_sd)
     y_model=pchip(T,sum(Y,2),t_lbnd_sd(ii,1):t_lbnd_sd(ii,2));
     b_symp=y_model(:).*(1-y_model(:)).^2./var_lbnd_sd(ii)-(1-y_model(:));
     a_symp=b_symp(:).*y_model(:)./(1-y_model(:));
+    f_neg=find(a_symp<0 | b_symp<0);
+    if(~isempty(f_neg))
+       a_symp(f_neg)=pchip(x_ref,a_lbnd_sd(ii,:),y_model(f_neg));
+       b_symp(f_neg)=pchip(x_ref,b_lbnd_sd(ii,:),y_model(f_neg));
+    end
     F_lbnd_sd(ii)=-mean(log(betacdf(1,a_symp(:),b_symp(:))-betacdf(y_lbnd_sd(ii),a_symp(:),b_symp(:))));
 end
 

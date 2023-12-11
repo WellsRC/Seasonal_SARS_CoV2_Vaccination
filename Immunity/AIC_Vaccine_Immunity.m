@@ -136,7 +136,7 @@ par_est_M=cell(1,5);
 L=zeros(1,5);
 AICs=zeros(1,5);
 BICs=zeros(1,5);
-for N_State=5:5
+for N_State=1:5
     lb=[0 zeros(1,N_State-1) -16.*ones(1,N_State) -16.*ones(1,N_State-1) zeros(1,N_State)];
     ub=[1 ones(1,N_State-1) zeros(1,N_State) zeros(1,N_State-1) ones(1,N_State)];
     

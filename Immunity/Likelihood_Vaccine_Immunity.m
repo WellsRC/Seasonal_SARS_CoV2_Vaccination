@@ -34,11 +34,27 @@ y_sd=pchip(T,sum(Y,2),t_sd);
 y_model=pchip(T,y_raw,t_ubnd);
 b_symp=y_model(:).*(1-y_model(:)).^2./var_ubnd(:)-(1-y_model(:));
 a_symp=b_symp(:).*y_model(:)./(1-y_model(:));
+f_neg=find(a_symp<0 | b_symp<0);
+if(~isempty(f_neg))
+    for zz=1:length(f_neg)
+        [abf]=lsqnonlin(@(z)([z(1)./sum(z) (z(1).*z(2))./((sum(z)+1).*sum(z).^2) ]- [y_model(f_neg(zz)) var_ubnd(f_neg(zz))]),[3.*y_model(f_neg(zz))./(1-y_model(f_neg(zz))) 3],[0 0],[1000 1000]);
+        a_symp(f_neg(zz))=abf(1);
+        b_symp(f_neg(zz))=abf(2);
+    end
+end
 F_ubnd=-sum(log(betacdf(y_ubnd(:),a_symp(:),b_symp(:))-betacdf(0,a_symp(:),b_symp(:))));
 
 y_model=pchip(T,sum(Y,2),t_ubnd);
 b_symp=y_model(:).*(1-y_model(:)).^2./var_ubnd(:)-(1-y_model(:));
 a_symp=b_symp(:).*y_model(:)./(1-y_model(:));
+f_neg=find(a_symp<0 | b_symp<0);
+if(~isempty(f_neg))
+    for zz=1:length(f_neg)
+        [abf]=lsqnonlin(@(z)([z(1)./sum(z) (z(1).*z(2))./((sum(z)+1).*sum(z).^2) ]- [y_model(f_neg(zz)) var_ubnd(f_neg(zz))]),[3.*y_model(f_neg(zz))./(1-y_model(f_neg(zz))) 3],[0 0],[1000 1000]);
+        a_symp(f_neg(zz))=abf(1);
+        b_symp(f_neg(zz))=abf(2);
+    end
+end
 F_lbnd=-sum(log(betacdf(1,a_symp(:),b_symp(:))-betacdf(y_ubnd(:),a_symp(:),b_symp(:))));
 
 F_ubnd_range=zeros(size(y_range_ubnd));
@@ -47,11 +63,27 @@ for ii=1:length(y_range_ubnd)
     y_model=pchip(T,y_raw,t_range_ubnd(ii,:));
     b_symp=y_model(:).*(1-y_model(:)).^2./var_range_ubnd(ii)-(1-y_model(:));
     a_symp=b_symp(:).*y_model(:)./(1-y_model(:));
+     f_neg=find(a_symp<0 | b_symp<0);
+    if(~isempty(f_neg))
+        for zz=1:length(f_neg)
+            [abf]=lsqnonlin(@(z)([z(1)./sum(z) (z(1).*z(2))./((sum(z)+1).*sum(z).^2) ]- [y_model(f_neg(zz)) var_range_ubnd(ii)]),[3.*y_model(f_neg(zz))./(1-y_model(f_neg(zz))) 3],[0 0],[1000 1000]);
+            a_symp(f_neg(zz))=abf(1);
+            b_symp(f_neg(zz))=abf(2);
+        end
+    end
     F_ubnd_range(ii)=-mean(log(betacdf(y_range_ubnd(ii),a_symp(:),b_symp(:))-betacdf(0,a_symp(:),b_symp(:))));
 
     y_model=pchip(T,sum(Y,2),t_range_ubnd(ii,:));
     b_symp=y_model(:).*(1-y_model(:)).^2./var_range_ubnd(ii)-(1-y_model(:));
     a_symp=b_symp(:).*y_model(:)./(1-y_model(:));
+     f_neg=find(a_symp<0 | b_symp<0);
+    if(~isempty(f_neg))
+        for zz=1:length(f_neg)
+            [abf]=lsqnonlin(@(z)([z(1)./sum(z) (z(1).*z(2))./((sum(z)+1).*sum(z).^2) ]- [y_model(f_neg(zz)) var_range_ubnd(ii)]),[3.*y_model(f_neg(zz))./(1-y_model(f_neg(zz))) 3],[0 0],[1000 1000]);
+            a_symp(f_neg(zz))=abf(1);
+            b_symp(f_neg(zz))=abf(2);
+        end
+    end
     F_1bnd_range(ii)=-mean(log(betacdf(1,a_symp(:),b_symp(:))-betacdf(y_range_ubnd(ii),a_symp(:),b_symp(:))));
 end
 

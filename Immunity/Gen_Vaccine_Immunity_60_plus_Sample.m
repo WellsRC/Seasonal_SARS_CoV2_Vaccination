@@ -1,17 +1,19 @@
 clear;
 clc;
 
-L=[];
-p=[];
-for ii=1:50
-    load(['Vaccine_Immunity_Under_18_Sample_' num2str(ii) '.mat']);
-    L=[L;Log_L];
-    p=[p;x];
-end
-clear Log_L x
-p=p(~isnan(L),:);
-L=L(~isnan(L));
-w=exp(L)./sum(exp(L));
+% L=[];
+% p=[];
+% for ii=1:1000
+%     load(['Vaccine_Immunity_60_plus_Sample_' num2str(ii) '.mat']);
+%     L=[L;Log_L(~isnan(Log_L) & ~isinf(Log_L))];
+%     p=[p;x(~isnan(Log_L) & ~isinf(Log_L),:)];
+% end
+% clear Log_L x
+% p=p(~isnan(L),:);
+% L=L(~isnan(L));
+load('Vaccine_Immunity_60_plus_Filler.mat','par_samp','L');
+p=par_samp;
+w=exp(L-max(L(:)))./sum(exp(L-max(L(:))));
 wc=cumsum(w);
 NS=10^4;
 par_samp_vi_60p=zeros(NS,11);

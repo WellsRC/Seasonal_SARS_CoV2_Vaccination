@@ -23,6 +23,8 @@ parfor jj=1:NS
 
     A=length(Parameters.N);
     AC=[0:84];
+    Parameters.Delay_Time=0; % Assume no delay in the baseline analysis
+    Parameters.Proportion_Two_Dose=ones(A,1); % Assume all individuals who are vaccinating will receive second dose
     count=1;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Latent period
@@ -171,11 +173,11 @@ parfor jj=1:NS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Transmission
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Parameters.beta_I.beta_max=(0.03+(0.05-0.03).*lhs_samp(jj,count));
+    Parameters.beta_I.beta_max=(0.025+(0.075-0.025).*lhs_samp(jj,count));
     count=count+1;
-    Parameters.beta_I.beta_min=(0.015+(0.025-0.015).*lhs_samp(jj,count));
+    Parameters.beta_I.beta_min=(0.005+(0.025-0.005).*lhs_samp(jj,count));
     count=count+1;
-    Parameters.beta_I.phi_t=0.25+(0.75+0.25).*lhs_samp(jj,count);
+    Parameters.beta_I.phi_t=lhs_samp(jj,count);
     count=count+1;
     Parameters.beta_I.scale_t=365.*(0.4+(1-0.4).*lhs_samp(jj,count));
     count=count+1;
@@ -268,19 +270,19 @@ parfor jj=1:NS
     
     vac_rate(AC<=1)=0.0507.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
+    vac_rate(AC>=2 & AC<=4)=0.0236.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
+    vac_rate(AC>=5 & AC<=11)=0.0138.*(1+0.05.*(0.5-lhs_samp(jj,count)));
+    count=count+1;
     vac_rate(AC>=12 & AC<=15)=0.0057.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     vac_rate(AC>=16 & AC<=17)=0.0052.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     vac_rate(AC>=18 & AC<=24)=0.0043.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
-    vac_rate(AC>=2 & AC<=4)=0.0236.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
     vac_rate(AC>=25 & AC<=39)=0.0096.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     vac_rate(AC>=40 & AC<=49)=0.0093.*(1+0.05.*(0.5-lhs_samp(jj,count)));
-    count=count+1;
-    vac_rate(AC>=5 & AC<=11)=0.0138.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
     vac_rate(AC>=50 & AC<=64)=0.0089.*(1+0.05.*(0.5-lhs_samp(jj,count)));
     count=count+1;
@@ -474,7 +476,8 @@ parfor jj=1:NS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     Parameters.X0.Baseline_Campaign=Calc_Initial_Conditions('Continual',Parameters,Parameters.vac_baseline,stratify_recovered(rs_ni(jj),:));
-        
+    Parameters.X0.Annual=Calc_Initial_Conditions('Annual_Campaign',Parameters,Parameters.vac_int_influenza,stratify_recovered(rs_ni(jj),:));
+    Parameters.X0.Two_Dose=Calc_Initial_Conditions('Two_Dose_Campaign',Parameters,Parameters.vac_int_influenza,stratify_recovered(rs_ni(jj),:));    
     P{jj}=Parameters;
 end
 end

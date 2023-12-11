@@ -23,57 +23,61 @@ if(strcmp('Continual',Vac_Camp))
     R4_i=24+span_A;
     R5_i=25+span_A;
 elseif(strcmp('Annual_Campaign',Vac_Camp))
-    X0=zeros(26.*A,1);
+    X0=zeros(30.*A,1);
 
-    span_A=26.*[0:(A-1)];
-        
+    span_A=30.*[0:(A-1)];
+    % Susceptyible
     S_n=1+span_A;
     S_i=2+span_A;
+    dS_i=3+span_A;
 
-    E_n=9+span_A;
-    I_n=14+span_A;
+    E_n=7+span_A;
+    I_n=10+span_A;
 
-    R1_n=19+span_A;
-    R1_i=20+span_A;
+    %Recovered
+    R1_n=13+span_A;
+    R2_n=14+span_A;
+    R3_n=15+span_A;
+    R4_n=16+span_A;
+    R5_n=17+span_A;
+    R1_i=18+span_A;
+    R2_i=19+span_A;
+    R3_i=20+span_A;
+    R4_i=21+span_A;
+    R5_i=22+span_A;
+    dR1_i=23+span_A;
+    dR2_i=24+span_A;
+    dR3_i=25+span_A;
+    dR4_i=26+span_A;
+    dR5_i=27+span_A;
 elseif(strcmp('Two_Dose_Campaign',Vac_Camp))
-    X0=zeros(26.*A,1);
+    X0=zeros(38.*A,1);
 
-    span_A=26.*[0:(A-1)];
+    span_A=38.*[0:(A-1)];
         
     S_n=1+span_A;
     S_i=2+span_A;
+    dS_i=3+span_A;
 
-    E_n=9+span_A;
-    I_n=14+span_A;
+    E_n=15+span_A;
+    I_n=18+span_A;
 
-    R1_n=19+span_A;
-    R1_i=20+span_A;
-elseif(strcmp('Delay_Annual_Campaign',Vac_Camp))
-    X0=zeros(26.*A,1);
+    R1_n=21+span_A;
+    R2_n=22+span_A;
+    R3_n=23+span_A;
+    R4_n=24+span_A;
+    R5_n=25+span_A;
+    R1_i=26+span_A;
+    R2_i=27+span_A;
+    R3_i=28+span_A;
+    R4_i=29+span_A;
+    R5_i=30+span_A;
+    dR1_i=31+span_A;
+    dR2_i=32+span_A;
+    dR3_i=33+span_A;
+    dR4_i=34+span_A;
+    dR5_i=35+span_A;
 
-    span_A=26.*[0:(A-1)];
-        
-    S_n=1+span_A;
-    S_i=2+span_A;
-
-    E_n=9+span_A;
-    I_n=14+span_A;
-
-    R1_n=19+span_A;
-    R1_i=20+span_A;
-elseif(strcmp('Delay_Two_Dose_Campaign',Vac_Camp))
-    X0=zeros(26.*A,1);
-
-    span_A=26.*[0:(A-1)];
-        
-    S_n=1+span_A;
-    S_i=2+span_A;
-
-    E_n=9+span_A;
-    I_n=14+span_A;
-
-    R1_n=19+span_A;
-    R1_i=20+span_A;
 end
     
 
@@ -91,30 +95,13 @@ X0(E_n)=Parameters.delta_I.*X0(I_n)./Parameters.sigma_E;
 
 X0(S_n)=Parameters.N-X0(R1_n)-X0(R2_n)-X0(R3_n)-X0(R4_n)-X0(R5_n)-X0(I_n)-X0(E_n);
 
-
-if(strcmp('Delay',Vac_Camp(1:5)))
-    X0(R1_i)=X0(R1_n).*vac_c.*(1-Parameters.Prop_Delay);
-    X0(dR1_i)=X0(R1_n).*vac_c.*Parameters.Prop_Delay;
-    X0(R1_n)=X0(R1_n)-X0(R1_i)-X0(dR1_i);
-    
-    X0(S_i)=X0(S_n).*vac_c.*(1-Parameters.Prop_Delay);
-    X0(dS_i)=X0(S_n).*vac_c.*Parameters.Prop_Delay;
-    X0(S_n)=X0(S_n)-X0(S_i)-X0(dS_i);
-
-    S_temp=X0(S_n)+X0(S_i)+X0(dS_i);
-    E_temp=X0(E_n);
-    I_temp=X0(I_n);
-    R1_temp=X0(R1_n)+X0(R1_i)+X0(dR1_i);
-
-    Non_Vac=X0(S_n)+X0(E_n)+X0(I_n)+X0(R1_n);
-    Vac=X0(S_i)+X0(dS_i)+X0(R1_i)+X0(dR1_i);
-else
+% if(strcmp('Continual',Vac_Camp))
     X0(R1_i)=X0(R1_n).*vac_c;
     X0(R2_i)=X0(R2_n).*vac_c;
     X0(R3_i)=X0(R3_n).*vac_c;
     X0(R4_i)=X0(R4_n).*vac_c;
     X0(R5_i)=X0(R5_n).*vac_c;
-
+    
     X0(R1_n)=X0(R1_n)-X0(R1_i);
     X0(R2_n)=X0(R2_n)-X0(R2_i);
     X0(R3_n)=X0(R3_n)-X0(R3_i);
@@ -128,11 +115,41 @@ else
     E_temp=X0(E_n);
     I_temp=X0(I_n);
     R1_temp=X0(R1_n)+X0(R2_n)+X0(R3_n)+X0(R4_n)+X0(R5_n)+X0(R1_i)+X0(R2_i)+X0(R3_i)+X0(R4_i)+X0(R5_i);
-
+    
     Non_Vac=X0(S_n)+X0(E_n)+X0(I_n)+X0(R1_n)+X0(R2_n)+X0(R3_n)+X0(R4_n)+X0(R5_n);
     Vac=X0(S_i)+X0(R1_i)+X0(R2_i)+X0(R3_i)+X0(R4_i)+X0(R5_i);
-end
-
+% else
+%     
+%     X0(R1_i)=X0(R1_n).*vac_c.*(1-Parameters.Prop_Delay);
+%     X0(R2_i)=X0(R2_n).*vac_c.*(1-Parameters.Prop_Delay);
+%     X0(R3_i)=X0(R3_n).*vac_c.*(1-Parameters.Prop_Delay);
+%     X0(R4_i)=X0(R4_n).*vac_c.*(1-Parameters.Prop_Delay);
+%     X0(R5_i)=X0(R5_n).*vac_c.*(1-Parameters.Prop_Delay);
+%     
+%     X0(dR1_i)=X0(R1_n).*vac_c.*(Parameters.Prop_Delay);
+%     X0(dR2_i)=X0(R2_n).*vac_c.*(Parameters.Prop_Delay);
+%     X0(dR3_i)=X0(R3_n).*vac_c.*(Parameters.Prop_Delay);
+%     X0(dR4_i)=X0(R4_n).*vac_c.*(Parameters.Prop_Delay);
+%     X0(dR5_i)=X0(R5_n).*vac_c.*(Parameters.Prop_Delay);
+%     
+%     X0(R1_n)=X0(R1_n)-X0(R1_i)-X0(dR1_i);
+%     X0(R2_n)=X0(R2_n)-X0(R2_i)-X0(dR2_i);
+%     X0(R3_n)=X0(R3_n)-X0(R3_i)-X0(dR3_i);
+%     X0(R4_n)=X0(R4_n)-X0(R4_i)-X0(dR4_i);
+%     X0(R5_n)=X0(R5_n)-X0(R5_i)-X0(dR5_i);
+%     
+%     X0(S_i)=X0(S_n).*vac_c.*(1-Parameters.Prop_Delay);
+%     X0(dS_i)=X0(S_n).*vac_c.*Parameters.Prop_Delay;
+%     X0(S_n)=X0(S_n)-X0(S_i)-X0(dS_i);
+%     
+%     S_temp=X0(S_n)+X0(S_i)+X0(dS_i);
+%     E_temp=X0(E_n);
+%     I_temp=X0(I_n);
+%     R1_temp=X0(R1_n)+X0(R2_n)+X0(R3_n)+X0(R4_n)+X0(R5_n)+X0(R1_i)+X0(R2_i)+X0(R3_i)+X0(R4_i)+X0(R5_i)+X0(dR1_i)+X0(dR2_i)+X0(dR3_i)+X0(dR4_i)+X0(dR5_i);
+%     
+%     Non_Vac=X0(S_n)+X0(E_n)+X0(I_n)+X0(R1_n)+X0(R2_n)+X0(R3_n)+X0(R4_n)+X0(R5_n);
+%     Vac=X0(S_i)+X0(R1_i)+X0(R2_i)+X0(R3_i)+X0(R4_i)+X0(R5_i)+X0(dS_i)+X0(dR1_i)+X0(dR2_i)+X0(dR3_i)+X0(dR4_i)+X0(dR5_i);
+% end
 X0_Summary.Non_Vaccinating.Age_0_to_2=sum(Non_Vac(Av<=2))./sum(Vac(Av<=2));
 X0_Summary.Non_Vaccinating.Age_3_to_11=sum(Non_Vac(Av<=11 & Av>=3))./sum(Vac(Av<=11 & Av>=3));
 X0_Summary.Non_Vaccinating.Age_12_to_17=sum(Non_Vac(Av<=17 & Av>=12))./sum(Vac(Av<=17 & Av>=12));

@@ -7,24 +7,29 @@ A=length(pd);
 NV=28;
 span_A=NV.*[0:(A-1)];
 
+% Susceptyible
 S_n=1+span_A;
 S_i=2+span_A;
+% Vaccine associated immunity
 V1=3+span_A;
 V2=4+span_A;
 V3=5+span_A;
 
+% Latent infection
 E_n=6+span_A;
 F_n=7+span_A;
 E_i=8+span_A;
 F_i=9+span_A;
 EV=10+span_A;
 
+% Infectious period
 I_n=11+span_A;
 J_n=12+span_A;
 I_i=13+span_A;
 J_i=14+span_A;
 IV=15+span_A;
 
+%Recovered
 R1_n=16+span_A;
 R2_n=17+span_A;
 R3_n=18+span_A;
@@ -36,6 +41,7 @@ R3_i=23+span_A;
 R4_i=24+span_A;
 R5_i=25+span_A;
 
+% Cumualtive
 CI=26+span_A;
 C_Death=27+span_A;
 C_Hosp=28+span_A;
@@ -57,6 +63,9 @@ lambda_FI=beta_t.*(C*I_tot_FI);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 NI_Inf=x(R1_n)+x(R2_n)+x(R3_n);
 NI_SD=x(R4_n)+x(R5_n);
+
+NI_Inf(NI_Inf==0)=1;
+NI_SD(NI_SD==0)=1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Inflow to the susceptbile compartment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,10 +105,10 @@ dxdt(J_n)=sigma_E.*x(F_n)-delta_I.*x(J_n);
 NI_Inf=x(R1_i)+x(R2_i)+x(R3_i);
 NI_SD=x(R4_i)+x(R5_i);
 N_Vac=x(V1)+x(V2)+x(V3);
-if(N_Vac==0)
-    N_Vac=1;
-end
 
+NI_Inf(NI_Inf==0)=1;
+NI_SD(NI_SD==0)=1;
+N_Vac(N_Vac==0)=1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Inflow to the susceptbile compartment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -108,13 +117,15 @@ Full_S_inflow_Intent=Full_S_inflow_Intent+(1-p1_sd).*((1-p2_inf).*alpha_R1.*x(R1
 Full_S_inflow_Intent=Full_S_inflow_Intent+(1-p2_sd).*(omega_R4.*x(R4_i)+alpha_R4.*x(R4_i).*x(R5_i)./NI_SD);
 Full_S_inflow_Intent=Full_S_inflow_Intent+omega_R5.*x(R5_i);
 Full_S_inflow_Intent=Full_S_inflow_Intent+(1-p1_sd).*(1-p1_inf).*(1-pd).*delta_I.*x(I_i);
+% Flow from vaccine compartment
+Full_S_inflow_Intent=Full_S_inflow_Intent+(1-q1_sd).*vac_R.*x(S_i);
 Full_S_inflow_Intent=Full_S_inflow_Intent+(1-q2_sd).*gammaV_1.*x(V1)+(1-q3_sd).*gammaV_2.*x(V2)+gammaV_3.*x(V3);
 Full_S_inflow_Intent=Full_S_inflow_Intent+(1-q2_sd).*kappaV_1.*x(V1).*x(V2)./N_Vac+(1-q3_sd).*kappaV_2.*x(V2).*x(V3)./N_Vac;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Unvaccinated
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-dxdt(S_i)=Full_S_inflow_Intent-lambda_FI.*x(S_i)-q1_sd.*vac_R.*x(S_i);
+dxdt(S_i)=Full_S_inflow_Intent-lambda_FI.*x(S_i)-vac_R.*x(S_i);
 dxdt(E_i)=lambda_FI.*x(S_i)-sigma_E.*x(E_i);
 dxdt(I_i)=sigma_E.*x(E_i)-delta_I.*x(I_i);
 

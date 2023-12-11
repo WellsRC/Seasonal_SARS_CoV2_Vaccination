@@ -104,5 +104,5 @@ boot_s=reshape(bootstrp(2500,@mean,Marginal_Benefit_Cost_Age),2500,dim_2,dim_3);
 Marginal_Benefit.Average.Cost_Age=mean(boot_s,1);
 Marginal_Benefit.PRCT.Cost_Age=prctile(boot_s,PRCT);
 
-save([pwd '/Files/Marginal_Benefit_Second_Dose_50_to_64_' SA_Scenario '.mat'],'Marginal_Benefit','PRCT');
+save([pwd '/Files/Marginal_Benefit_Second_Dose_' SA_Scenario '.mat'],'Marginal_Benefit','PRCT');
 end

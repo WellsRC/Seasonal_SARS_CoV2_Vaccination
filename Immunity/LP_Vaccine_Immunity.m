@@ -136,16 +136,17 @@ end
 load('Vaccine_Immunity_Population.mat','par_est_M','AICs');
 x0=par_est_M{AICs==min(AICs)};    
 N_State=find(AICs==min(AICs));
-lb=[zeros(1,N_State) -16.*ones(1,N_State) -16.*ones(1,N_State-1) zeros(1,N_State)];
+lb=[zeros(1,N_State) -10.*ones(1,N_State) -2.*ones(1,N_State-1) zeros(1,N_State)];
 ub=[ones(1,N_State) zeros(1,N_State) zeros(1,N_State-1) ones(1,N_State)];
 LP=zeros(length(x0),1001);
 par_v=zeros(length(x0),1001);
 
 for jj=1:length(x0)
-    xt=x0;
+    
     r23=x0(3)./x0(2);
     par_v(jj,:)=linspace(lb(jj),ub(jj),1001);
-    for ii=1:1001
+    parfor ii=1:1001
+        xt=x0;
         if(jj==2)
             xt(2)=par_v(jj,ii);
             xt(3)=xt(2).*r23;

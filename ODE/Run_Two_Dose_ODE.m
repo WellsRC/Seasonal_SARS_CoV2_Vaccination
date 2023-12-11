@@ -1,31 +1,56 @@
 function [T_Run,Y_Model] = Run_Two_Dose_ODE(T_Run,Parameters)
 
-opts = odeset('RelTol',1e-6,'AbsTol',1e-6,'NonNegative',1:length(Parameters.X0.Influenza_Campaign));
+opts = odeset('RelTol',1e-8,'AbsTol',1e-8,'NonNegative',1:length(Parameters.X0.Two_Dose));
 
 
 pd=Parameters.prob_H.*Parameters.prob_death_H;
-pd_v=Parameters.prob_H.*(1-Parameters.eps_H).*Parameters.prob_death_H.*(1-Parameters.eps_DH);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Influenza coverage: Single booster campaign
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[T,Y] = ode15s(@(t,x)Two_Dose_SEIRVS(t,x,Parameters.beta_I,Parameters.sigma_E,Parameters.delta_I,Parameters.delta_V,Parameters.gamma_V,Parameters.gamma_SD,Parameters.omega_R,Parameters.eps_V,Parameters.psi_V,Parameters.nu_V_Influenza,Parameters.C,Parameters.prob_H,Parameters.prob_H.*(1-Parameters.eps_H),pd,pd_v,Parameters.Add_dose), [min(T_Run) max(T_Run)+2],Parameters.X0.Influenza_Campaign, opts);
+[T,Y] = ode45(@(t,x)Two_Dose_SEIRVS(t,x,Parameters.beta_I,Parameters.sigma_E,Parameters.delta_I,Parameters.omega_R1,Parameters.omega_R2,Parameters.omega_R3,Parameters.omega_R4,Parameters.omega_R5,Parameters.alpha_R1,Parameters.alpha_R2,Parameters.alpha_R4,Parameters.p1_inf,Parameters.p2_inf,Parameters.p3_inf,Parameters.p1_sd,Parameters.p2_sd,Parameters.eps_V1,Parameters.eps_V2,Parameters.eps_V3,Parameters.q1_sd,Parameters.q2_sd,Parameters.q3_sd,Parameters.gammaV_1,Parameters.gammaV_2,Parameters.gammaV_3,Parameters.kappaV_1,Parameters.kappaV_2,Parameters.delta_V,Parameters.psi_V,Parameters.nu_V_Influenza,Parameters.C,Parameters.prob_H,pd,Parameters.Delay_Time,Parameters.Add_dose,Parameters.Proportion_Two_Dose), [min(T_Run) max(T_Run)+2],Parameters.X0.Two_Dose, opts);
 A=length(pd);
-C_Incidence_NoVac=Y(:,23+26.*[0:(A-1)]);
-C_Incidence_Vac=Y(:,24+26.*[0:(A-1)]);
-C_Death=Y(:,25+26.*[0:(A-1)]);
-C_Hosp=Y(:,26+26.*[0:(A-1)]);
+C_Incidence=Y(:,36+38.*[0:(A-1)]);
+C_Death=Y(:,37+38.*[0:(A-1)]);
+C_Hosp=Y(:,38+38.*[0:(A-1)]);
 
-Y_Model.Rec_Age=Y([1 end],19+26.*[0:(A-1)])+Y([1 end],20+26.*[0:(A-1)])+Y([1 end],21+26.*[0:(A-1)])+Y([1 end],22+26.*[0:(A-1)]);
+SD_Natural=zeros(size(Y(:,21+38.*[0:(A-1)])));
+I_Natural=zeros(size(Y(:,21+38.*[0:(A-1)])));
+for jj=21:35
+    SD_Natural=SD_Natural+Y(:,jj+38.*[0:(A-1)]);
+    if((jj>=21 && jj<=23)||(jj>=26 && jj<=28)||(jj>=31 && jj<=33))
+        I_Natural=I_Natural+Y(:,jj+38.*[0:(A-1)]);
+    end
+end
+SD_Vaccine=zeros(size(Y(:,6+38.*[0:(A-1)])));
+I_Vaccine=zeros(size(Y(:,6+38.*[0:(A-1)])));
+for jj=6:14
+    SD_Vaccine=SD_Vaccine+Y(:,jj+38.*[0:(A-1)]);
+    if((jj==6)||(jj==9)||(jj==12))
+            I_Vaccine=I_Vaccine+repmat(Parameters.eps_V1',length(T),1).*Y(:,jj+38.*[0:(A-1)]);
+    elseif((jj==7)||(jj==10)||(jj==13))
+            I_Vaccine=I_Vaccine+repmat(Parameters.eps_V2',length(T),1).*Y(:,jj+38.*[0:(A-1)]);
+    elseif((jj==8)||(jj==11)||(jj==14))
+            I_Vaccine=I_Vaccine+repmat(Parameters.eps_V3',length(T),1).*Y(:,jj+38.*[0:(A-1)]);
+    end
+end
+F_Susceptible=Y(:,1+38.*[0:(A-1)])+Y(:,2+38.*[0:(A-1)])+Y(:,3+38.*[0:(A-1)])+Y(:,4+38.*[0:(A-1)])+Y(:,5+38.*[0:(A-1)]);
+                                                                                                                                                                                
+[Daily_Incidence,Daily_Hospital,Daily_Death,Age_Cumulative_Incidence,Age_Cumulative_Hospital,Age_Cumulative_Death,~,Daily_Hospital_Age,~]=Compute_Daily_Incidence_Hospital_Death(T,C_Incidence,C_Death,C_Hosp,T_Run,Parameters);
+[Hospital_Admission]=Compute_Hospital(Daily_Hospital_Age,T_Run);
 
-[Daily_Incidence,Daily_Hospital,Daily_Death,Age_Cumulative_Incidence,Age_Cumulative_Hospital,Age_Cumulative_Death,~,Daily_Hospital_Age,~]=Compute_Daily_Incidence_Hospital_Death(T,C_Incidence_NoVac,C_Incidence_Vac,C_Death,C_Hosp,T_Run,Parameters);
-[Hospital_Admission,Hospital_Prevalence]=Compute_Hospital(Daily_Hospital_Age,T_Run);
+[SD_Natural_Immunity,Infection_Natural_Immunity,SD_Vaccine_Immunity,Infection_Vaccine_Immunity,Fully_Susceptible]=Compute_Daily_Immunity(T,SD_Natural,I_Natural,SD_Vaccine,I_Vaccine,F_Susceptible,T_Run);
 
 Y_Model.Incidence=Daily_Incidence;
 Y_Model.Death=Daily_Death;
 Y_Model.Hospital_Admission=Hospital_Admission;
-Y_Model.Hospital_Burden=Hospital_Prevalence;
 Y_Model.Hospital_Count=Daily_Hospital;
+
+Y_Model.SD_Natural_Immunity=SD_Natural_Immunity;
+Y_Model.Infection_Natural_Immunity=Infection_Natural_Immunity;
+Y_Model.SD_Vaccine_Immunity=SD_Vaccine_Immunity;
+Y_Model.Infection_Vaccine_Immunity=Infection_Vaccine_Immunity;
+Y_Model.Fully_Susceptible=Fully_Susceptible;
 
 Y_Model.Age_Cumulative_Incidence=Age_Cumulative_Incidence;
 Y_Model.Age_Cumulative_Death=Age_Cumulative_Death;

@@ -33,7 +33,7 @@ figure('units','normalized','outerposition',[0.2 0.02 0.5 0.8]);
 subplot('Position',[0.095042372881356,0.60,0.881652542372881,0.38])
 M_Inf=median(Y_Inf,1);
 
-P_Inf=prctile(Y_Inf,[2.5 25 76 97.5]);
+P_Inf=prctile(Y_Inf,[2.5 25 75 97.5]);
 
 patch([T_P flip(T_P)],[P_Inf(1,:) flip(P_Inf(4,:))],'k','LineStyle','none','Facealpha',0.3); hold on
 patch([T_P flip(T_P)],[P_Inf(2,:) flip(P_Inf(3,:))],'k','LineStyle','none','Facealpha',0.3); hold on

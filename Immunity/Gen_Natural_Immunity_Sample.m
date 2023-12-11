@@ -1,19 +1,23 @@
 clear;
 clc;
+% 
+% L=[];
+% p=[];
+% for ii=1:932
+%     load(['Natural_Immunity_Sample_' num2str(ii) '.mat']);
+%     L=[L;Log_L];
+%     p=[p;x];
+% end
+% clear Log_L x
 
-L=[];
-p=[];
-for ii=1:891
-    load(['Natural_Immunity_Sample_' num2str(ii) '.mat']);
-    L=[L;Log_L];
-    p=[p;x];
-end
-clear Log_L x
-w=exp(L)./sum(exp(L));
-wc=cumsum(w);
+load('Natural_Immunity_Filler.mat','par_samp','L');
+p=par_samp;
 NS=10^4;
 par_samp_ni=zeros(NS,13);
 stratify_recovered=zeros(NS,5);
+
+w=exp(L)./sum(exp(L));
+wc=cumsum(w);
 % Number of stages for immunity to infection
 N_State_Inf=3;
 % Number of additional stages for immunity to severe disease
@@ -67,5 +71,5 @@ for ii=1:NS
     
     stratify_recovered(ii,:)=[mean(p1) mean(p2) mean(p3) mean(p4) mean(p5)];
 end
-save('Plot_Data_Waning_Natural_Immunity.mat','Y_Inf','Y_SD','T_P')
-;save('Sample_Natural_Immunity.mat','par_samp_ni','stratify_recovered');
+save('Plot_Data_Waning_Natural_Immunity.mat','Y_Inf','Y_SD','T_P');
+save('Sample_Natural_Immunity.mat','par_samp_ni','stratify_recovered');

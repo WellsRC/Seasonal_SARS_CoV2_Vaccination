@@ -1,6 +1,6 @@
 clear;
 clc;
-% parpool(32);
+parpool(32);
 % Only have data that can properly inform the efficacy and not the severe
 % disease efficacy for this specified age group 
 
@@ -65,6 +65,19 @@ end
 
 [~,var_lbnd_sd]=betastat(a_lbnd_sd,b_lbnd_sd);
 
+
+a_lbnd_sd=zeros(length(var_lbnd_sd),1001);
+b_lbnd_sd=zeros(length(var_lbnd_sd),1001);
+x_ref=10.^linspace(-16,0,1001);
+
+for ii=1:length(var_lbnd_sd)
+    parfor jj=1:1001
+        [est]=lsqnonlin(@(z)([z(1)./sum(z) (z(1).*z(2))./((sum(z)+1).*sum(z).^2) ]- [x_ref(jj) var_lbnd_sd(ii)]),[3.*x_ref(jj)./(1-x_ref(jj)) 3],[0 0],[1000 1000]);
+        a_lbnd_sd(ii,jj)=est(1);
+        b_lbnd_sd(ii,jj)=est(2);
+    end
+end
+
 Data_Table=readtable("Immunity_Data.xlsx","Sheet","Age_18_49_Booster_SD_1");
 
 data_t=[Data_Table.val Data_Table.lower Data_Table.upper];
@@ -98,10 +111,12 @@ for ii=1:length(a_range_sd)
 end
 
 N_State=3;
+% 0.619140625000000	1	1	-3.92187500000000	-5	-1.42968750000000	-1.19140625000000	-0.0820312500000000	0.857421875000000	0.859375000000000	0.863281250000000
 
-% % Initial
-lb=[0 0 0 -4 -4 -4 -2 -2  0 0 0];
-ub=[1 1 1  0  0  0  0  0  1 1 1];
+% Focused
+lb=[0.6   0.85  0 -3.4  -6    -1.75 -1.5 -0.2   0.825 0.75 0.35];
+ub=[0.675  1    1 -2.8  -3.5  -1    -1.3  0     0.875 1    0.65];
+
 rng('shuffle');
 for jj=1:500
     Log_L=zeros(50000,1);
@@ -109,7 +124,7 @@ for jj=1:500
     x=repmat(lb,50000,1)+repmat(ub-lb,50000,1).*lhsdesign(50000,length(lb));
     x(:,3)=x(:,3).*x(:,2); % the efficacy needs to reduce over time
     parfor ii=1:50000
-        Log_L(ii,:)=-Likelihood_Vaccine_Immunity_18_to_59(x(ii,:),a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_range_sd,b_range_sd,t_range_sd,N_State);
+        Log_L(ii,:)=-Likelihood_Vaccine_Immunity_18_to_59(x(ii,:),a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_lbnd_sd,b_lbnd_sd,x_ref,a_range_sd,b_range_sd,t_range_sd,N_State);
     end
     ct=1;
     while isfile(['Vaccine_Immunity_18_59_Sample_' num2str(ct) '.mat'])
