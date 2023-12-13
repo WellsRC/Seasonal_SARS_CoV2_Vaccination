@@ -1,12 +1,14 @@
 clear;
 clc;
-
+% 
 % L=[];
 % p=[];
-% for ii=1:1000
-%     load(['Vaccine_Immunity_60_plus_Sample_' num2str(ii) '.mat']);
-%     L=[L;Log_L(~isnan(Log_L) & ~isinf(Log_L))];
-%     p=[p;x(~isnan(Log_L) & ~isinf(Log_L),:)];
+% for ii=1:1465
+%     try
+%         load(['Vaccine_Immunity_60_plus_Sample_' num2str(ii) '.mat']);
+%         L=[L;Log_L(~isnan(Log_L) & ~isinf(Log_L))];
+%         p=[p;x(~isnan(Log_L) & ~isinf(Log_L),:)];
+%     end
 % end
 % clear Log_L x
 % p=p(~isnan(L),:);

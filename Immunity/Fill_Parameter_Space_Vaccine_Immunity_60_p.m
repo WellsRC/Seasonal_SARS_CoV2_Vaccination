@@ -1,6 +1,6 @@
 clear;
 clc;
-
+parpool(32);
 % Only have data that can properly inform the efficacy and not the severe
 % disease efficacy for this specified age group 
 
@@ -113,7 +113,7 @@ par_samp_vi_60p(:,(N_State+1):(3*N_State-1))=log10(par_samp_vi_60p(:,(N_State+1)
 
 L_old=zeros(size(par_samp_vi_60p,1),1);
 parfor ii=1:size(par_samp_vi_60p,1)
-    L_old(ii)=-Likelihood_Vaccine_Immunity_60_plus(par_samp_vi_60p(ii,:),a_boost,b_boost,t_boost,a_sd,b_sd,t_sd,a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_lbnd_sd,b_lbnd_sd,x_ref,a_range_sd,b_range_sd,t_range_sd,N_State);
+    L_old(ii)=-Likelihood_Vaccine_Immunity_60_plus(par_samp_vi_60p(ii,:),a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_lbnd_sd,b_lbnd_sd,x_ref,a_range_sd,b_range_sd,t_range_sd,N_State);
 end
 [~,s_indx]=sort(L_old,'descend');
 par_samp_vi_60p=par_samp_vi_60p(s_indx,:);
@@ -147,7 +147,7 @@ end
 
        
 parfor jj=1:NS
-   L_new(jj)=-Likelihood_Vaccine_Immunity_60_plus(new_samp(jj,:),a_boost,b_boost,t_boost,a_sd,b_sd,t_sd,a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_lbnd_sd,b_lbnd_sd,x_ref,a_range_sd,b_range_sd,t_range_sd,N_State);
+   L_new(jj)=-Likelihood_Vaccine_Immunity_60_plus(new_samp(jj,:),a_range,b_range,t_range,t_lbnd_sd,y_lbnd_sd,var_lbnd_sd,a_lbnd_sd,b_lbnd_sd,x_ref,a_range_sd,b_range_sd,t_range_sd,N_State);
 end 
 
 L=[L_new;L_old];
@@ -155,3 +155,5 @@ par_samp=[new_samp;par_samp_vi_60p];
 
 
 save('Vaccine_Immunity_60_plus_Filler.mat','par_samp','L');
+
+Gen_Vaccine_Immunity_60_plus_Sample

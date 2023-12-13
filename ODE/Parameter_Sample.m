@@ -173,13 +173,13 @@ parfor jj=1:NS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Transmission
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Parameters.beta_I.beta_max=(0.025+(0.075-0.025).*lhs_samp(jj,count));
+    Parameters.beta_I.beta_max=(0.025+(0.05-0.025).*lhs_samp(jj,count));
     count=count+1;
     Parameters.beta_I.beta_min=(0.005+(0.025-0.005).*lhs_samp(jj,count));
     count=count+1;
     Parameters.beta_I.phi_t=lhs_samp(jj,count);
     count=count+1;
-    Parameters.beta_I.scale_t=365.*(0.4+(1-0.4).*lhs_samp(jj,count));
+    Parameters.beta_I.scale_t=(91+(274-91).*lhs_samp(jj,count));
     count=count+1;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

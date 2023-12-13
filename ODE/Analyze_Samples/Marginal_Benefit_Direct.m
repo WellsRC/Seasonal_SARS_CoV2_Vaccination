@@ -4,12 +4,12 @@ PRCT=sort([50 2.5 25 75 97.5]);
 Time_temp=[90:30:300 365];
 Incidence_Second_Dose_Alt=sum(Two_Dose_Model.Incidence(:,1:Time_Second_Dose),2);
 Death_Second_Dose_Alt=sum(Two_Dose_Model.Death(:,1:Time_Second_Dose),2);
-Hospital_Second_Dose_Alt=sum(Two_Dose_Model.Hospital_Burden(:,1:Time_Second_Dose),2);
+Hospital_Second_Dose_Alt=sum(Two_Dose_Model.Hospital_Admission(:,1:Time_Second_Dose),2);
 Cost_Total_Second_Dose_Alt=Two_Dose_Model.Cost_Total(:,Time_temp==Time_Second_Dose);
 
 Incidence_Second_Dose_Baseline=sum(Baseline.Incidence(:,1:Time_Second_Dose),2);
 Death_Second_Dose_Baseline=sum(Baseline.Death(:,1:Time_Second_Dose),2);
-Hospital_Second_Dose_Baseline=sum(Baseline.Hospital_Burden(:,1:Time_Second_Dose),2);
+Hospital_Second_Dose_Baseline=sum(Baseline.Hospital_Admission(:,1:Time_Second_Dose),2);
 Cost_Total_Second_Dose_Baseline=Baseline.Cost_Total(:,Time_temp==Time_Second_Dose);
 
 

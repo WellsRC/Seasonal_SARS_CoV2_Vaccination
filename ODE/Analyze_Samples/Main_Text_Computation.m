@@ -3,30 +3,26 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear;
 clc;
-Analysis_B;
-
-clear;
-clc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 % Scenario Calcualtions and comparison of annula vs two dose
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 
-load(['Output_Annual_ILC.mat'],'Filtered_Output_Large_Winter');
-Annual_Output=Filtered_Output_Large_Winter;
-Scenario_Calculations(Annual_Output,['Main_Text_Annual']);
-
-for t_d=1:8    
-    Time_Dose=90+30.*(t_d-1);
-    load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older.mat'],'Filtered_Output_Large_Winter');
-    Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_under_2_and_50_and_older']);
-    Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older' ]);
-    load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older.mat'],'Filtered_Output_Large_Winter');
-    Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_50_and_older']);
-    Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_50_and_older' ]);
-    load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older.mat'],'Filtered_Output_Large_Winter');
-    Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_65_and_older']);
-    Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_65_and_older' ]);
-end
+% load(['Output_Annual_ILC.mat'],'Filtered_Output_Large_Winter');
+% Annual_Output=Filtered_Output_Large_Winter;
+% Scenario_Calculations(Annual_Output,['Main_Text_Annual']);
+% 
+% for t_d=1:8    
+%     Time_Dose=90+30.*(t_d-1);
+%     load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older.mat'],'Filtered_Output_Large_Winter');
+%     Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days']);
+%     Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days' ]);
+%     load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older.mat'],'Filtered_Output_Large_Winter');
+%     Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_50_and_older_' num2str(Time_Dose) '_days']);
+%     Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_50_and_older_' num2str(Time_Dose) '_days' ]);
+%     load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older.mat'],'Filtered_Output_Large_Winter');
+%     Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_65_and_older_' num2str(Time_Dose) '_days']);
+%     Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_65_and_older_' num2str(Time_Dose) '_days' ]);
+% end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

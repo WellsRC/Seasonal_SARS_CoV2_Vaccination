@@ -4,12 +4,21 @@ clc;
 % Large Winter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 AC=[0:84];
+load([pwd '\Parameter_Filtered.mat'])
 sigma_E=zeros(length(P_Large_Winter),1);
 day_delta_I=zeros(length(P_Large_Winter),3);
 day_delta_V=zeros(length(P_Large_Winter),3);
-eps_V=zeros(length(P_Large_Winter),4);
-eps_H=zeros(length(P_Large_Winter),1);
-eps_DH=zeros(length(P_Large_Winter),2);
+eps_V1=zeros(length(P_Large_Winter),3);
+eps_V2=zeros(length(P_Large_Winter),3);
+eps_V3=zeros(length(P_Large_Winter),3);
+q1_sd=zeros(length(P_Large_Winter),3);
+q2_sd=zeros(length(P_Large_Winter),3);
+q3_sd=zeros(length(P_Large_Winter),3);
+gammaV_1=zeros(length(P_Large_Winter),3);
+gammaV_2=zeros(length(P_Large_Winter),3);
+gammaV_3=zeros(length(P_Large_Winter),3);
+kappaV_1=zeros(length(P_Large_Winter),3);
+kappaV_2=zeros(length(P_Large_Winter),3);
 psi_V=zeros(length(P_Large_Winter),1);
 beta_max=zeros(length(P_Large_Winter),1);
 beta_min=zeros(length(P_Large_Winter),1);
@@ -26,6 +35,8 @@ R0=zeros(length(P_Large_Winter),5);
 Influenza_vac_coverage=zeros(length(P_Large_Winter),6);
 SARSCoV2_vac_coverage=zeros(length(P_Large_Winter),11);
 
+
+
 Var={'Incubation_Period';
     'Infectious_Period_under_30';
     'Infectious_Period_30_to_49';
@@ -33,10 +44,24 @@ Var={'Incubation_Period';
     'Infectious_Period_under_30_Vaccinated';
     'Infectious_Period_30_to_49_Vaccinated';
     'Infectious_Period_50_and_older_Vaccinated';
-    'Efficacy_Infection_under_18';
-    'Efficacy_Infection_18_to_49';
-    'Efficacy_Infection_50_to_64';
-    'Efficacy_Infection_65_and_older';
+    'Stage_1_Efficacy_Infection_under_18';
+    'Stage_1_Efficacy_Infection_18_to_59';
+    'Stage_1_Efficacy_Infection_60_and_older';
+    'Stage_2_Efficacy_Infection_under_18';
+    'Stage_2_Efficacy_Infection_18_to_59';
+    'Stage_2_Efficacy_Infection_60_and_older';
+    'Stage_3_Efficacy_Infection_under_18';
+    'Stage_3_Efficacy_Infection_18_to_59';
+    'Stage_3_Efficacy_Infection_60_and_older';
+    'Stage_1_Vaccine_Probability_under_18';
+    'Stage_1_Vaccine_Probability_18_to_59';
+    'Stage_1_Vaccine_Probability_60_and_older';
+    'Stage_2_Vaccine_Probability_under_18';
+    'Stage_2_Vaccine_Probability_18_to_59';
+    'Stage_2_Vaccine_Probability_60_and_older';
+    'Stage_3_Vaccine_Probability_under_18';
+    'Stage_3_Vaccine_Probability_18_to_59';
+    'Stage_3_Vaccine_Probability_60_and_older';
     'Efficacy_Hospitalization';
     'Efficacy_Death_Hospital_under_65';
     'Efficacy_Death_Hospital_65_and_older';
@@ -124,18 +149,25 @@ for ss=1:length(P_Large_Winter)
     Parameters=P_Large_Winter{ss};
     sigma_E(ss)=1./unique(Parameters.sigma_E);
 
-    day_delta_I(ss,1)=1./unique(Parameters.day_delta_I(AC<30));
-    day_delta_I(ss,2)=1./unique(Parameters.day_delta_I(AC>=30 & AC<50));
-    day_delta_I(ss,3)=1./unique(Parameters.day_delta_I(AC>=50));
+    day_delta_I(ss,1)=1./unique(Parameters.delta_I(AC<30));
+    day_delta_I(ss,2)=1./unique(Parameters.delta_I(AC>=30 & AC<50));
+    day_delta_I(ss,3)=1./unique(Parameters.delta_I(AC>=50));
 
-    day_delta_V(ss,1)=1./unique(Parameters.day_delta_V(AC<30));
-    day_delta_V(ss,2)=1./unique(Parameters.day_delta_V(AC>=30 & AC<50));
-    day_delta_V(ss,3)=1./unique(Parameters.day_delta_V(AC>=50));
+    day_delta_V(ss,1)=1./unique(Parameters.delta_V(AC<30));
+    day_delta_V(ss,2)=1./unique(Parameters.delta_V(AC>=30 & AC<50));
+    day_delta_V(ss,3)=1./unique(Parameters.delta_V(AC>=50));
 
-    eps_V(ss,1)=unique(Parameters.eps_V(AC<=17));
-    eps_V(ss,2)=unique(Parameters.eps_V(AC>=18 & AC<=49));
-    eps_V(ss,3)=unique(Parameters.eps_V(AC>=50 & AC<=64));
-    eps_V(ss,4)=unique(Parameters.eps_V(AC>=65));
+    eps_V1(ss,1)=unique(Parameters.eps_V1(AC<=17));
+    eps_V1(ss,2)=unique(Parameters.eps_V1(AC>=18 & AC<=59));
+    eps_V1(ss,3)=unique(Parameters.eps_V1(AC>=60));
+
+    eps_V2(ss,1)=unique(Parameters.eps_V2(AC<=17));
+    eps_V2(ss,2)=unique(Parameters.eps_V2(AC>=18 & AC<=59));
+    eps_V2(ss,3)=unique(Parameters.eps_V2(AC>=60));
+
+    eps_V3(ss,1)=unique(Parameters.eps_V3(AC<=17));
+    eps_V3(ss,2)=unique(Parameters.eps_V3(AC>=18 & AC<=59));
+    eps_V3(ss,3)=unique(Parameters.eps_V3(AC>=60));
     
     eps_H(ss)=unique(Parameters.eps_H);
 
@@ -237,7 +269,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % Compute the correlation of posterior 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-X=[sigma_E day_delta_I day_delta_V eps_V eps_H eps_DH psi_V beta_max beta_min phi_t scale_t S_Inf Influenza_vac_rate Influenza_vac_delay Influenza_vac_HC SARSCoV2_vac_rate prob_H prob_death_H R0 Influenza_vac_coverage SARSCoV2_vac_coverage];
+X=[sigma_E day_delta_I day_delta_V eps_V1 eps_H eps_DH psi_V beta_max beta_min phi_t scale_t S_Inf Influenza_vac_rate Influenza_vac_delay Influenza_vac_HC SARSCoV2_vac_rate prob_H prob_death_H R0 Influenza_vac_coverage SARSCoV2_vac_coverage];
 [Corr_Post,P_post]=corr(X);
 T_Corr=[table(Var) array2table(Corr_Post)];
 T_Corr.VariableNames=[{'Variable'} Var'];

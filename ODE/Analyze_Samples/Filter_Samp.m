@@ -1,7 +1,7 @@
 clear;
 clc;
 
-NG=50;
+NG=100;
 NS=10^3;
 Av=[0:84];
 ACg=[0 1;2 4;5 12;13 17; 18 49; 50 64; 65 85];
@@ -12,7 +12,7 @@ save('Baseline_Outputs.mat','Filtered_Output_Large_Winter','Filtered_Output_Larg
 clear;
 clc;
 
-NG=50;
+NG=100;
 NS=10^3;
 Av=[0:84];
 ACg=[0 1;2 4;5 12;13 17; 18 49; 50 64; 65 85];
