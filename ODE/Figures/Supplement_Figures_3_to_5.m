@@ -48,19 +48,23 @@ for ii=1:length(HD_P)
     HD_P(ii)=DHA(f_indx);
 end
 
-HA=zeros(3,3,length(T));
+HA=zeros(3,4,length(T));
+
 
 HA(1,1,:)=min(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),[],1);
 HA(1,2,:)=max(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),[],1);
 HA(1,3,:)=median(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),1);
+HA(1,4,:)=mean(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),1);
 
 HA(2,1,:)=min(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6 ,:),[],1);
 HA(2,2,:)=max(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6,:),[],1);
 HA(2,3,:)=median(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6,:),1);
+HA(2,4,:)=mean(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6,:),1);
 
 HA(3,1,:)=min(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),[],1);
 HA(3,2,:)=max(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),[],1);
 HA(3,3,:)=median(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),1);
+HA(3,4,:)=mean(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),1);
 
 
 figure('units','normalized','outerposition',[0.02 0.02 1 1]);
@@ -89,18 +93,20 @@ Y2=squeeze(HA(1,2,:))';
 patch([T flip(T)], [Y1 flip(Y2)],hex2rgb('#E94F08'),'FaceAlpha',0.3,'LineStyle','none'); hold on
 YM=squeeze(HA(1,3,:));
 plot(T,YM,'color',hex2rgb('#E94F08'),'LineWidth',2);
+YM=squeeze(HA(1,4,:));
+plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:80000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:55000,'Yminortick','on');
 title('Winter peak: September 1 to November 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 80000])
+ylim([0 55000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Observed data')
+legend('Range','Median','Mean','Observed data')
 text(-0.14,1.05,'B','Units','normalized','FontSize',28)
 
 subplot('Position',[0.065 0.11 0.4 0.36])
@@ -109,18 +115,20 @@ Y2=squeeze(HA(2,2,:))';
 patch([T flip(T)], [Y1 flip(Y2)],hex2rgb('#E94F08'),'FaceAlpha',0.3,'LineStyle','none'); hold on
 YM=squeeze(HA(2,3,:));
 plot(T,YM,'color',hex2rgb('#E94F08'),'LineWidth',2);
+YM=squeeze(HA(2,4,:));
+plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:80000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:55000,'Yminortick','on');
 title('Winter peak: December 1 to January 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 80000])
+ylim([0 55000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Observed data')
+legend('Range','Median','Mean','Observed data')
 text(-0.14,1.05,'C','Units','normalized','FontSize',28)
 
 subplot('Position',[0.55 0.11 0.4 0.36])
@@ -129,18 +137,20 @@ Y2=squeeze(HA(3,2,:))';
 patch([T flip(T)], [Y1 flip(Y2)],hex2rgb('#E94F08'),'FaceAlpha',0.3,'LineStyle','none'); hold on
 YM=squeeze(HA(3,3,:));
 plot(T,YM,'color',hex2rgb('#E94F08'),'LineWidth',2);
+YM=squeeze(HA(3,4,:));
+plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:80000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:55000,'Yminortick','on');
 title('Winter peak: February 1 to March 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 80000])
+ylim([0 55000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Observed data')
+legend('Range','Median','Mean','Observed data')
 text(-0.14,1.05,'D','Units','normalized','FontSize',28)
 print(gcf,['Supplement_Figure_3.png'],'-dpng','-r600');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,11 +203,12 @@ for ii=1:length(HD_P)
     HD_P(ii)=DHA(f_indx);
 end
 
-HA=zeros(3,length(T));
+HA=zeros(4,length(T));
 
 HA(1,:)=min(Filtered_Output_Large_Summer.Hospital_Admission,[],1);
 HA(2,:)=max(Filtered_Output_Large_Summer.Hospital_Admission,[],1);
 HA(3,:)=median(Filtered_Output_Large_Summer.Hospital_Admission,1);
+HA(4,:)=mean(Filtered_Output_Large_Summer.Hospital_Admission,1);
 
 figure('units','normalized','outerposition',[0.02 0.1 1 0.6]);
 
@@ -225,6 +236,8 @@ Y2=squeeze(HA(2,:));
 patch([T flip(T)], [Y1 flip(Y2)],hex2rgb('#E94F08'),'FaceAlpha',0.3,'LineStyle','none'); hold on
 YM=squeeze(HA(3,:));
 plot(T,YM,'color',hex2rgb('#E94F08'),'LineWidth',2);
+YM=squeeze(HA(4,:));
+plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
@@ -235,7 +248,7 @@ ylim([0 40000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend({'Range','Median','Observed data'},'Location','northwest')
+legend({'Range','Median','Mean','Observed data'},'Location','northwest')
 text(-0.14,1.05,'B','Units','normalized','FontSize',28)
 print(gcf,['Supplement_Figure_4.png'],'-dpng','-r600');
 
@@ -285,14 +298,17 @@ HA=zeros(3,3,length(T));
 HA(1,1,:)=min(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),[],1);
 HA(1,2,:)=max(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),[],1);
 HA(1,3,:)=median(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),1);
+HA(1,4,:)=mean(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),1);
 
 HA(2,1,:)=min(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),[],1);
 HA(2,2,:)=max(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),[],1);
 HA(2,3,:)=median(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),1);
+HA(2,4,:)=mean(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),1);
 
 HA(3,1,:)=min(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),[],1);
 HA(3,2,:)=max(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),[],1);
 HA(3,3,:)=median(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),1);
+HA(3,4,:)=mean(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),1);
 
 
 figure('units','normalized','outerposition',[0.02 0.02 1 1]);
@@ -306,7 +322,7 @@ set(gca,'LineWidth',2,'TickDir','out','XTickLabel',XTL,'Fontsize',16);
 xlabel('Month of winter peak','Fontsize',18)
 ylabel('Percentage of samples')
 ytickformat('percentage')
-ylim([0 35])
+ylim([0 45])
 xlim([0.5 length(XTL)+0.5])
 text(-0.14,1.05,'A','Units','normalized','FontSize',28)
 
@@ -316,18 +332,21 @@ Y2=squeeze(HA(1,2,:))';
 patch([T flip(T)], [Y1 flip(Y2)],hex2rgb('#E94F08'),'FaceAlpha',0.3,'LineStyle','none'); hold on
 YM=squeeze(HA(1,3,:));
 plot(T,YM,'color',hex2rgb('#E94F08'),'LineWidth',2);
+YM=squeeze(HA(1,4,:));
+plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
+
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:70000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:50000,'Yminortick','on');
 title('Winter peak: October 1 to November 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 70000])
+ylim([0 50000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Observed data')
+legend('Range','Median','Mean','Observed data')
 text(-0.14,1.05,'B','Units','normalized','FontSize',28)
 
 subplot('Position',[0.065 0.11 0.4 0.36])
@@ -336,18 +355,20 @@ Y2=squeeze(HA(2,2,:))';
 patch([T flip(T)], [Y1 flip(Y2)],hex2rgb('#E94F08'),'FaceAlpha',0.3,'LineStyle','none'); hold on
 YM=squeeze(HA(2,3,:));
 plot(T,YM,'color',hex2rgb('#E94F08'),'LineWidth',2);
+YM=squeeze(HA(2,4,:));
+plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:70000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:50000,'Yminortick','on');
 title('Winter peak: December 1 to Janaury 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 70000])
+ylim([0 50000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Observed data')
+legend('Range','Median','Mean','Observed data')
 text(-0.14,1.05,'C','Units','normalized','FontSize',28)
 
 subplot('Position',[0.55 0.11 0.4 0.36])
@@ -356,17 +377,19 @@ Y2=squeeze(HA(3,2,:))';
 patch([T flip(T)], [Y1 flip(Y2)],hex2rgb('#E94F08'),'FaceAlpha',0.3,'LineStyle','none'); hold on
 YM=squeeze(HA(3,3,:));
 plot(T,YM,'color',hex2rgb('#E94F08'),'LineWidth',2);
+YM=squeeze(HA(3,4,:));
+plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:70000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:50000,'Yminortick','on');
 title('Winter peak: February 1 to April 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 70000])
+ylim([0 50000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Observed data')
+legend('Range','Median','Mean','Observed data')
 text(-0.14,1.05,'D','Units','normalized','FontSize',28)
 print(gcf,['Supplement_Figure_5.png'],'-dpng','-r600');

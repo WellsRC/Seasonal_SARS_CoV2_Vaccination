@@ -38,7 +38,7 @@ for t_d=4:5
             
                 Num_Needed=sum(Parameters.vac_int_influenza(:).*Parameters.N(:).*Old_Age_Dose(:));
                 New_Vac=sum(Parameters.vac_int_influenza(:).*Parameters.N(:).*Age_Dose(:));
-            
+                Scale_F=min(New_Vac./Num_Needed,1);
                 Parameters.Proportion_Two_Dose=Scale_F.*Age_Dose(:)+(1-red_2d).*Old_Age_Dose(:);
             
                 [~,Model_Output{jj}] = Run_Two_Dose_ODE(T_Run,Parameters);
