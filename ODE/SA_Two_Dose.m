@@ -1,23 +1,10 @@
 parpool(32);
 
 AC=[0:84];
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Bimodal peaks
+% Bimodal peaks (Delay)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Time_Dose=180;
-load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_All','T_Run','R_WP');
-
-NS=length(P_All);
-R_WPv=R_WP;
-num_l=ceil(NS./1000);
-NSv=1000.*ones(num_l,1);
-NSv(end)=NS-sum(NSv(1:end-1));
-
-Age_Dose=zeros(size(AC));
-Age_Dose(AC>=50 | AC<2)=1;
-
-
 for tau_delay=7:7:28
     for p_delay=0.3:0.3:0.9
         for ii=1:length(NSv)  
@@ -102,7 +89,8 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bimodal peaks reduced probability hospitalization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for eps_H=0.1:0.2:0.7for ii=1:length(NSv)  
+for eps_H=0.1:0.2:0.7
+    for ii=1:length(NSv)  
         Model_Output=cell(NSv(ii),1);
         if(ii==1)
             s_start=1;

@@ -7,22 +7,22 @@ clc;
 % Scenario Calcualtions and comparison of annula vs two dose
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 
-% load(['Output_Annual_ILC.mat'],'Filtered_Output_Large_Winter');
-% Annual_Output=Filtered_Output_Large_Winter;
-% Scenario_Calculations(Annual_Output,['Main_Text_Annual']);
-% 
-% for t_d=1:8    
-%     Time_Dose=90+30.*(t_d-1);
-%     load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older.mat'],'Filtered_Output_Large_Winter');
-%     Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days']);
-%     Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days' ]);
-%     load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older.mat'],'Filtered_Output_Large_Winter');
-%     Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_50_and_older_' num2str(Time_Dose) '_days']);
-%     Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_50_and_older_' num2str(Time_Dose) '_days' ]);
-%     load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older.mat'],'Filtered_Output_Large_Winter');
-%     Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_65_and_older_' num2str(Time_Dose) '_days']);
-%     Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_65_and_older_' num2str(Time_Dose) '_days' ]);
-% end
+load(['Output_Annual_ILC.mat'],'Filtered_Output_Large_Winter');
+Annual_Output=Filtered_Output_Large_Winter;
+Scenario_Calculations(Annual_Output,['Main_Text_Annual']);
+
+for t_d=1:8    
+    Time_Dose=90+30.*(t_d-1);
+    load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older.mat'],'Filtered_Output_Large_Winter');
+    Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days']);
+    Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days' ]);
+    load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older.mat'],'Filtered_Output_Large_Winter');
+    Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_50_and_older_' num2str(Time_Dose) '_days']);
+    Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_50_and_older_' num2str(Time_Dose) '_days' ]);
+    load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older.mat'],'Filtered_Output_Large_Winter');
+    Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_Two_Dose_65_and_older_' num2str(Time_Dose) '_days']);
+    Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_65_and_older_' num2str(Time_Dose) '_days' ]);
+end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,6 +53,23 @@ for t_d=1:8
 
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Supplement
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear;
+clc;
+
+load(['Output_Annual_ILC.mat'],'Filtered_Output_Large_Winter');
+Annual_Output=Filtered_Output_Large_Winter;
+
+load('Baseline_Outputs.mat','Filtered_Output_Large_Winter');
+Calibration_Output=Filtered_Output_Large_Winter;
+
+load(['Output_Two_Dose_ILC_180_days_under_2_and_50_and_older.mat'],'Filtered_Output_Large_Winter');
+Two_Dose_Output=Filtered_Output_Large_Winter;    
+
+Comparison_Calculations(Annual_Output,Calibration_Output,['Annual_vs_Calibration' ]);
+Comparison_Calculations(Two_Dose_Output,Calibration_Output,['Two_Dose_vs_Calibration' ]);
 
 % 
 % % % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -122,7 +122,7 @@ Full_S_inflow_No_Intent=Full_S_inflow_No_Intent+(1-P_2Dose).*(1-q1_sd).*vac_R.*x
 
 % No intent to vaccinate
 dxdt(S_n)=Full_S_inflow_No_Intent-lambda_FI.*x(S_n);
-dxdt(E_n)=lambda_FI.*x(S_n)+lambda_FI.*x(S_i)+lambda_FI.*x(dS_i)-sigma_E.*x(E_n);
+dxdt(E_n)=lambda_FI.*x(S_n)+lambda_FI.*x(S_i)+lambda_FI.*x(dS_i)+lambda_FI.*x(S2_i)+lambda_FI.*x(dS2_i)-sigma_E.*x(E_n);
 dxdt(I_n)=sigma_E.*x(E_n)-delta_I.*x(I_n);
 % Waning of immunity to infection
 dxdt(R1_n)=p1_inf.*((1-pd).*delta_I.*x(I_n)+delta_I.*x(J_n)+delta_V.*x(IV))-omega_R1.*x(R1_n)-alpha_R1.*x(R1_n).*x(R2_n)./NI_Inf;
@@ -252,7 +252,8 @@ N_Vac=x(V1)+x(V2)+x(V3);
 N_Vac(N_Vac==0)=1;
 
 V_inflow=q1_sd.*vac_R_2.*x(S2_i)+q1_sd.*dvac_R_2.*x(dS2_i)+vac_R_2.*x(sV1)+vac_R_2.*x(sV2)+vac_R_2.*x(sV3)+dvac_R_2.*x(dsV1)+dvac_R_2.*x(dsV2)+dvac_R_2.*x(dsV3);
-V_inflow=V_inflow+(1-P_2Dose).*(q1_sd.*vac_R.*x(S_i)+vac_R.*x(R4_i)+vac_R.*x(R5_i))+(1-P_2Dose).*(q1_sd.*dvac_R.*x(dS_i)+dvac_R.*x(dR4_i)+dvac_R.*x(dR5_i));
+V_inflow=V_inflow+(1-P_2Dose).*(q1_sd.*vac_R.*x(S_i)+vac_R.*x(R4_i)+vac_R.*x(R5_i));
+V_inflow=V_inflow+(1-P_2Dose).*(q1_sd.*dvac_R.*x(dS_i)+dvac_R.*x(dR4_i)+dvac_R.*x(dR5_i));
 dxdt(V1)=V_inflow-(1-eps_V1).*lambda_FI.*x(V1)-gammaV_1.*x(V1)-kappaV_1.*x(V1).*x(V2)./N_Vac;
 dxdt(V2)=q2_sd.*(gammaV_1.*x(V1)+kappaV_1.*x(V1).*x(V2)./N_Vac)-(1-eps_V2).*lambda_FI.*x(V2)-gammaV_2.*x(V2)-kappaV_2.*x(V2).*x(V3)./N_Vac; % those in V2 already have immunity to severe disease so they should just move back to V1 and not have a probability of loosing immunity to severe disease
 dxdt(V3)=q3_sd.*(gammaV_2.*x(V2)+kappaV_2.*x(V2).*x(V3)./N_Vac)-(1-eps_V3).*lambda_FI.*x(V3)-gammaV_3.*x(V3); % those in V3 already have immunity to severe disease so they should just move back to V1 and not have a probability of loosing immunity to severe disease

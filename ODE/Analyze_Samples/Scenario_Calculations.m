@@ -43,6 +43,26 @@ boot_s=bootstrp(2500,@mean,Model_Output.Death);
 Output_Summary.PRCT.Death=prctile(boot_s,PRCT);
 Output_Summary.Average.Death=mean(boot_s,1);
 
+boot_s=bootstrp(2500,@mean,Model_Output.SD_Natural_Immunity);  
+Output_Summary.PRCT.SD_Natural_Immunity=prctile(boot_s,PRCT);
+Output_Summary.Average.SD_Natural_Immunity=mean(boot_s,1);
+
+boot_s=bootstrp(2500,@mean,Model_Output.Inf_Natural_Immunity);  
+Output_Summary.PRCT.Inf_Natural_Immunity=prctile(boot_s,PRCT);
+Output_Summary.Average.Inf_Natural_Immunity=mean(boot_s,1);
+
+boot_s=bootstrp(2500,@mean,Model_Output.SD_Vaccine_Immunity);  
+Output_Summary.PRCT.SD_Vaccine_Immunity=prctile(boot_s,PRCT);
+Output_Summary.Average.SD_Vaccine_Immunity=mean(boot_s,1);
+
+boot_s=bootstrp(2500,@mean,Model_Output.Inf_Vaccine_Immunity);  
+Output_Summary.PRCT.Inf_Vaccine_Immunity=prctile(boot_s,PRCT);
+Output_Summary.Average.Inf_Vaccine_Immunity=mean(boot_s,1);
+
+boot_s=bootstrp(2500,@mean,Model_Output.Susceptible);  
+Output_Summary.PRCT.Susceptible=prctile(boot_s,PRCT);
+Output_Summary.Average.Susceptible=mean(boot_s,1);
+
 boot_s=reshape(bootstrp(2500,@mean,Model_Output.Incidence_Cumulative_Count_Age),2500,dim_2,dim_3);  
 Output_Summary.PRCT.Age_Incidence=prctile(boot_s,PRCT);
 Output_Summary.Average.Age_Incidence=mean(boot_s);

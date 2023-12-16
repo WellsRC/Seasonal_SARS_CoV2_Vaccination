@@ -43,7 +43,8 @@ for t_d=4:5
             
                 [~,Model_Output{jj}] = Run_Two_Dose_ODE(T_Run,Parameters);
             end
-            save(['Two_Dose_ILC_' num2str(Time_Dose) '_days_18_49_' num2str(ii) '.mat'],'T_Run','Model_Output','R_WP');
+            save(['Two_Dose_ILC_' num2str(Time_Dose) '_days_Reduction_' num2str(100.*red_2d) '_18_49_' num2str(ii) '.mat'],'T_Run','Model_Output','R_WP');
+            
         end
     end
 end

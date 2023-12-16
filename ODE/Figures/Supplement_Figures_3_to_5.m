@@ -36,7 +36,7 @@ end
 Count_Month=Count_Month./max(Count_Month(:));
 Per_Month=100.*Count_Month./sum(Count_Month(:));
 
-T= datetime(2023,9,1) + caldays(0:364);
+T= datetime(2022,9,1) + caldays(0:364);
 
 H_Data=readtable('data_table_for_weekly_covid19_hospital_admissions_-_the_united_states.csv');
 T_Data=datetime(2023,9,1) + caldays(0:101);
@@ -51,18 +51,18 @@ end
 HA=zeros(3,4,length(T));
 
 
-HA(1,1,:)=min(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),[],1);
-HA(1,2,:)=max(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),[],1);
+HA(1,1,:)=prctile(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),2.5);
+HA(1,2,:)=prctile(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),97.5);
 HA(1,3,:)=median(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),1);
 HA(1,4,:)=mean(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month<=3,:),1);
 
-HA(2,1,:)=min(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6 ,:),[],1);
-HA(2,2,:)=max(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6,:),[],1);
+HA(2,1,:)=prctile(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6 ,:),2.5);
+HA(2,2,:)=prctile(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6,:),97.5);
 HA(2,3,:)=median(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6,:),1);
 HA(2,4,:)=mean(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>3 & Indx_Month<6,:),1);
 
-HA(3,1,:)=min(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),[],1);
-HA(3,2,:)=max(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),[],1);
+HA(3,1,:)=prctile(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),2.5);
+HA(3,2,:)=prctile(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),97.5);
 HA(3,3,:)=median(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),1);
 HA(3,4,:)=mean(Filtered_Output_Large_Winter.Hospital_Admission(Indx_Month>=6,:),1);
 
@@ -98,15 +98,15 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:55000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
 title('Winter peak: September 1 to November 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 55000])
+ylim([0 35000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Mean','Observed data')
+legend('95% PI','Median','Mean','Observed 2023 data')
 text(-0.14,1.05,'B','Units','normalized','FontSize',28)
 
 subplot('Position',[0.065 0.11 0.4 0.36])
@@ -120,15 +120,15 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:55000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
 title('Winter peak: December 1 to January 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 55000])
+ylim([0 35000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Mean','Observed data')
+legend('95% PI','Median','Mean','Observed 2023 data')
 text(-0.14,1.05,'C','Units','normalized','FontSize',28)
 
 subplot('Position',[0.55 0.11 0.4 0.36])
@@ -142,15 +142,15 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:55000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
 title('Winter peak: February 1 to March 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 55000])
+ylim([0 35000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Mean','Observed data')
+legend('95% PI','Median','Mean','Observed 2023 data')
 text(-0.14,1.05,'D','Units','normalized','FontSize',28)
 print(gcf,['Supplement_Figure_3.png'],'-dpng','-r600');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -205,8 +205,8 @@ end
 
 HA=zeros(4,length(T));
 
-HA(1,:)=min(Filtered_Output_Large_Summer.Hospital_Admission,[],1);
-HA(2,:)=max(Filtered_Output_Large_Summer.Hospital_Admission,[],1);
+HA(1,:)=prctile(Filtered_Output_Large_Summer.Hospital_Admission,2.5);
+HA(2,:)=prctile(Filtered_Output_Large_Summer.Hospital_Admission,97.5);
 HA(3,:)=median(Filtered_Output_Large_Summer.Hospital_Admission,1);
 HA(4,:)=mean(Filtered_Output_Large_Summer.Hospital_Admission,1);
 
@@ -241,14 +241,14 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:40000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:25000,'Yminortick','on');
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 40000])
+ylim([0 25000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend({'Range','Median','Mean','Observed data'},'Location','northwest')
+legend({'95% PI','Median','Mean','Observed 2023 data'},'Location','northwest')
 text(-0.14,1.05,'B','Units','normalized','FontSize',28)
 print(gcf,['Supplement_Figure_4.png'],'-dpng','-r600');
 
@@ -263,11 +263,12 @@ temp_cd=pwd;
 temp_cd=temp_cd(1:end-7);
 
 load([temp_cd 'Analyze_Samples\Unimodal_Peak_Winter_Output.mat'],'Filtered_Output_Unimodal');
-Winter_Peak_Month=[datenum('October 1, 2022'); datenum('November 1, 2022'); datenum('December 1, 2022'); datenum('Janaury 1, 2023'); datenum('February 1, 2023'); datenum('March 1, 2023'); datenum('April 1, 2023') ; datenum('May 1, 2023')]-datenum('August 31, 2022');
+T_Run=datenum('September 1, 2022'):datenum('August 31, 2023');
+Winter_Peak_Month=[datenum('October 1, 2022'); datenum('November 1, 2022'); datenum('December 1, 2022'); datenum('Janaury 1, 2023'); datenum('February 1, 2023'); datenum('March 1, 2023'); datenum('April 1, 2023') ; datenum('May 1, 2023')];
 
 Time_Winter_Peak=zeros(size(Filtered_Output_Unimodal.Hospital_Admission,1),1);
 for ii=1:length(Time_Winter_Peak)
-    Time_Winter_Peak(ii)=find(Filtered_Output_Unimodal.Hospital_Admission(ii,:)==max(Filtered_Output_Unimodal.Hospital_Admission(ii,:)));
+    Time_Winter_Peak(ii)=T_Run(Filtered_Output_Unimodal.Hospital_Admission(ii,:)==max(Filtered_Output_Unimodal.Hospital_Admission(ii,:)));
 end
 
 Count_Month=zeros(length(Winter_Peak_Month)-1,1);
@@ -295,18 +296,18 @@ end
 
 HA=zeros(3,3,length(T));
 
-HA(1,1,:)=min(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),[],1);
-HA(1,2,:)=max(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),[],1);
+HA(1,1,:)=prctile(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),2.5);
+HA(1,2,:)=prctile(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),97.5);
 HA(1,3,:)=median(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),1);
 HA(1,4,:)=mean(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month<=2,:),1);
 
-HA(2,1,:)=min(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),[],1);
-HA(2,2,:)=max(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),[],1);
+HA(2,1,:)=prctile(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),2.5);
+HA(2,2,:)=prctile(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),97.5);
 HA(2,3,:)=median(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),1);
 HA(2,4,:)=mean(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>2 & Indx_Month<5,:),1);
 
-HA(3,1,:)=min(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),[],1);
-HA(3,2,:)=max(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),[],1);
+HA(3,1,:)=prctile(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),2.5);
+HA(3,2,:)=prctile(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),97.5);
 HA(3,3,:)=median(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),1);
 HA(3,4,:)=mean(Filtered_Output_Unimodal.Hospital_Admission(Indx_Month>=5,:),1);
 
@@ -338,15 +339,15 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:50000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:45000,'Yminortick','on');
 title('Winter peak: October 1 to November 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 50000])
+ylim([0 45000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Mean','Observed data')
+legend('95% PI','Median','Mean','Observed 2023 data')
 text(-0.14,1.05,'B','Units','normalized','FontSize',28)
 
 subplot('Position',[0.065 0.11 0.4 0.36])
@@ -360,15 +361,15 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:50000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:45000,'Yminortick','on');
 title('Winter peak: December 1 to Janaury 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 50000])
+ylim([0 45000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Mean','Observed data')
+legend('95% PI','Median','Mean','Observed 2023 data')
 text(-0.14,1.05,'C','Units','normalized','FontSize',28)
 
 subplot('Position',[0.55 0.11 0.4 0.36])
@@ -382,14 +383,14 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:10000:50000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:45000,'Yminortick','on');
 title('Winter peak: February 1 to April 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 50000])
+ylim([0 45000])
 xtickformat('MMM d' )
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
-legend('Range','Median','Mean','Observed data')
+legend('95% PI','Median','Mean','Observed 2023 data')
 text(-0.14,1.05,'D','Units','normalized','FontSize',28)
 print(gcf,['Supplement_Figure_5.png'],'-dpng','-r600');

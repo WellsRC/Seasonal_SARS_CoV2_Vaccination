@@ -1,73 +1,188 @@
 function Figure_2()
 close all;
-Scenario='Large_Winter';
-% close all;
 temp_cd=pwd;
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
-
-Outcome={'Incidence','Hospitalizations','Deaths','Cost'};
-
-
-CC=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
-
-xt=linspace(-0.05,0.05,5001);
-xt2=-xt;
-t_day=[90:30:300];
-XTL={'90','120','150','180','210','240','270','300'};
-AgeV=[65 50];
-Age_Text={['0' char(8211) '49'],['50' char(8211) '64'],'65+'};
-aa_indx=[7 5 6];
-
-Age_50_64=cell(length(t_day),1);
-Age_65_Older=cell(length(t_day),1);
-Age_Under_50=cell(length(t_day),1);
-
-figure('units','normalized','outerposition',[0.1 0.05 0.75 1]);
-for Scenario_Indx=1:4    
-    Y=zeros(1,length(XTL));
-
-    min_x=Inf;
-    max_x=-Inf;
-
-    for mm=1:length(XTL)
-        load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(t_day(mm)) '_days.mat']);
-    
-%         for aav=1:3
-%             aa=aa_indx(aav);
-            if(Scenario_Indx==1)
-                Y(mm)=Comparison.Average.Cumulative_Count_Incidence_rel;
-            elseif(Scenario_Indx==2)   
-                Y(mm)=Comparison.Average.Cumulative_Count_Hospital_rel;
-            elseif(Scenario_Indx==3)   
-                Y(mm)=Comparison.Average.Cumulative_Count_Death_rel;
-            elseif(Scenario_Indx==4)   
-                Y(mm)=Comparison.Average.Cost_Total_rel(end);
-            end
-%         end
-    end
-    Y=-100.*Y;
-    subplot(2,2,Scenario_Indx)
-    bar(Y)
-%     for aa=1:3
-%         subplot('Position',[0.08+0.33.*(aa-1),0.785-0.235.*(Scenario_Indx-1),0.24,0.18]);
-%         bar([1:length(XTL)],Y(aa,:),'LineStyle','none','FaceColor',CC(Scenario_Indx,:))
-%         box off;
-%         set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[0:5:25],'Xminortick','off','Fontsize',16);
-%         ylim([0 25])
-%         xlim([0.4 length(XTL)+.6])
-%         ytickformat('percentage');
-%         ylabel({'Reduction in', lower(Outcome{Scenario_Indx})},'Fontsize',18);
-%         if(Scenario_Indx==1)
-%            title(['Ages ' Age_Text{aa}]);
-%         end
-%         if(Scenario_Indx==4)
-%             xlabel({'Days to second dose'},'Fontsize',18,'Units','Normalized','Position',[0.500000476837158,-0.27,0]);
-%         end
-%         text(-0.32,1,char(64+aa+ 3.*(Scenario_Indx-1)),'Fontsize',24,'Units','normalized','fontweight','bold'); 
-%     end
-%     
+dx=linspace(0,1,9);
+dx=dx(2:end);
+C_Plot=interp1([0 1],[hex2rgb('#ffffff'); hex2rgb('#0C7BDC')],dx);
+Y_Err.LineWidth=2;
+XTL=cell(8,1);
+for ii=1:8
+    XTL{ii}=num2str(90+30.*(ii-1));
 end
-print(gcf,['Figure_2.png'],'-dpng','-r300');
-delay_v=XTL';
-table(delay_v,Age_Under_50,Age_50_64,Age_65_Older)
+figure('units','normalized','outerposition',[0 0.08 0.8 1]);
+subplot('Position',[0.065, 0.77,0.18 0.2])
+Y_Err.Cap_Size=10;
+
+Y=zeros(8,1);
+Y_Err.LB=zeros(8,1);
+Y_Err.UB=zeros(8,1);
+for dd=90:30:300
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    Y(dd./30-2)=-Comparison.Average.Cumulative_Count_Incidence_dt;
+    Y_Err.LB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==97.5);
+    Y_Err.UB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==2.5);
+end
+
+Error_Bar_Plot(Y,Y_Err,C_Plot);
+box off;
+
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
+ylabel({'Incidence','averted'},'FontSize',16)
+xlabel('Days between doses','FontSize',16)
+xlim([0.5 8.5])
+ylim([3.*10^7 4.*10^7])
+
+text(-0.335,1,'A','Fontsize',28,'Units','Normalized')
+
+subplot('Position',[0.315, 0.77,0.18 0.2])
+Y=zeros(8,1);
+Y_Err.LB=zeros(8,1);
+Y_Err.UB=zeros(8,1);
+for dd=90:30:300
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    Y(dd./30-2)=-Comparison.Average.Cumulative_Count_Hospital_dt;
+    Y_Err.LB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5);
+    Y_Err.UB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5);
+end
+
+Error_Bar_Plot(Y,Y_Err,C_Plot);
+box off;
+
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
+ylabel({'Hospitalizations','averted'},'FontSize',16)
+xlabel('Days between doses','FontSize',16)
+xlim([0.5 8.5])
+ylim([1.8*10^5 2.5.*10^5])
+
+text(-0.335,1,'B','Fontsize',28,'Units','Normalized');
+
+subplot('Position',[0.565, 0.77,0.18 0.2])
+Y=zeros(8,1);
+Y_Err.LB=zeros(8,1);
+Y_Err.UB=zeros(8,1);
+for dd=90:30:300
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    Y(dd./30-2)=-Comparison.Average.Cumulative_Count_Death_dt;
+    Y_Err.LB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5);
+    Y_Err.UB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5);
+end
+Error_Bar_Plot(Y,Y_Err,C_Plot);
+box off;
+
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
+ylabel({'Deaths averted'},'FontSize',16)
+xlabel('Days between doses','FontSize',16)
+xlim([0.5 8.5])
+ylim([7.5.*10^3 10^4])
+text(-0.335,1,'C','Fontsize',28,'Units','Normalized');
+
+subplot('Position',[0.815, 0.77,0.18 0.2])
+
+for dd=90:30:300
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    Y(dd./30-2)=-Comparison.Average.Cost_Total_dt(end);
+    Y_Err.LB(dd./30-2)=-Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end);
+    Y_Err.UB(dd./30-2)=-Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end);
+end
+
+Error_Bar_Plot(Y,Y_Err,C_Plot);
+box off;
+
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
+ylabel({'Costs','averted'},'FontSize',16)
+xlabel('Days between doses','FontSize',16)
+xlim([0.5 8.5])
+ylim([5.5.*10^9 7.5.*10^9])
+text(-0.335,1,'D','Fontsize',28,'Units','Normalized');
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Age_C={['0' char(8211) '1'],['2' char(8211) '4'],['5' char(8211) '12'],['13' char(8211) '17'],['18' char(8211) '49'],['50' char(8211) '64'],'65+'};
+Y_Err.LineWidth=1.1;
+Y_Err.Cap_Size=0;
+subplot('Position',[0.065, 0.41,0.43 0.27])
+Y=zeros(7,8);
+Y_Err.LB=zeros(7,8);
+Y_Err.UB=zeros(7,8);
+for dd=90:30:300
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    Y(:,dd./30-2)=-100.*Comparison.Average.Age_Cumulative_Count_Incidence_rel(:,1:7,end);
+    Y_Err.LB(:,dd./30-2)=-100.*Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(PRCT==97.5,1:7,end);
+    Y_Err.UB(:,dd./30-2)=-100.*Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(PRCT==2.5,1:7,end);
+end
+
+Error_Bar_Plot(Y,Y_Err,C_Plot);
+
+box off;
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C)
+ytickformat('percentage');
+xlim([0.5 7.5])
+ylabel('Incidence reduction','FontSize',16)
+xlabel('Age class','FontSize',16)
+legend(XTL,'Location','northeast','NumColumns',4);
+text(-0.14,1,'E','Fontsize',28,'Units','Normalized');
+subplot('Position',[0.565, 0.41,0.43 0.27])
+Y=zeros(7,8);
+Y_Err.LB=zeros(7,8);
+Y_Err.UB=zeros(7,8);
+for dd=90:30:300
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    Y(:,dd./30-2)=-100.*Comparison.Average.Age_Cumulative_Count_Hospital_rel(:,1:7,end);
+    Y_Err.LB(:,dd./30-2)=-100.*Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(PRCT==97.5,1:7,end);
+    Y_Err.UB(:,dd./30-2)=-100.*Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(PRCT==2.5,1:7,end);
+end
+Error_Bar_Plot(Y,Y_Err,C_Plot);
+box off;
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C)
+ytickformat('percentage');
+xlim([0.5 7.5])
+ylabel('Hospitalziation reduction','FontSize',16)
+xlabel('Age class','FontSize',16)
+legend(XTL,'Location','northeast','NumColumns',4);
+text(-0.14,1,'F','Fontsize',28,'Units','Normalized');
+
+subplot('Position',[0.065, 0.07,0.43 0.27])
+Y=zeros(7,8);
+Y_Err.LB=zeros(7,8);
+Y_Err.UB=zeros(7,8);
+for dd=90:30:300
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    Y(:,dd./30-2)=-100.*Comparison.Average.Age_Cumulative_Count_Death_rel(:,1:7,end);
+    Y_Err.LB(:,dd./30-2)=-100.*Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(PRCT==97.5,1:7,end);
+    Y_Err.UB(:,dd./30-2)=-100.*Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(PRCT==2.5,1:7,end);
+end
+Error_Bar_Plot(Y,Y_Err,C_Plot);
+box off;
+
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C)
+ytickformat('percentage');
+
+xlim([0.5 7.5])
+ylabel('Death reduction','FontSize',16)
+xlabel('Age class','FontSize',16)
+legend(XTL,'Location','northeast','NumColumns',4);
+text(-0.14,1,'G','Fontsize',28,'Units','Normalized');
+
+subplot('Position',[0.565, 0.07,0.43 0.27])
+Y=zeros(7,8);
+Y_Err.LB=zeros(7,8);
+Y_Err.UB=zeros(7,8);
+for dd=90:30:300
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    Y(:,dd./30-2)=-100.*Comparison.Average.Cost_Age_rel(:,1:7,end);
+    Y_Err.LB(:,dd./30-2)=-100.*Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(PRCT==97.5,1:7,end);
+    Y_Err.UB(:,dd./30-2)=-100.*Comparison.PRCT.Age_Cumulative_Count_Incidence_rel(PRCT==2.5,1:7,end);
+end
+Error_Bar_Plot(Y,Y_Err,C_Plot);
+box off;
+ytickformat('percentage');
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C)
+
+xlim([0.5 7.5])
+ylabel('Costs reduction','FontSize',16)
+xlabel('Age class','FontSize',16)
+legend(XTL,'Location','northeast','NumColumns',4);
+text(-0.14,1,'H','Fontsize',28,'Units','Normalized');
+% print(gcf,['Figure_2.jpg'],'-djpeg','-r300');    
 end

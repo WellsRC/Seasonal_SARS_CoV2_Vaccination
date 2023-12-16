@@ -26,8 +26,24 @@ if((length(dt_pks)>=2))
            end
        end
     end
+    % https://covid.cdc.gov/covid-data-tracker/#new-hospital-admissions
+    lb=2972;
+    ub=21521;
+    %xo=lsqnonlin(@(x)(norminv([0.025 0.975],x(1),x(2))-log10([lb ub])),[3.89 0.21]);
+    par_peak=[3.90295562633983	0.219344245436142];
+    if(min(Mag_Peaks)<lb)
+        prob_lb=(normcdf(log10(min(Mag_Peaks)),par_peak(1),par_peak(2)))./(normcdf(log10(lb),par_peak(1),par_peak(2)));
+    else
+        prob_lb=1;
+    end
+    if(max(Mag_Peaks)>ub)
+        prob_ub=(1-normcdf(log10(max(Mag_Peaks)),par_peak(1),par_peak(2)))./(1-normcdf(log10(ub),par_peak(1),par_peak(2)));
+    else
+        prob_ub=1;
+    end
+
     if(Summer_Peak*Winter_Peak>0)
-        if(min(Mag_Peaks)>=1000)
+        if((rand(1)<=prob_lb) && (rand(1)<=prob_ub))
             Pks=1;
         end
     end

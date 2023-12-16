@@ -30,6 +30,12 @@ Filtered_Output_All.Cost_Total=zeros(NN,9);
 Filtered_Output_All.Cost_Age=zeros(NN,length(ACg(:,1)),9);
 Filtered_Output_All.Cost_Compliment_Age=zeros(NN,length(ACg(:,1)),9);
 
+Filtered_Output_All.SD_Natural_Immunity=zeros(NN,53);
+Filtered_Output_All.Inf_Natural_Immunity=zeros(NN,53);
+Filtered_Output_All.SD_Vaccine_Immunity=zeros(NN,53);
+Filtered_Output_All.Inf_Vaccine_Immunity=zeros(NN,53);
+Filtered_Output_All.Susceptible=zeros(NN,53);
+
 Filtered_Output_All.SD_Natural_Immunity_Age=zeros(NN,length(ACg(:,1)),53);
 Filtered_Output_All.Inf_Natural_Immunity_Age=zeros(NN,length(ACg(:,1)),53);
 Filtered_Output_All.SD_Vaccine_Immunity_Age=zeros(NN,length(ACg(:,1)),53);
