@@ -70,6 +70,20 @@ fprintf(['Maximal Incremental benefit to ' Age_Text{age_indx} ' when vaccinating
 fprintf('===========================================================================\n');
 fprintf(['Results: Prioritizing second doses among those 18 to 49 years of age\n']);
 fprintf('===========================================================================\n');
+load([temp_cd 'Marginal_Benefit_Second_Dose_Main_Text_18_49_vs_FDA_Reduction35.mat'])
+fprintf(['Incremental benefit of vaccinating those 18-49 with a 35%% reduction:' num2str(100.*Marginal_Benefit.Average.Cost(end),'%3.1f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5,end),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5,end),'%3.1f') '%%) \n']);
+
+age_indx=Marginal_Benefit.Average.Cost_Age(:,1:7,end)==max(Marginal_Benefit.Average.Cost_Age(:,1:7,end));
+fprintf(['Maximal Incremental benefit to ' Age_Text{age_indx} ' when vaccinating those 18-49 with a 35%% reduction:' num2str(100.*Marginal_Benefit.Average.Cost_Age(:,age_indx,end),'%3.1f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==2.5,age_indx,end),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==97.5,age_indx,end),'%3.1f') '%%) \n']);
+
+age_indx=Marginal_Benefit.Average.Cost_Age(:,1:7,end)==max(Marginal_Benefit.Average.Cost_Age(:,~age_indx,end));
+fprintf(['Maximal Incremental benefit to ' Age_Text{age_indx} ' when vaccinating those 18-49 with a 35%% reduction:' num2str(100.*Marginal_Benefit.Average.Cost_Age(:,age_indx,end),'%3.1f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==2.5,age_indx,end),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==97.5,age_indx,end),'%3.1f') '%%) \n']);
+
+load([temp_cd 'Marginal_Benefit_Second_Dose_Main_Text_18_49_vs_FDA_Reduction50.mat'])
+fprintf(['Incremental benefit of vaccinating those 18-49 with a 50%% reduction:' num2str(100.*Marginal_Benefit.Average.Cost(end),'%3.1f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5,end),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5,end),'%3.1f') '%%) \n']);
+
+load([temp_cd 'Marginal_Benefit_Second_Dose_Main_Text_18_49_vs_FDA_Reduction65.mat'])
+fprintf(['Incremental benefit of vaccinating those 18-49 with a 65%% reduction:' num2str(100.*Marginal_Benefit.Average.Cost(end),'%3.1f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5,end),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5,end),'%3.1f') '%%) \n']);
 
 fprintf('===========================================================================\n');
 fprintf(['Results: Effects of a fast and slow waning vaccine on the benefits of a second dose\n']);

@@ -1,8 +1,9 @@
-function [Pks,Mag_Peaks,Time_Peaks]=Hospital_Admission_Peak(Hospital_Admission,T_Run)
+function [Pks,Time_Peaks,Winter_Peak_Ind]=Hospital_Admission_Peak(Hospital_Admission,T_Run)
 
 Mag_Peaks=zeros(1,2);
 Time_Peaks=zeros(1,2);
 Pks=0;
+Winter_Peak_Ind=0;
 
 [m_pks,dt_pks]=findpeaks(Hospital_Admission,T_Run(1:end-1)); 
 if((length(dt_pks)>=2))
@@ -46,6 +47,9 @@ if((length(dt_pks)>=2))
         if((rand(1)<=prob_lb) && (rand(1)<=prob_ub))
             Pks=1;
         end
+    end
+    if(Mag_Peaks(1)>Mag_Peaks(2))
+        Winter_Peak_Ind=1;
     end
 end
 end

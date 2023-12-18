@@ -1,9 +1,9 @@
 clear;
 clc;
 
-parpool(32)
+parpool(48)
 rng('shuffle');
-for ss=1:50
+for ss=1:100
     NS=10^3;  
 
     [T_Run,P] = Parameter_Sample(NS);

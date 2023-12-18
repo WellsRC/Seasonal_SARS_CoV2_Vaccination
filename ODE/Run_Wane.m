@@ -7,9 +7,9 @@ AC=[0:84];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Time_Dose=180;
-load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_All','T_Run','R_WP');
+load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_Large_Winter','T_Run');
 
-NS=length(P_All);
+NS=length(P_Large_Winter);
 R_WPv=R_WP;
 num_l=ceil(NS./1000);
 NSv=1000.*ones(num_l,1);
@@ -26,7 +26,7 @@ for ii=1:length(NSv)
         s_start=sum(NSv(1:(ii-1)))+1;
     end
     s_end=sum(NSv(1:ii));
-    Pt=P_All(s_start:s_end);
+    Pt=P_Large_Winter(s_start:s_end);
     R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
@@ -46,7 +46,7 @@ for ii=1:length(NSv)
         Parameters.kappaV_2=Parameters.kappaV_2(end).*ones(size(Parameters.kappaV_2));
         [~,Model_Output{jj}] = Run_Two_Dose_ODE(T_Run,Parameters);
     end
-    save(['FDA_Two_Dose_ILC_Slow_Waning_Vaccine_' num2str(ii) '.mat'],'T_Run','Model_Output','R_WP');
+    save(['FDA_Two_Dose_ILC_Slow_Waning_Vaccine_W_' num2str(ii) '.mat'],'T_Run','Model_Output');
 end
 
 
@@ -58,7 +58,7 @@ for ii=1:length(NSv)
         s_start=sum(NSv(1:(ii-1)))+1;
     end
     s_end=sum(NSv(1:ii));
-    Pt=P_All(s_start:s_end);
+    Pt=P_Large_Winter(s_start:s_end);
     R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
@@ -75,7 +75,7 @@ for ii=1:length(NSv)
         Parameters.kappaV_2=Parameters.kappaV_2(end).*ones(size(Parameters.kappaV_2));
         [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Parameters);
     end
-    save(['Annual_ILC_Slow_Waning_Vaccine_' num2str(ii) '.mat'],'T_Run','Model_Output','R_WP');
+    save(['Annual_ILC_Slow_Waning_Vaccine_W_' num2str(ii) '.mat'],'T_Run','Model_Output');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,7 +90,7 @@ for ii=1:length(NSv)
         s_start=sum(NSv(1:(ii-1)))+1;
     end
     s_end=sum(NSv(1:ii));
-    Pt=P_All(s_start:s_end);
+    Pt=P_Large_Winter(s_start:s_end);
     R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
@@ -110,7 +110,7 @@ for ii=1:length(NSv)
         Parameters.kappaV_2=Parameters.kappaV_2(1).*ones(size(Parameters.kappaV_2));
         [~,Model_Output{jj}] = Run_Two_Dose_ODE(T_Run,Parameters);
     end
-    save(['FDA_Two_Dose_ILC_Fast_Waning_Vaccine_' num2str(ii) '.mat'],'T_Run','Model_Output','R_WP');
+    save(['FDA_Two_Dose_ILC_Fast_Waning_Vaccine_W_' num2str(ii) '.mat'],'T_Run','Model_Output');
 end
 
 
@@ -122,7 +122,7 @@ for ii=1:length(NSv)
         s_start=sum(NSv(1:(ii-1)))+1;
     end
     s_end=sum(NSv(1:ii));
-    Pt=P_All(s_start:s_end);
+    Pt=P_Large_Winter(s_start:s_end);
     R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
@@ -139,5 +139,5 @@ for ii=1:length(NSv)
         Parameters.kappaV_2=Parameters.kappaV_2(1).*ones(size(Parameters.kappaV_2));
         [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Parameters);
     end
-    save(['Annual_ILC_Fast_Waning_Vaccine_' num2str(ii) '.mat'],'T_Run','Model_Output','R_WP');
+    save(['Annual_ILC_Fast_Waning_Vaccine_W_' num2str(ii) '.mat'],'T_Run','Model_Output');
 end

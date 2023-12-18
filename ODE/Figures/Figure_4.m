@@ -20,7 +20,7 @@ Fast_Waning=Comparison;
 load([temp_cd 'Comparison_Summary_Main_Text_Two_Dose_vs_Annual_Slow_Waning_Vaccine.mat'])
 Slow_Waning=Comparison;
 
-C_Plot=[hex2rgb('#0C7BDC');hex2rgb('#8856a7');hex2rgb('#9ebcda');];
+C_Plot=[hex2rgb('#0C7BDC');hex2rgb('#810f7c');hex2rgb('#9ebcda');];
 figure('units','normalized','outerposition',[0 0.08 0.8 1]);
 subplot('Position',[0.065, 0.77,0.18 0.2])
 

@@ -80,4 +80,6 @@ ylabel('Incremental benefit','FontSize',16)
 ytickformat('percentage')
 xlabel('Age class','FontSize',16)
 legend({'35% reduction','50% reduction','65% reduction'},'Location','northwest')
+print(gcf,['Figure_3.jpg'],'-djpeg','-r600');    
+print(gcf,['Figure_3.png'],'-dpng','-r300');    
 end
