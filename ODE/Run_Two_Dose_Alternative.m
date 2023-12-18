@@ -1,4 +1,4 @@
-parpool(32);
+parpool(48);
 
 AC=[0:84];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19,7 +19,7 @@ for t_d=4:5
     
     Old_Age_Dose=zeros(size(AC));
     Old_Age_Dose(AC>=50 | AC<2)=1;
-    for red_2d=0.05:0.1:0.65
+    for red_2d=0.35:0.15:0.65
         for ii=1:length(NSv)  
             Model_Output=cell(NSv(ii),1);
             if(ii==1)

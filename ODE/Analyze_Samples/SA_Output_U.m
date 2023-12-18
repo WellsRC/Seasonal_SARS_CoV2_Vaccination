@@ -16,6 +16,7 @@ NN=length(Model_Output);
 Filtered_Output_All.Recovered=zeros(NN,6,2);
 Filtered_Output_All.Incidence=zeros(NN,365);
 Filtered_Output_All.Hospital_Admission=zeros(NN,365);
+Filtered_Output_All.Hospital_Count=zeros(NN,365);
 Filtered_Output_All.Death=zeros(NN,365);
 Filtered_Output_All.Incidence_Cumulative_Count=zeros(NN,1);
 Filtered_Output_All.Hospital_Cumulative_Count=zeros(NN,1);

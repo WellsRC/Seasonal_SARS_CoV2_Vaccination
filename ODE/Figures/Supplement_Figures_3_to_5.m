@@ -8,7 +8,7 @@ temp_cd=pwd;
 
 temp_cd=temp_cd(1:end-7);
 
-load([temp_cd 'Analyze_Samples\Baseline_Outputs.mat'],'Filtered_Output_Large_Winter');
+load([temp_cd 'Analyze_Samples\Output_Calibration.mat'],'Filtered_Output_Large_Winter');
 Winter_Peak_Month=[datenum('September 1, 2022'); datenum('October 1, 2022'); datenum('November 1, 2022'); datenum('December 1, 2022'); datenum('Janaury 1, 2023'); datenum('February 1, 2023'); datenum('March 1, 2023'); datenum('April 1, 2023')]-datenum('August 31, 2022');
 Summer_Peak_Month=[datenum('April 1, 2023'); datenum('May 1, 2023'); datenum('June 1, 2023'); datenum('July 1, 2023');  datenum('August 1, 2023');  datenum('September 1, 2023') ]-datenum('August 31, 2022');
 
@@ -98,12 +98,12 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:40000,'Yminortick','on');
 title('Winter peak: September 1 to November 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 35000])
-xtickformat('MMM d' )
+ylim([0 40000])
+xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
 legend('95% PI','Median','Mean','Observed 2023 data')
@@ -120,12 +120,12 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:40000,'Yminortick','on');
 title('Winter peak: December 1 to January 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 35000])
-xtickformat('MMM d' )
+ylim([0 40000])
+xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
 legend('95% PI','Median','Mean','Observed 2023 data')
@@ -142,12 +142,12 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:40000,'Yminortick','on');
 title('Winter peak: February 1 to March 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 35000])
-xtickformat('MMM d' )
+ylim([0 40000])
+xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
 legend('95% PI','Median','Mean','Observed 2023 data')
@@ -163,7 +163,7 @@ temp_cd=pwd;
 
 temp_cd=temp_cd(1:end-7);
 
-load([temp_cd 'Analyze_Samples\Baseline_Outputs.mat'],'Filtered_Output_Large_Summer');
+load([temp_cd 'Analyze_Samples\Output_Calibration.mat'],'Filtered_Output_Large_Summer');
 Winter_Peak_Month=[datenum('September 1, 2022'); datenum('October 1, 2022'); datenum('November 1, 2022'); datenum('December 1, 2022'); datenum('Janaury 1, 2023'); datenum('February 1, 2023'); datenum('March 1, 2023'); datenum('April 1, 2023')]-datenum('August 31, 2022');
 Summer_Peak_Month=[datenum('April 1, 2023'); datenum('May 1, 2023'); datenum('June 1, 2023'); datenum('July 1, 2023');  datenum('August 1, 2023');  datenum('September 1, 2023') ]-datenum('August 31, 2022');
 
@@ -244,8 +244,8 @@ xlim([T(1) T(end)])
 set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:25000,'Yminortick','on');
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 25000])
-xtickformat('MMM d' )
+ylim([0 40000])
+xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
 legend({'95% PI','Median','Mean','Observed 2023 data'},'Location','northwest')
@@ -262,7 +262,7 @@ temp_cd=pwd;
 
 temp_cd=temp_cd(1:end-7);
 
-load([temp_cd 'Analyze_Samples\Unimodal_Peak_Winter_Output.mat'],'Filtered_Output_Unimodal');
+load([temp_cd 'Analyze_Samples\Output_Calibration_UW.mat'],'Filtered_Output_Unimodal');
 T_Run=datenum('September 1, 2022'):datenum('August 31, 2023');
 Winter_Peak_Month=[datenum('October 1, 2022'); datenum('November 1, 2022'); datenum('December 1, 2022'); datenum('Janaury 1, 2023'); datenum('February 1, 2023'); datenum('March 1, 2023'); datenum('April 1, 2023') ; datenum('May 1, 2023')];
 
@@ -323,7 +323,7 @@ set(gca,'LineWidth',2,'TickDir','out','XTickLabel',XTL,'Fontsize',16);
 xlabel('Month of winter peak','Fontsize',18)
 ylabel('Percentage of samples')
 ytickformat('percentage')
-ylim([0 45])
+ylim([0 50])
 xlim([0.5 length(XTL)+0.5])
 text(-0.14,1.05,'A','Units','normalized','FontSize',28)
 
@@ -343,8 +343,8 @@ set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',
 title('Winter peak: October 1 to November 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 45000])
-xtickformat('MMM d' )
+ylim([0 40000])
+xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
 legend('95% PI','Median','Mean','Observed 2023 data')
@@ -365,8 +365,8 @@ set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',
 title('Winter peak: December 1 to Janaury 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 45000])
-xtickformat('MMM d' )
+ylim([0 40000])
+xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
 legend('95% PI','Median','Mean','Observed 2023 data')
@@ -387,8 +387,8 @@ set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',
 title('Winter peak: February 1 to April 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 45000])
-xtickformat('MMM d' )
+ylim([0 40000])
+xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
 legend('95% PI','Median','Mean','Observed 2023 data')

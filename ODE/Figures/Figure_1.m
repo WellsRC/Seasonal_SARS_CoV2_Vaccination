@@ -36,7 +36,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',X
 ylabel('Incidence','FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 2.5])
-ylim([1.8.*10^8 2.6.*10^8])
+ylim([1.3.*10^8 1.9.*10^8])
 
 text(-0.25,1,'A','Fontsize',28,'Units','Normalized')
 
@@ -56,7 +56,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',X
 ylabel('Hospitalizations','FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 2.5])
-ylim([1.*10^6 1.5.*10^6])
+ylim([0.8.*10^6 1.2.*10^6])
 
 text(-0.25,1,'B','Fontsize',28,'Units','Normalized');
 
@@ -75,7 +75,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',X
 ylabel('Deaths','FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 2.5])
-ylim([4.*10^4 6.*10^4])
+ylim([2.75.*10^4 4.75.*10^4])
 text(-0.25,1,'C','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.815, 0.77,0.18 0.2])
@@ -93,7 +93,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',X
 ylabel('Costs','FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 2.5])
-ylim([3.*10^10 4.5.*10^10])
+ylim([2.*10^10 3.5.*10^10])
 text(-0.25,1,'D','Fontsize',28,'Units','Normalized');
 
 
@@ -104,9 +104,9 @@ Y_Err.Cap_Size=10;
 Y_Err.LineWidth=1.5;
 subplot('Position',[0.065, 0.42,0.43 0.28])
 
-Y=10^4.*[Annual.Average.Age_Incidence(:,:,end)'./Pop  Two_Dose.Average.Age_Incidence(:,:,end)'./Pop];
-Y_Err.LB=10^4.*[Annual.PRCT.Age_Incidence(ismember(PRCT,2.5),:,end)'./Pop  Two_Dose.PRCT.Age_Incidence(ismember(PRCT,2.5),:,end)'./Pop];
-Y_Err.UB=10^4.*[Annual.PRCT.Age_Incidence(ismember(PRCT,97.5),:,end)'./Pop Two_Dose.PRCT.Age_Incidence(ismember(PRCT,97.5),:,end)'./Pop];
+Y=10^4.*[Annual.Average.Age_Incidence(:,1:7,end)'./Pop  Two_Dose.Average.Age_Incidence(:,1:7,end)'./Pop];
+Y_Err.LB=10^4.*[Annual.PRCT.Age_Incidence(ismember(PRCT,2.5),1:7,end)'./Pop  Two_Dose.PRCT.Age_Incidence(ismember(PRCT,2.5),1:7,end)'./Pop];
+Y_Err.UB=10^4.*[Annual.PRCT.Age_Incidence(ismember(PRCT,97.5),1:7,end)'./Pop Two_Dose.PRCT.Age_Incidence(ismember(PRCT,97.5),1:7,end)'./Pop];
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
@@ -119,9 +119,9 @@ legend({'Annual','Two dose'},'Location','northwest');
 text(-0.14,1,'E','Fontsize',28,'Units','Normalized');
 subplot('Position',[0.565, 0.42,0.43 0.28])
 
-Y=10^4.*[Annual.Average.Age_Hospital(:,:,end)'./Pop  Two_Dose.Average.Age_Hospital(:,:,end)'./Pop];
-Y_Err.LB=10^4.*[Annual.PRCT.Age_Hospital(ismember(PRCT,2.5),:,end)'./Pop  Two_Dose.PRCT.Age_Hospital(ismember(PRCT,2.5),:,end)'./Pop];
-Y_Err.UB=10^4.*[Annual.PRCT.Age_Hospital(ismember(PRCT,97.5),:,end)'./Pop Two_Dose.PRCT.Age_Hospital(ismember(PRCT,97.5),:,end)'./Pop];
+Y=10^4.*[Annual.Average.Age_Hospital(:,1:7,end)'./Pop  Two_Dose.Average.Age_Hospital(:,1:7,end)'./Pop];
+Y_Err.LB=10^4.*[Annual.PRCT.Age_Hospital(ismember(PRCT,2.5),1:7,end)'./Pop  Two_Dose.PRCT.Age_Hospital(ismember(PRCT,2.5),1:7,end)'./Pop];
+Y_Err.UB=10^4.*[Annual.PRCT.Age_Hospital(ismember(PRCT,97.5),1:7,end)'./Pop Two_Dose.PRCT.Age_Hospital(ismember(PRCT,97.5),1:7,end)'./Pop];
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
@@ -135,9 +135,9 @@ text(-0.14,1,'F','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.065, 0.07,0.43 0.28])
 
-Y=10^4.*[Annual.Average.Age_Death(:,:,end)'./Pop  Two_Dose.Average.Age_Death(:,:,end)'./Pop];
-Y_Err.LB=10^4.*[Annual.PRCT.Age_Death(ismember(PRCT,2.5),:,end)'./Pop  Two_Dose.PRCT.Age_Death(ismember(PRCT,2.5),:,end)'./Pop];
-Y_Err.UB=10^4.*[Annual.PRCT.Age_Death(ismember(PRCT,97.5),:,end)'./Pop Two_Dose.PRCT.Age_Death(ismember(PRCT,97.5),:,end)'./Pop];
+Y=10^4.*[Annual.Average.Age_Death(:,1:7,end)'./Pop  Two_Dose.Average.Age_Death(:,1:7,end)'./Pop];
+Y_Err.LB=10^4.*[Annual.PRCT.Age_Death(ismember(PRCT,2.5),1:7,end)'./Pop  Two_Dose.PRCT.Age_Death(ismember(PRCT,2.5),1:7,end)'./Pop];
+Y_Err.UB=10^4.*[Annual.PRCT.Age_Death(ismember(PRCT,97.5),1:7,end)'./Pop Two_Dose.PRCT.Age_Death(ismember(PRCT,97.5),1:7,end)'./Pop];
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
@@ -153,9 +153,9 @@ text(-0.14,1,'G','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.565, 0.07,0.43 0.28])
 
-Y=10^4.*[Annual.Average.Cost_Age(:,:,end)'./Pop  Two_Dose.Average.Cost_Age(:,:,end)'./Pop];
-Y_Err.LB=10^4.*[Annual.PRCT.Cost_Age(ismember(PRCT,2.5),:,end)'./Pop  Two_Dose.PRCT.Cost_Age(ismember(PRCT,2.5),:,end)'./Pop];
-Y_Err.UB=10^4.*[Annual.PRCT.Cost_Age(ismember(PRCT,97.5),:,end)'./Pop Two_Dose.PRCT.Cost_Age(ismember(PRCT,97.5),:,end)'./Pop];
+Y=10^4.*[Annual.Average.Cost_Age(:,1:7,end)'./Pop  Two_Dose.Average.Cost_Age(:,1:7,end)'./Pop];
+Y_Err.LB=10^4.*[Annual.PRCT.Cost_Age(ismember(PRCT,2.5),1:7,end)'./Pop  Two_Dose.PRCT.Cost_Age(ismember(PRCT,2.5),1:7,end)'./Pop];
+Y_Err.UB=10^4.*[Annual.PRCT.Cost_Age(ismember(PRCT,97.5),1:7,end)'./Pop Two_Dose.PRCT.Cost_Age(ismember(PRCT,97.5),1:7,end)'./Pop];
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
@@ -167,5 +167,6 @@ ylabel('Costs per 10,000','FontSize',16)
 xlabel('Age class','FontSize',16)
 legend({'Annual','Two dose'},'Location','northwest');
 text(-0.14,1,'H','Fontsize',28,'Units','Normalized');
-print(gcf,['Figure_1.jpg'],'-djpeg','-r300');    
+print(gcf,['Figure_1.jpg'],'-djpeg','-r600');    
+print(gcf,['Figure_1.png'],'-dpng','-r600');    
 end

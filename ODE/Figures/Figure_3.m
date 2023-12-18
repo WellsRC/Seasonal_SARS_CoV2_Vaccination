@@ -12,21 +12,21 @@ Y=zeros(8,2);
 Y_Err.LB=zeros(8,2);
 Y_Err.UB=zeros(8,2);
 load([temp_cd 'Marginal_Benefit_Second_Dose_Main_Text_50_vs_young_50_Second_dose_180_days.mat'])
-Y(1,1)=Marginal_Benefit.Average.Cost(end);
-Y_Err.LB(1,1)=Marginal_Benefit.PRCT.Cost(PRCT==2.5,end);
-Y_Err.UB(1,1)=Marginal_Benefit.PRCT.Cost(PRCT==97.5,end);
+Y(1,1)=100.*Marginal_Benefit.Average.Cost(end);
+Y_Err.LB(1,1)=100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5,end);
+Y_Err.UB(1,1)=100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5,end);
 
-Y(2:end,1)=Marginal_Benefit.Average.Cost_Age(1,1:7,end);
-Y_Err.LB(2:end,1)=Marginal_Benefit.PRCT.Cost_Age(PRCT==2.5,1:7,end);
-Y_Err.UB(2:end,1)=Marginal_Benefit.PRCT.Cost_Age(PRCT==97.5,1:7,end);
+Y(2:end,1)=100.*Marginal_Benefit.Average.Cost_Age(1,1:7,end);
+Y_Err.LB(2:end,1)=100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==2.5,1:7,end);
+Y_Err.UB(2:end,1)=100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==97.5,1:7,end);
 load([temp_cd 'Marginal_Benefit_Second_Dose_Main_Text_65_vs_50_Second_dose_180_days.mat'])
-Y(1,2)=Marginal_Benefit.Average.Cost(end);
-Y_Err.LB(1,2)=Marginal_Benefit.PRCT.Cost(PRCT==2.5,end);
-Y_Err.UB(1,2)=Marginal_Benefit.PRCT.Cost(PRCT==97.5,end);
+Y(1,2)=100.*Marginal_Benefit.Average.Cost(end);
+Y_Err.LB(1,2)=100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5,end);
+Y_Err.UB(1,2)=100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5,end);
 
-Y(2:end,2)=Marginal_Benefit.Average.Cost_Age(1,1:7,end);
-Y_Err.LB(2:end,2)=Marginal_Benefit.PRCT.Cost_Age(PRCT==2.5,1:7,end);
-Y_Err.UB(2:end,2)=Marginal_Benefit.PRCT.Cost_Age(PRCT==97.5,1:7,end);
+Y(2:end,2)=100.*Marginal_Benefit.Average.Cost_Age(1,1:7,end);
+Y_Err.LB(2:end,2)=100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==2.5,1:7,end);
+Y_Err.UB(2:end,2)=100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==97.5,1:7,end);
 
 figure('units','normalized','outerposition',[0 0.08 0.8 0.8]);
 subplot('Position',[0.065, 0.59,0.93 0.38])
@@ -34,6 +34,7 @@ Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:8],'XTickLabel',Age_C,'FontSize',14)
 ylabel('Incremental benefit','FontSize',16)
+ytickformat('percentage')
 xlabel('Age class','FontSize',16)
 legend({'FDA vs 50 or older','50 or older vs 65 or older'},'Location','northwest')
 

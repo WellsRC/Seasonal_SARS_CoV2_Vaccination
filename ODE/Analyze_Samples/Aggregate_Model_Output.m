@@ -41,6 +41,7 @@ end
 
 Filtered_Output_All.Incidence(ss,:)=MO.Incidence;
 Filtered_Output_All.Hospital_Admission(ss,:)=MO.Hospital_Admission;
+Filtered_Output_All.Hospital_Count(ss,:)=MO.Hospital_Count;
 Filtered_Output_All.Death(ss,:)=MO.Death;
 Filtered_Output_All.Incidence_Cumulative_Count(ss,:)=sum(MO.Incidence);
 Filtered_Output_All.Hospital_Cumulative_Count(ss,:)=sum(MO.Hospital_Count);

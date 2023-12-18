@@ -10,6 +10,9 @@ XTL=cell(8,1);
 for ii=1:8
     XTL{ii}=num2str(90+30.*(ii-1));
 end
+
+PRCT=[2.5 25 50 75 97.5];
+
 figure('units','normalized','outerposition',[0 0.08 0.8 1]);
 subplot('Position',[0.065, 0.77,0.18 0.2])
 Y_Err.Cap_Size=10;
@@ -18,83 +21,93 @@ Y=zeros(8,1);
 Y_Err.LB=zeros(8,1);
 Y_Err.UB=zeros(8,1);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
-    Y(dd./30-2)=-Comparison.Average.Cumulative_Count_Incidence_dt;
-    Y_Err.LB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==97.5);
-    Y_Err.UB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==2.5);
+    load([temp_cd 'Marginal_Benefit_Direct_Main_Text_under_2_50_Second_dose_' num2str(dd) '_days.mat']);
+    Y(dd./30-2)=100.*Marginal_Benefit.Average.Incidence;
+    Y_Err.LB(dd./30-2)=100.*Marginal_Benefit.PRCT.Incidence(PRCT==97.5);
+    Y_Err.UB(dd./30-2)=100.*Marginal_Benefit.PRCT.Incidence(PRCT==2.5);
 end
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
-ylabel({'Incidence','averted'},'FontSize',16)
+ylabel('Incremental benefit','FontSize',16)
 xlabel('Days between doses','FontSize',16)
+title('Incidence')
 xlim([0.5 8.5])
-ylim([3.*10^7 4.*10^7])
+ylim([0 45])
+ytickformat('percentage')
 
-text(-0.335,1,'A','Fontsize',28,'Units','Normalized')
+text(-0.345,1.025,'A','Fontsize',28,'Units','Normalized')
 
 subplot('Position',[0.315, 0.77,0.18 0.2])
 Y=zeros(8,1);
 Y_Err.LB=zeros(8,1);
 Y_Err.UB=zeros(8,1);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
-    Y(dd./30-2)=-Comparison.Average.Cumulative_Count_Hospital_dt;
-    Y_Err.LB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5);
-    Y_Err.UB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5);
+    load([temp_cd 'Marginal_Benefit_Direct_Main_Text_under_2_50_Second_dose_' num2str(dd) '_days.mat']);
+    Y(dd./30-2)=100.*Marginal_Benefit.Average.Hospitalization;
+    Y_Err.LB(dd./30-2)=100.*Marginal_Benefit.PRCT.Hospitalization(PRCT==97.5);
+    Y_Err.UB(dd./30-2)=100.*Marginal_Benefit.PRCT.Hospitalization(PRCT==2.5);
 end
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
-ylabel({'Hospitalizations','averted'},'FontSize',16)
+ylabel({'Incremental benefit'},'FontSize',16)
+title('Hospitalizations')
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
-ylim([1.8*10^5 2.5.*10^5])
+ylim([0 45])
+ytickformat('percentage')
 
-text(-0.335,1,'B','Fontsize',28,'Units','Normalized');
+text(-0.345,1.025,'B','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.565, 0.77,0.18 0.2])
 Y=zeros(8,1);
 Y_Err.LB=zeros(8,1);
 Y_Err.UB=zeros(8,1);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
-    Y(dd./30-2)=-Comparison.Average.Cumulative_Count_Death_dt;
-    Y_Err.LB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5);
-    Y_Err.UB(dd./30-2)=-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5);
+    load([temp_cd 'Marginal_Benefit_Direct_Main_Text_under_2_50_Second_dose_' num2str(dd) '_days.mat']);
+    Y(dd./30-2)=100.*Marginal_Benefit.Average.Death;
+    Y_Err.LB(dd./30-2)=100.*Marginal_Benefit.PRCT.Death(PRCT==97.5);
+    Y_Err.UB(dd./30-2)=100.*Marginal_Benefit.PRCT.Death(PRCT==2.5);
 end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
-ylabel({'Deaths averted'},'FontSize',16)
+ylabel({'Incremental benefit'},'FontSize',16)
+title('Deaths')
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
-ylim([7.5.*10^3 10^4])
-text(-0.335,1,'C','Fontsize',28,'Units','Normalized');
+
+ylim([0 45])
+ytickformat('percentage')
+text(-0.345,1.025,'C','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.815, 0.77,0.18 0.2])
 
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
-    Y(dd./30-2)=-Comparison.Average.Cost_Total_dt(end);
-    Y_Err.LB(dd./30-2)=-Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end);
-    Y_Err.UB(dd./30-2)=-Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end);
+    load([temp_cd 'Marginal_Benefit_Direct_Main_Text_under_2_50_Second_dose_' num2str(dd) '_days.mat']);
+    Y(dd./30-2)=100.*Marginal_Benefit.Average.Cost;
+    Y_Err.LB(dd./30-2)=100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5);
+    Y_Err.UB(dd./30-2)=100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5);
 end
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
-ylabel({'Costs','averted'},'FontSize',16)
+ylabel({'Incremental benefit'},'FontSize',16)
+title('Direct costs')
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
-ylim([5.5.*10^9 7.5.*10^9])
-text(-0.335,1,'D','Fontsize',28,'Units','Normalized');
+
+ylim([0 45])
+ytickformat('percentage')
+text(-0.345,1.025,'D','Fontsize',28,'Units','Normalized');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -184,5 +197,6 @@ ylabel('Costs reduction','FontSize',16)
 xlabel('Age class','FontSize',16)
 legend(XTL,'Location','northeast','NumColumns',4);
 text(-0.14,1,'H','Fontsize',28,'Units','Normalized');
-% print(gcf,['Figure_2.jpg'],'-djpeg','-r300');    
+print(gcf,['Figure_2.jpg'],'-djpeg','-r600');    
+print(gcf,['Figure_2.png'],'-dpng','-r300');    
 end

@@ -15,9 +15,9 @@ end
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
 load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_180_days.mat'])
 Two_Dose=Comparison;
-load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_180_days.mat'])
+load([temp_cd 'Comparison_Summary_Main_Text_Two_Dose_vs_Annual_Fast_Waning_Vaccine.mat'])
 Fast_Waning=Comparison;
-load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_180_days.mat'])
+load([temp_cd 'Comparison_Summary_Main_Text_Two_Dose_vs_Annual_Slow_Waning_Vaccine.mat'])
 Slow_Waning=Comparison;
 
 C_Plot=[hex2rgb('#0C7BDC');hex2rgb('#8856a7');hex2rgb('#9ebcda');];
@@ -40,7 +40,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel'
 ylabel({'Incidence','averted'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 3.5])
-ylim([3.*10^7 4.*10^7])
+ylim([0 1.8.*10^7])
 
 text(-0.335,1,'A','Fontsize',28,'Units','Normalized')
 
@@ -63,7 +63,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel'
 ylabel({'Hospitalizations','averted'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 3.5])
-ylim([1.8*10^5 2.5.*10^5])
+ylim([0 2*10^5])
 text(-0.335,1,'B','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.565, 0.77,0.18 0.2])
@@ -84,7 +84,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel'
 ylabel({'Deaths averted'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 3.5])
-ylim([7.5.*10^3 10^4])
+ylim([0 8500])
 text(-0.335,1,'C','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.815, 0.77,0.18 0.2])
@@ -105,55 +105,170 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel'
 ylabel({'Cost','averted'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 3.5])
-ylim([5.5.*10^9 7.5.*10^9])
+ylim([0 6.*10^9])
 text(-0.335,1,'D','Fontsize',28,'Units','Normalized');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 T= datetime(2022,9,1) + caldays(0:7:364);
 
+subplot('Position',[0.065, 0.37,0.27 0.24])
 load([temp_cd 'Model_Output_Summary_Main_Text_Two_Dose_under_2_and_50_and_older_180_days.mat'])
-Y2=squeeze(Output_Summary.Average.Inf_Vaccine_Immunity_Age(1,5,:));
+Y2=squeeze(Output_Summary.Average.Inf_Vaccine_Immunity);
+YN=squeeze(Output_Summary.Average.Inf_Natural_Immunity);
 
 load([temp_cd 'Model_Output_Summary_Main_Text_Annual.mat'])
-YA=squeeze(Output_Summary.Average.Inf_Vaccine_Immunity_Age(1,5,:));
+YA=squeeze(Output_Summary.Average.Inf_Vaccine_Immunity);
+YAN=squeeze(Output_Summary.Average.Inf_Natural_Immunity);
 
-subplot('Position',[0.065, 0.4,0.27 0.24])
-plot(T,Y2,'-','color',C_Plot(1,:),'LineWidth',2); hold on
-plot(T,YA,'-','color','k','LineWidth',2); hold on;
+plot(T,Y2,'-','color',C_Plot(1,:),'LineWidth',2); hold on;
+plot(T,YA,'-.','color',C_Plot(1,:),'LineWidth',2); 
+plot(T,YN,'-','color','k','LineWidth',2); 
+plot(T,YAN,'-.','color','k','LineWidth',2); 
+legend({'Vaccine: Two-dose','Vaccine: Single','Natural: Two-dose','Natural: Single'},'Location','north','NumColumns',2)
+ylim([0 0.8])
+
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
-ylabel({'Vaccine immunity','infection'},'FontSize',16)
+
+ylabel('Immunity: Infection','FontSize',16)
 xlabel('Date','FontSize',16)
 xtickformat('MMM d' )
+ax=gca;
+ax.XTickLabel = ax.XTickLabel;
+xlim([T(1) T(end)])
+box off;
+title('Baseline')
+text(-0.2,1,'E','Fontsize',28,'Units','Normalized');
+subplot('Position',[0.395, 0.37,0.27 0.24])
 
-subplot('Position',[0.395, 0.4,0.27 0.24])
+load([temp_cd 'Model_Output_Summary_Main_Text_FDA_Two_Dose_ILC_Fast_Waning_Vaccine.mat'])
+Y2=squeeze(Output_Summary.Average.Inf_Vaccine_Immunity);
+YN=squeeze(Output_Summary.Average.Inf_Natural_Immunity);
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
-ylabel({'Vaccine immunity','infection'},'FontSize',16)
-xlabel('Date','FontSize',16)
+load([temp_cd 'Model_Output_Summary_Main_Text_Annual_Fast_Waning_Vaccine.mat'])
+YA=squeeze(Output_Summary.Average.Inf_Vaccine_Immunity);
+YAN=squeeze(Output_Summary.Average.Inf_Natural_Immunity);
 
-subplot('Position',[0.725, 0.4,0.27 0.24])
-
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
-ylabel({'Vaccine immunity','infection'},'FontSize',16)
-xlabel('Date','FontSize',16)
-
-subplot('Position',[0.065, 0.07,0.27 0.24])
-
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
-ylabel({'Vaccine immunity','severe disease'},'FontSize',16)
-xlabel('Date','FontSize',16)
-
-subplot('Position',[0.395, 0.07,0.27 0.24])
-
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
-ylabel({'Vaccine immunity','severe disease'},'FontSize',16)
-xlabel('Date','FontSize',16)
-
-subplot('Position',[0.725, 0.07,0.27 0.24])
+plot(T,Y2,'-','color',C_Plot(2,:),'LineWidth',2); hold on;
+plot(T,YA,'-.','color',C_Plot(2,:),'LineWidth',2); 
+plot(T,YN,'-','color','k','LineWidth',2); 
+plot(T,YAN,'-.','color','k','LineWidth',2); 
+legend({'Vaccine: Two-dose','Vaccine: Single','Natural: Two-dose','Natural: Single'},'Location','north','NumColumns',2)
+ylim([0 0.8])
 
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
-ylabel({'Vaccine immunity','severe disease'},'FontSize',16)
+
+ylabel('Immunity: Infection','FontSize',16)
 xlabel('Date','FontSize',16)
+xtickformat('MMM d' )
+ax=gca;
+ax.XTickLabel = ax.XTickLabel;
+xlim([T(1) T(end)])
+box off;
+title('Fast Waning')
+text(-0.2,1,'F','Fontsize',28,'Units','Normalized');
 
+subplot('Position',[0.725, 0.37,0.27 0.24])
 
+load([temp_cd 'Model_Output_Summary_Main_Text_FDA_Two_Dose_ILC_Slow_Waning_Vaccine.mat'])
+Y2=squeeze(Output_Summary.Average.Inf_Vaccine_Immunity);
+YN=squeeze(Output_Summary.Average.Inf_Natural_Immunity);
+
+load([temp_cd 'Model_Output_Summary_Main_Text_Annual_Slow_Waning_Vaccine.mat'])
+YA=squeeze(Output_Summary.Average.Inf_Vaccine_Immunity);
+YAN=squeeze(Output_Summary.Average.Inf_Natural_Immunity);
+plot(T,Y2,'-','color',C_Plot(3,:),'LineWidth',2); hold on;
+plot(T,YA,'-.','color',C_Plot(3,:),'LineWidth',2); 
+plot(T,YN,'-','color','k','LineWidth',2); 
+plot(T,YAN,'-.','color','k','LineWidth',2); 
+legend({'Vaccine: Two-dose','Vaccine: Single','Natural: Two-dose','Natural: Single'},'Location','north','NumColumns',2)
+ylim([0 0.8])
+
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
+
+ylabel('Immunity: Infection','FontSize',16)
+xlabel('Date','FontSize',16)
+xtickformat('MMM d' )
+ax=gca;
+ax.XTickLabel = ax.XTickLabel;
+xlim([T(1) T(end)])
+
+box off;
+title('Slow Waning')
+text(-0.2,1,'G','Fontsize',28,'Units','Normalized');
+
+subplot('Position',[0.065, 0.065,0.27 0.24])
+load([temp_cd 'Model_Output_Summary_Main_Text_Two_Dose_under_2_and_50_and_older_180_days.mat'])
+Y2=squeeze(Output_Summary.Average.SD_Vaccine_Immunity);
+YN=squeeze(Output_Summary.Average.SD_Natural_Immunity);
+
+load([temp_cd 'Model_Output_Summary_Main_Text_Annual.mat'])
+YA=squeeze(Output_Summary.Average.SD_Vaccine_Immunity);
+YAN=squeeze(Output_Summary.Average.SD_Natural_Immunity);
+plot(T,Y2,'-','color',C_Plot(1,:),'LineWidth',2); hold on;
+plot(T,YA,'-.','color',C_Plot(1,:),'LineWidth',2); 
+plot(T,YN,'-','color','k','LineWidth',2); 
+plot(T,YAN,'-.','color','k','LineWidth',2); 
+legend({'Vaccine: Two-dose','Vaccine: Single','Natural: Two-dose','Natural: Single'},'Location','north','NumColumns',2)
+ylim([0 1])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
+ylabel('Immunity: Severe Disease','FontSize',16)
+xlabel('Date','FontSize',16)
+xtickformat('MMM d' )
+ax=gca;
+ax.XTickLabel = ax.XTickLabel;
+xlim([T(1) T(end)])
+box off;
+text(-0.2,1,'H','Fontsize',28,'Units','Normalized');
+subplot('Position',[0.395, 0.065,0.27 0.24])
+
+load([temp_cd 'Model_Output_Summary_Main_Text_FDA_Two_Dose_ILC_Fast_Waning_Vaccine.mat'])
+Y2=squeeze(Output_Summary.Average.SD_Vaccine_Immunity);
+YN=squeeze(Output_Summary.Average.SD_Natural_Immunity);
+
+load([temp_cd 'Model_Output_Summary_Main_Text_Annual_Fast_Waning_Vaccine.mat'])
+YA=squeeze(Output_Summary.Average.SD_Vaccine_Immunity);
+YAN=squeeze(Output_Summary.Average.SD_Natural_Immunity);
+
+plot(T,Y2,'-','color',C_Plot(2,:),'LineWidth',2); hold on;
+plot(T,YA,'-.','color',C_Plot(2,:),'LineWidth',2); 
+plot(T,YN,'-','color','k','LineWidth',2); 
+plot(T,YAN,'-.','color','k','LineWidth',2); 
+legend({'Vaccine: Two-dose','Vaccine: Single','Natural: Two-dose','Natural: Single'},'Location','north','NumColumns',2)
+ylim([0 1])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
+ylabel('Immunity: Severe Disease','FontSize',16)
+xlabel('Date','FontSize',16)
+xtickformat('MMM d' )
+ax=gca;
+ax.XTickLabel = ax.XTickLabel;
+xlim([T(1) T(end)])
+box off;
+text(-0.2,1,'I','Fontsize',28,'Units','Normalized');
+subplot('Position',[0.725, 0.065,0.27 0.24])
+
+load([temp_cd 'Model_Output_Summary_Main_Text_FDA_Two_Dose_ILC_Slow_Waning_Vaccine.mat'])
+Y2=squeeze(Output_Summary.Average.SD_Vaccine_Immunity);
+YN=squeeze(Output_Summary.Average.SD_Natural_Immunity);
+
+load([temp_cd 'Model_Output_Summary_Main_Text_Annual_Slow_Waning_Vaccine.mat'])
+YA=squeeze(Output_Summary.Average.SD_Vaccine_Immunity);
+YAN=squeeze(Output_Summary.Average.SD_Natural_Immunity);
+
+plot(T,Y2,'-','color',C_Plot(3,:),'LineWidth',2); hold on;
+plot(T,YA,'-.','color',C_Plot(3,:),'LineWidth',2); 
+plot(T,YN,'-','color','k','LineWidth',2); 
+plot(T,YAN,'-.','color','k','LineWidth',2); 
+legend({'Vaccine: Two-dose','Vaccine: Single','Natural: Two-dose','Natural: Single'},'Location','north','NumColumns',2)
+ylim([0 1])
+box off;
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14)
+ylabel('Immunity: Severe Disease','FontSize',16)
+xlabel('Date','FontSize',16)
+xtickformat('MMM d' )
+ax=gca;
+ax.XTickLabel = ax.XTickLabel;
+xlim([T(1) T(end)])
+text(-0.2,1,'J','Fontsize',28,'Units','Normalized');
+print(gcf,['Figure_4.jpg'],'-djpeg','-r600');    
+print(gcf,['Figure_4.png'],'-dpng','-r300');
 end

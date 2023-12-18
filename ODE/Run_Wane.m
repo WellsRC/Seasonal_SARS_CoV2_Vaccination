@@ -1,4 +1,4 @@
-parpool(32);
+parpool(48);
 
 AC=[0:84];
 
@@ -73,7 +73,7 @@ for ii=1:length(NSv)
         Parameters.gammaV_3=Parameters.gammaV_3(end).*ones(size(Parameters.gammaV_3));
         Parameters.kappaV_1=Parameters.kappaV_1(end).*ones(size(Parameters.kappaV_1));
         Parameters.kappaV_2=Parameters.kappaV_2(end).*ones(size(Parameters.kappaV_2));
-        [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Pt{jj});
+        [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Parameters);
     end
     save(['Annual_ILC_Slow_Waning_Vaccine_' num2str(ii) '.mat'],'T_Run','Model_Output','R_WP');
 end
@@ -137,7 +137,7 @@ for ii=1:length(NSv)
         Parameters.gammaV_3=Parameters.gammaV_3(1).*ones(size(Parameters.gammaV_3));
         Parameters.kappaV_1=Parameters.kappaV_1(1).*ones(size(Parameters.kappaV_1));
         Parameters.kappaV_2=Parameters.kappaV_2(1).*ones(size(Parameters.kappaV_2));
-        [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Pt{jj});
+        [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Parameters);
     end
     save(['Annual_ILC_Fast_Waning_Vaccine_' num2str(ii) '.mat'],'T_Run','Model_Output','R_WP');
 end

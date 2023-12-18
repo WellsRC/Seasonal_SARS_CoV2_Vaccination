@@ -31,21 +31,45 @@ fprintf(['Annual campaign-Cumulative Count Hospital:' num2str(Output_Summary.Ave
 fprintf(['Annual campaign-Cumulative Count Death:' num2str(Output_Summary.Average.Cumulative_Count_Death,'%10.0f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cumulative_Count_Death(PRCT==2.5),'%10.0f') char(8211) num2str(Output_Summary.PRCT.Cumulative_Count_Death(PRCT==97.5),'%10.0f') ') \n']);
 fprintf(['Annual campaign-Cumulative Total Costs:' num2str(Output_Summary.Average.Cost_Total(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cost_Total(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Output_Summary.PRCT.Cost_Total(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
-Age_Cost=Output_Summary.Average.Cost_Age(:,:,end);
+Age_Cost=Output_Summary.Average.Cost_Age(:,1:7,end);
 age_indx=find(Age_Cost==max(Age_Cost));
 fprintf(['Annual campaign-Age Group with greatest medical costs:' Age_Text{age_indx} ' at '  num2str(Output_Summary.Average.Cost_Age(:,age_indx,end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cost_Age(PRCT==2.5,age_indx,end)./10^9,'%3.2f') char(8211) num2str(Output_Summary.PRCT.Cost_Age(PRCT==97.5,age_indx,end)./10^9,'%3.2f') ') billion USD \n']);
 fprintf('===========================================================================\n');
 fprintf(['Results: Effect of a second dose among individuals under two years of age or 50 years and older\n']);
 fprintf('===========================================================================\n');
-load([temp_cd 'Model_Output_Summary_Main_Text_Two_Dose_under_2_and_50_and_older_210_days.mat']);
-fprintf(['Two-Dose campaign-Cumulative Count Hospital:' num2str(Output_Summary.Average.Cumulative_Count_Hospital./10^6,'%3.2f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cumulative_Count_Hospital(PRCT==2.5)./10^6,'%3.2f') char(8211) num2str(Output_Summary.PRCT.Cumulative_Count_Hospital(PRCT==97.5)./10^6,'%3.2f') ') million \n']);
-fprintf(['Two-Dose campaign-Cumulative Count Death:' num2str(Output_Summary.Average.Cumulative_Count_Death,'%10.0f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cumulative_Count_Death(PRCT==2.5),'%10.0f') char(8211) num2str(Output_Summary.PRCT.Cumulative_Count_Death(PRCT==97.5),'%10.0f') ') \n']);
-fprintf(['Two-Dose campaign-Cumulative Total Costs:' num2str(Output_Summary.Average.Cost_Total(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cost_Total(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Output_Summary.PRCT.Cost_Total(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
-load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_210_days.mat']);
-fprintf(['Reduction of Hospitalization from Two-Dose campaign:' num2str(-Comparison.Average.Cumulative_Count_Hospital_dt,'%10.0f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5),'%10.0f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%10.0f') ')  \n']);
-fprintf(['Reduction of Death from Two-Dose campaign:' num2str(-Comparison.Average.Cumulative_Count_Death_dt,'%10.0f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5),'%10.0f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%10.0f') ')  \n']);
-fprintf(['Reduction of Death from Two-Dose campaign:' num2str(-Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') char(8211) num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') ') billion USD  \n']);
+load([temp_cd 'Marginal_Benefit_Direct_Main_Text_under_2_50_Second_dose_180_days.mat']);
+fprintf(['Incremental benefit: Hospitalization:' num2str(100.*Marginal_Benefit.Average.Hospitalization,'%3.1f') '%% (95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Hospitalization(PRCT==2.5),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Hospitalization(PRCT==97.5),'%3.1f') '%%)  \n']);
+fprintf(['Incremental benefit: Death:' num2str(100.*Marginal_Benefit.Average.Death,'%3.1f') '%% (95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Death(PRCT==2.5),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Death(PRCT==97.5),'%3.1f') '%%)  \n']);
+fprintf(['Incremental benefit: Costs:' num2str(100.*Marginal_Benefit.Average.Cost,'%3.1f') '%% (95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5),'%3.1f') '%%)  \n']);
+
+load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_180_days.mat']);
+fprintf(['Two-Dose campaign-Averted Hospital:' num2str(-Comparison.Average.Cumulative_Count_Hospital_dt,'%10.0f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5),'%10.0f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%10.0f') ') \n']);
+fprintf(['Two-Dose campaign-Averted Death:' num2str(-Comparison.Average.Cumulative_Count_Death_dt,'%10.0f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5),'%10.0f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%10.0f') ') \n']);
+fprintf(['Two-Dose campaign-Averted Costs:' num2str(-Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') char(8211) num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') ') billion USD \n']);
+
+fprintf('===========================================================================\n');
+fprintf(['Results: Comparison of outcomes with a second dose only among older adults\n']);
+fprintf('===========================================================================\n');
+
+
+load([temp_cd 'Marginal_Benefit_Second_Dose_Main_Text_50_vs_young_50_Second_dose_180_days.mat'])
+fprintf(['Incremental benefit of vaccinating those undr two:' num2str(100.*Marginal_Benefit.Average.Cost(end),'%3.2f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5,end),'%3.2f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5,end),'%3.2f') '%%) \n']);
+
+age_indx=Marginal_Benefit.Average.Cost_Age(:,1:7,end)==max(Marginal_Benefit.Average.Cost_Age(:,1:7,end));
+fprintf(['Maximal Incremental benefit to ' Age_Text{age_indx} ' when vaccinating those undr two:' num2str(100.*Marginal_Benefit.Average.Cost_Age(:,age_indx,end),'%3.1f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==2.5,age_indx,end),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==97.5,age_indx,end),'%3.1f') '%%) \n']);
+
+
+load([temp_cd 'Marginal_Benefit_Second_Dose_Main_Text_65_vs_50_Second_dose_180_days.mat'])
+fprintf(['Incremental benefit of vaccinating those 50-64:' num2str(100.*Marginal_Benefit.Average.Cost(end),'%3.1f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==2.5,end),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost(PRCT==97.5,end),'%3.1f') '%%) \n']);
+
+age_indx=Marginal_Benefit.Average.Cost_Age(:,1:7,end)==max(Marginal_Benefit.Average.Cost_Age(:,1:7,end));
+fprintf(['Maximal Incremental benefit to ' Age_Text{age_indx} ' when vaccinating those undr two:' num2str(100.*Marginal_Benefit.Average.Cost_Age(:,age_indx,end),'%3.1f') ' %%(95%% UI: ' num2str(100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==2.5,age_indx,end),'%3.1f') '%%' char(8211) num2str(100.*Marginal_Benefit.PRCT.Cost_Age(PRCT==97.5,age_indx,end),'%3.1f') '%%) \n']);
+
+
+fprintf('===========================================================================\n');
+fprintf(['Results: Prioritizing second doses among those 18 to 49 years of age\n']);
+fprintf('===========================================================================\n');
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %% comaprison of single dose to two-dose
