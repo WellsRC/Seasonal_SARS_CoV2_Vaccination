@@ -47,10 +47,10 @@ save(['Output_Annual_ILC_Fast_Waning_Vaccine.mat'],'Filtered_Output_Large_Winter
     [Filtered_Output_Large_Winter,Filtered_Output_Large_Summer] = SA_Output(Scenario,Av,ACg,max_file);
     save(['Output_Annual_ILC.mat'],'Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
 
-%     Scenario=['Annual_ILC_UW'];
-%     max_file=9;
-%     [Filtered_Output_Unimodal] = SA_Output_U(Scenario,Av,ACg,max_file);
-%     save(['Output_Annual_ILC_UW.mat'],'Filtered_Output_Unimodal');
+    Scenario=['Annual_ILC_UW'];
+    max_file=9;
+    [Filtered_Output_Unimodal] = SA_Output_U(Scenario,Av,ACg,max_file);
+    save(['Output_Annual_ILC_UW.mat'],'Filtered_Output_Unimodal');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FDA policy Two Doses
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
@@ -63,10 +63,10 @@ for t_d=1:8
     save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older.mat'],'Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
    
     
-%     Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_UW'];
-%     max_file=9;
-%     [Filtered_Output_Unimodal] = SA_Output_U(Scenario,Av,ACg,max_file);
-%     save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_UW.mat'],'Filtered_Output_Unimodal');
+    Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_UW'];
+    max_file=9;
+    [Filtered_Output_Unimodal] = SA_Output_U(Scenario,Av,ACg,max_file);
+    save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_UW.mat'],'Filtered_Output_Unimodal');
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 65+ Two Doses
@@ -80,10 +80,10 @@ for t_d=1:8
     save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older.mat'],'Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
    
     
-%     Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older_UW'];
-%     max_file=9;
-%     [Filtered_Output_Unimodal] = SA_Output_U(Scenario,Av,ACg,max_file);
-%     save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older_UW.mat'],'Filtered_Output_Unimodal');
+    Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older_UW'];
+    max_file=9;
+    [Filtered_Output_Unimodal] = SA_Output_U(Scenario,Av,ACg,max_file);
+    save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_65_and_older_UW.mat'],'Filtered_Output_Unimodal');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -97,10 +97,10 @@ for t_d=1:8
     [Filtered_Output_Large_Winter,Filtered_Output_Large_Summer] = SA_Output(Scenario,Av,ACg,max_file);
     save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older.mat'],'Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
 
-%     Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older_UW'];
-%     max_file=9;
-%     [Filtered_Output_Unimodal] = SA_Output_U(Scenario,Av,ACg,max_file);
-%     save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older_UW.mat'],'Filtered_Output_Unimodal');
+    Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older_UW'];
+    max_file=9;
+    [Filtered_Output_Unimodal] = SA_Output_U(Scenario,Av,ACg,max_file);
+    save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older_UW.mat'],'Filtered_Output_Unimodal');
 end
 
 for red_2d=0.35:0.15:0.65  
@@ -109,6 +109,11 @@ for red_2d=0.35:0.15:0.65
     max_file=3;
     [Filtered_Output_Large_Winter,Filtered_Output_Large_Summer] = SA_Output(Scenario,Av,ACg,max_file);
     save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_Reduction_' num2str(100.*red_2d) '_18_49.mat'],'Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
+
+    Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_Reduction_' num2str(100.*red_2d) '_FDA'];
+    max_file=3;
+    [Filtered_Output_Large_Winter,Filtered_Output_Large_Summer] = SA_Output(Scenario,Av,ACg,max_file);
+    save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_Reduction_' num2str(100.*red_2d) '_FDA.mat'],'Filtered_Output_Large_Winter','Filtered_Output_Large_Summer');
 end
 
 

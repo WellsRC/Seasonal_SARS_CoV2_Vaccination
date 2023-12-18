@@ -71,6 +71,20 @@ fprintf('=======================================================================
 fprintf(['Results: Prioritizing second doses among those 18 to 49 years of age\n']);
 fprintf('===========================================================================\n');
 
+fprintf('===========================================================================\n');
+fprintf(['Results: Effects of a fast and slow waning vaccine on the benefits of a second dose\n']);
+fprintf('===========================================================================\n');
+load([temp_cd 'Comparison_Summary_Main_Text_Two_Dose_vs_Annual_Fast_Waning_Vaccine.mat'])
+fprintf(['Fast waning-Averted Hospital:' num2str(-Comparison.Average.Cumulative_Count_Hospital_dt,'%10.0f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5),'%10.0f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%10.0f') ') \n']);
+fprintf(['Fast waning-Averted Death:' num2str(-Comparison.Average.Cumulative_Count_Death_dt,'%10.0f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5),'%10.0f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%10.0f') ') \n']);
+fprintf(['Fast waning-Averted Costs:' num2str(-Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') char(8211) num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') ') billion USD \n']);
+
+load([temp_cd 'Comparison_Summary_Main_Text_Two_Dose_vs_Annual_Slow_Waning_Vaccine.mat'])
+fprintf(['Slow waning-Averted Hospital:' num2str(-Comparison.Average.Cumulative_Count_Hospital_dt,'%10.0f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5),'%10.0f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%10.0f') ') \n']);
+fprintf(['Slow waning-Averted Death:' num2str(-Comparison.Average.Cumulative_Count_Death_dt,'%10.0f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5),'%10.0f') char(8211) num2str(-Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%10.0f') ') \n']);
+fprintf(['Slow waning-Averted Costs:' num2str(-Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') char(8211) num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') ') billion USD \n']);
+
+
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %% comaprison of single dose to two-dose
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

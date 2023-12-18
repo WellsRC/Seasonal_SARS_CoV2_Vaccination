@@ -93,13 +93,16 @@ clc;
 
 load(['Output_Annual_ILC.mat'],'Filtered_Output_Large_Winter');
 Annual_Output=Filtered_Output_Large_Winter;
-load(['Output_Two_Dose_ILC_180_days_under_2_and_50_and_older.mat'],'Filtered_Output_Large_Winter');
-Two_Dose_FDA=Filtered_Output_Large_Winter;  
+
 
 
 for red_2d=0.35:0.15:0.65  
+    load(['Output_Two_Dose_ILC_180_days_Reduction_' num2str(100.*red_2d) '_FDA.mat'],'Filtered_Output_Large_Winter');
+    Two_Dose_FDA=Filtered_Output_Large_Winter;  
     load(['Output_Two_Dose_ILC_180_days_Reduction_' num2str(100.*red_2d) '_18_49.mat'],'Filtered_Output_Large_Winter');
-    Marginal_Benefit_Second_Doses(Filtered_Output_Large_Winter,Two_Dose_child_and_50_Output,Annual_Output, ['Main_Text_18_49_vs_FDA_Reduction' num2str(100.*red_2d)]);
+    Scenario_Calculations(Filtered_Output_Large_Winter,['Main_Text_18_49_vs_FDA_Reduction' num2str(100.*red_2d)]);
+     Comparison_Calculations(Filtered_Output_Large_Winter,Annual_Output,['Main_Text_Annual_vs_Two_Dose_under_18_49_vs_FDA_Reduction' num2str(100.*red_2d) ]);
+    Marginal_Benefit_Second_Doses(Two_Dose_FDA,Filtered_Output_Large_Winter,Annual_Output, ['Main_Text_18_49_vs_FDA_Reduction' num2str(100.*red_2d)]);
     Marginal_Benefit_Direct(Filtered_Output_Large_Winter,Annual_Output,180,['Main_Text_18_49_180_days_FDA_Reduction' num2str(100.*red_2d)]);
 end
 
