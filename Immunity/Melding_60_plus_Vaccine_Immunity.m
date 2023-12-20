@@ -1,6 +1,6 @@
 clear;
 clc;
-parpool(32)
+% parpool(48)
 % Only have data that can properly inform the efficacy and not the severe
 % disease efficacy for this specified age group 
 
@@ -102,8 +102,8 @@ N_State=3;
 % % Initial
 
 % lt=[0 0 0 1 1 1 1 1 0 0 0];
-lb=[0.6   0.8    0.7 -5 -1.2 -4 -1.1 -5 0.85 0.9 0.4];
-ub=[0.7 1 1 -4 -0.8 -2 -0.9 -1 0.95 1 0.6];
+lb=[0.61 0.8  0.7 -4.6 -1.   -3.2 -0.84 -5 0.87 0.95 0.43];
+ub=[0.67 1    1   -4.2 -0.94 -2   -0.79 -1  0.91 1 0.55];
 
 rng('shuffle');
 for jj=1:500

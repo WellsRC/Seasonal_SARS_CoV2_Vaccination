@@ -11,7 +11,7 @@ for mm=1:max_file
     end
 
 end
-NN=length(Model_Output);
+NN=length(Model_Output_A);
 
 Filtered_Output_All.Recovered=zeros(NN,6,2);
 Filtered_Output_All.Incidence=zeros(NN,365);
@@ -44,7 +44,7 @@ Filtered_Output_All.Inf_Vaccine_Immunity_Age=zeros(NN,length(ACg(:,1)),53);
 Filtered_Output_All.Susceptible_Age=zeros(NN,length(ACg(:,1)),53);
 
 for ss=1:NN 
-    MO=Model_Output{ss};    
+    MO=Model_Output_A{ss};    
     [Filtered_Output_All]=Aggregate_Model_Output(ss,Filtered_Output_All,MO,Av,ACg,N);
 end
 

@@ -35,7 +35,7 @@ box off;
 set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:8],'XTickLabel',Age_C,'FontSize',14)
 ylabel('Incremental benefit','FontSize',16)
 ytickformat('percentage')
-xlabel('Age class','FontSize',16)
+xlabel('Age group','FontSize',16)
 legend({'FDA vs 50 or older','50 or older vs 65 or older'},'Location','northwest')
 
 
@@ -78,7 +78,7 @@ box off;
 set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:8],'XTickLabel',Age_C,'FontSize',14)
 ylabel('Incremental benefit','FontSize',16)
 ytickformat('percentage')
-xlabel('Age class','FontSize',16)
+xlabel('Age group','FontSize',16)
 legend({'35% reduction','50% reduction','65% reduction'},'Location','northwest')
 print(gcf,['Figure_3.jpg'],'-djpeg','-r600');    
 print(gcf,['Figure_3.png'],'-dpng','-r300');    

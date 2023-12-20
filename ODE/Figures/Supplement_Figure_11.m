@@ -1,72 +1,114 @@
-function Supplement_Figure_11
+function  Supplement_Figure_11
 close all;
-Scenario='Large_Winter';
-% close all;
+Y_Err.LineWidth=2;
+Y_Err.Cap_Size=40;
+XTL={'Continual','Annual','Two Dose'};
 temp_cd=pwd;
+load([temp_cd(1:end-11) 'Contact_Matrix\Contact_USA_85.mat'],'N');
+Av=[0:84];
+ACg=[0 1;2 4;5 12;13 17; 18 49; 50 64; 65 85];
+Pop=zeros(size(ACg,1),1);
+for ii=1:length(Pop)
+    Pop(ii)=sum(N(Av>=ACg(ii,1) & Av<=ACg(ii,2)));
+end
+Tot_Pop=sum(N);
+
+T= datetime(2023,9,1) + caldays(0:7:364);
+
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
+load([temp_cd 'Model_Output_Summary_Main_Text_Annual.mat'])
+Annual=Output_Summary;
+load([temp_cd 'Model_Output_Summary_Main_Text_Two_Dose_under_2_and_50_and_older_150_days.mat'])
+Two_Dose=Output_Summary;
+load([temp_cd 'Model_Output_Summary_Calibration.mat'])
+Calibration=Output_Summary;
 
-Outcome={'Incidence','Hospitalizations','Deaths','Cost'};
+C_Plot=[hex2rgb('#2f4f4f');
+    hex2rgb('#FFC20A');
+        hex2rgb('#0C7BDC')];
+figure('units','normalized','outerposition',[0 0.08 0.8 1]);
 
+Age_C={'All ages',['Ages: 0' char(8211) '1'],['Ages: 2' char(8211) '4'],['Ages: 5' char(8211) '12'],['Ages: 13' char(8211) '17'],['Ages: 18' char(8211) '49'],['Ages: 50' char(8211) '64'],'Ages: 65+'};
 
-CC=[hex2rgb('#EDAE01'); hex2rgb('#E94F08'); hex2rgb('#7F152E'); hex2rgb('#002C54')];
+Y_S=[Calibration.Average.Susceptible;
+    Annual.Average.Susceptible;
+    Two_Dose.Average.Susceptible];
 
-xt=linspace(-0.05,0.05,5001);
-xt2=-xt;
-t_day=[90:30:300];
-XTL={'90','120','150','180','210','240','270','300'};
-AgeV=[65 50];
-Age_Text={['0' char(8211) '49'],['50' char(8211) '64'],'65+'};
-aa_indx=[7 5 6];
+Y_S_Age=[Calibration.Average.Susceptible_Age;
+    Annual.Average.Susceptible_Age;
+    Two_Dose.Average.Susceptible_Age];
+Y_S_Age=Y_S_Age(:,1:7,:);
+dx=[0.075 0.32 0.565 0.815];
+dy=[0.775 0.555];
+for ii=1:8
+    subplot('Position',[dx(ii-4.*floor((ii-1)/4)), dy(ceil(ii./4)),0.18 0.2]);
+    if(ii==1)
+        for jj=1:3
+            plot(T,Y_S(jj,:),'color',C_Plot(jj,:),'LineWidth',2); hold on
+        end
+    else
+        for jj=1:3
+            plot(T,squeeze(Y_S_Age(jj,ii-1,:)),'color',C_Plot(jj,:),'LineWidth',2); hold on
+        end    
+    end
+    xlim([T(1) T(53)])
+    ylim([0.2 0.5])
+    box off;
+    set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',[],'YTick',[0.2:0.05:0.5])
+    ylabel({'Susceptbile'},'fontsize',16)
+    text(0.05,0.95,Age_C{ii},'Fontsize',16,'units','normalized')
+    text(-0.3,1.05,char(64+ii),"FontSize",24,'units','normalized')
+%     xlabel('Date','fontsize',16)
+if(ii==1)
+        legend({'Continual','SD-AVC','FDA-AVC'},'Fontsize',12)
+end
+end
 
-Age_50_64=cell(length(t_day),1);
-Age_65_Older=cell(length(t_day),1);
-Age_Under_50=cell(length(t_day),1);
+Y_Hosp=[Calibration.Average.Hospital_Admission;
+    Annual.Average.Hospital_Admission;
+    Two_Dose.Average.Hospital_Admission];
 
-figure('units','normalized','outerposition',[0.1 0.05 0.75 1]);
-for Scenario_Indx=1:4    
-    Y=zeros(3,length(XTL));
+Y_Hosp_Age=[Calibration.Average.Age_Hospital;
+    Annual.Average.Age_Hospital;
+    Two_Dose.Average.Age_Hospital];
+Y_Hosp_Age=Y_Hosp_Age(:,1:7,:);
+T= datetime(2023,9,1) + caldays(0:364);
+dy=[0.335 0.115];
+for ii=1:8
+    subplot('Position',[dx(ii-4.*floor((ii-1)/4)), dy(ceil(ii./4)),0.18 0.2]);
+    if(ii==1)
+        for jj=1:3
+            plot(T,Y_Hosp(jj,:),'color',C_Plot(jj,:),'LineWidth',2); hold on
+        end
 
-    min_x=Inf;
-    max_x=-Inf;
-
-    for mm=1:length(XTL)
-        load([temp_cd 'Comparison_Summary_' Scenario '_Two_Campaign_Baseline_Coverage_' num2str(t_day(mm)) '_days_50_and_older.mat']);
-        Comparison.Average.Age_Cumulative_Count_Incidence_rel=reshape(Comparison.Average.Age_Cumulative_Count_Incidence_rel,7,9);
-        Comparison.Average.Age_Cumulative_Count_Hospital_rel=reshape(Comparison.Average.Age_Cumulative_Count_Hospital_rel,7,9);
-        Comparison.Average.Age_Cumulative_Count_Death_rel=reshape(Comparison.Average.Age_Cumulative_Count_Death_rel,7,9);
-        Comparison.Average.Cost_Age_rel=reshape(Comparison.Average.Cost_Age_rel,7,9);
-        for aav=1:3
-            aa=aa_indx(aav);
-            if(Scenario_Indx==1)
-                Y(aav,mm)=Comparison.Average.Age_Cumulative_Count_Incidence_rel(aa,end);
-            elseif(Scenario_Indx==2)   
-                Y(aav,mm)=Comparison.Average.Age_Cumulative_Count_Hospital_rel(aa,end);
-            elseif(Scenario_Indx==3)   
-                Y(aav,mm)=Comparison.Average.Age_Cumulative_Count_Death_rel(aa,end);
-            elseif(Scenario_Indx==4)   
-                Y(aav,mm)=Comparison.Average.Cost_Age_rel(aa,end);
-            end
+        xlim([T(1) T(end)])
+    else
+        b=bar([1:9],squeeze(Y_Hosp_Age(:,ii-1,:))./10^4,'LineStyle','none','FaceColor','flat'); hold on
+        
+        for jj=1:length(b)
+            b(jj).CData = C_Plot(jj,:);
         end
     end
-    Y=-100.*Y;
-    for aa=1:3
-        subplot('Position',[0.08+0.33.*(aa-1),0.785-0.235.*(Scenario_Indx-1),0.24,0.18]);
-        bar([1:length(XTL)],Y(aa,:),'LineStyle','none','FaceColor',CC(Scenario_Indx,:))
-        box off;
-        set(gca,'LineWidth',2,'Tickdir','out','XTick',[1:length(XTL)],'XTickLabel',XTL,'Yminortick','on','YTick',[0:5],'Xminortick','off','Fontsize',16);
-        ylim([0 5])
-        xlim([0.4 length(XTL)+.6])
-        ytickformat('percentage');
-        ylabel({'Reduction in', lower(Outcome{Scenario_Indx})},'Fontsize',18);
-        if(Scenario_Indx==1)
-           title(['Ages ' Age_Text{aa}]);
-        end
-        if(Scenario_Indx==4)
-            xlabel({'Days to second dose'},'Fontsize',18,'Units','Normalized','Position',[0.500000476837158,-0.27,0]);
-        end
-        text(-0.32,1,char(64+aa+ 3.*(Scenario_Indx-1)),'Fontsize',24,'Units','normalized','fontweight','bold'); 
+    if(ii<5)
+        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',[])
+
+    else
+        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',datestr(datenum('September 1, 2022')+[90:30:300 364],'mmm-dd'))
+        xlabel('Date','fontsize',16)
+%         xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
     end
-%     
+    if(ii==1)
+        ylabel({'Hospital admissions'},'fontsize',16)
+    else
+        ylabel({'Total Hospitalizations','(10,000)'},'fontsize',14)
+        
+        
+    end
+%         legend({'Continual','SD-AVC','FDA-AVC'},'Fontsize',12)
+    box off;
+    text(0.05,0.95,Age_C{ii},'Fontsize',16,'units','normalized')
+    text(-0.3,1.05,char(72+ii),"FontSize",24,'units','normalized')
 end
-print(gcf,['Supplement_Figure_11.png'],'-dpng','-r300');
+
 end
+

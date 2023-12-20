@@ -6,7 +6,6 @@ AC=[0:84];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_Large_Winter','T_Run');
 NS=length(P_Large_Winter);
-R_WPv=R_WP;
 num_l=ceil(NS./1000);
 NSv=1000.*ones(num_l,1);
 NSv(end)=NS-sum(NSv(1:end-1));
@@ -19,7 +18,6 @@ for ii=1:length(NSv)
     end
     s_end=sum(NSv(1:ii));
     Pt=P_Large_Winter(s_start:s_end);
-    R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
         [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Pt{jj});
@@ -32,7 +30,6 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_Large_Summer','T_Run');
 NS=length(P_Large_Summer);
-R_WPv=R_WP;
 num_l=ceil(NS./1000);
 NSv=1000.*ones(num_l,1);
 NSv(end)=NS-sum(NSv(1:end-1));
@@ -45,7 +42,6 @@ for ii=1:length(NSv)
     end
     s_end=sum(NSv(1:ii));
     Pt=P_Large_Summer(s_start:s_end);
-    R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
         [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Pt{jj});

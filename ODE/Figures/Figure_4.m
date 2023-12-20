@@ -13,7 +13,7 @@ for ii=1:length(Pop)
 end
 
 temp_cd=[temp_cd(1:end-7) 'Analyze_Samples\'];
-load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_180_days.mat'])
+load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_150_days.mat'])
 Two_Dose=Comparison;
 load([temp_cd 'Comparison_Summary_Main_Text_Two_Dose_vs_Annual_Fast_Waning_Vaccine.mat'])
 Fast_Waning=Comparison;

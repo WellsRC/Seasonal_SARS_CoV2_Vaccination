@@ -40,9 +40,8 @@ for iix=1:length(Age_C)
         
             t_plot=T_Eval;
 
-        plot(TM,test,'k-.','LineWidth',1.5); hold on
+        plot(TM,test,'k','LineWidth',2); hold on
         scatter(t_plot,Vac_t,25,'r','filled');
-
         title([Age_C_P{ii}])
          ylim([0 0.6])
         xlim([min(T_Run) max(T_Run)])

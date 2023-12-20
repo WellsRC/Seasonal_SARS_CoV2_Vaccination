@@ -3,7 +3,7 @@ parpool(48);
 AC=[0:84];
 load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_Large_Winter','T_Run');
 NS=length(P_Large_Winter);
-R_WPv=R_WP;
+
 num_l=ceil(NS./1000);
 NSv=1000.*ones(num_l,1);
 NSv(end)=NS-sum(NSv(1:end-1));
@@ -13,7 +13,7 @@ Age_Dose(AC>=50  | AC<2)=1;
 % Bimodal peaks reduced coverage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for red_vc=0.1:0.3:0.7
+for red_vc=0.33:0.33:0.66
     for ii=1:length(NSv)  
         Model_Output=cell(NSv(ii),1);
         if(ii==1)
@@ -23,7 +23,7 @@ for red_vc=0.1:0.3:0.7
         end
         s_end=sum(NSv(1:ii));
         Pt=P_Large_Winter(s_start:s_end);
-        R_WP=R_WPv(s_start:s_end);
+        
         parfor jj=1:NSv(ii)
             Parameters=Pt{jj};
             Parameters.X0.Annual=Adjust_Initial_Conditions(Annual_Campaign,Parameters,Parameters.X0.Annual,Parameters.vac_int_influenza.*(1-red_vc),[]);
@@ -36,7 +36,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bimodal peaks Increase overall efficacy
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for eps_INC=0.35:0.3:0.95
+for eps_INC=0.33:0.33:0.66
     for ii=1:length(NSv)  
         Model_Output=cell(NSv(ii),1);
         if(ii==1)
@@ -46,7 +46,7 @@ for eps_INC=0.35:0.3:0.95
         end
         s_end=sum(NSv(1:ii));
         Pt=P_Large_Winter(s_start:s_end);
-        R_WP=R_WPv(s_start:s_end);
+        
         parfor jj=1:NSv(ii)
             Parameters=Pt{jj};
             Parameters.q1_sd=Parameters.q1_sd+eps_INC.*(1-Parameters.q1_sd);

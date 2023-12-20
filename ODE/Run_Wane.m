@@ -6,11 +6,10 @@ AC=[0:84];
 % Bimodal peaks (Slow Waning vaccine)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Time_Dose=180;
+Time_Dose=150;
 load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_Large_Winter','T_Run');
 
 NS=length(P_Large_Winter);
-R_WPv=R_WP;
 num_l=ceil(NS./1000);
 NSv=1000.*ones(num_l,1);
 NSv(end)=NS-sum(NSv(1:end-1));
@@ -27,7 +26,6 @@ for ii=1:length(NSv)
     end
     s_end=sum(NSv(1:ii));
     Pt=P_Large_Winter(s_start:s_end);
-    R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
         Parameters.Add_dose.t0=T_Run(1);
@@ -59,7 +57,6 @@ for ii=1:length(NSv)
     end
     s_end=sum(NSv(1:ii));
     Pt=P_Large_Winter(s_start:s_end);
-    R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
         Parameters.eps_V1=Parameters.eps_V1(end).*ones(size(Parameters.eps_V1));
@@ -91,7 +88,6 @@ for ii=1:length(NSv)
     end
     s_end=sum(NSv(1:ii));
     Pt=P_Large_Winter(s_start:s_end);
-    R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
         Parameters.Add_dose.t0=T_Run(1);
@@ -123,7 +119,6 @@ for ii=1:length(NSv)
     end
     s_end=sum(NSv(1:ii));
     Pt=P_Large_Winter(s_start:s_end);
-    R_WP=R_WPv(s_start:s_end);
     parfor jj=1:NSv(ii)
         Parameters=Pt{jj};
         Parameters.eps_V1=Parameters.eps_V1(1).*ones(size(Parameters.eps_V1));

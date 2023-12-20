@@ -14,6 +14,8 @@ clc;
 
 load('Vaccine_Immunity_Under_18_Filler.mat','par_samp','L');
 p=par_samp;
+L=L(p(:,2)>=p(:,3));
+p=p(p(:,2)>=p(:,3),:);
 w=exp(L)./sum(exp(L));
 wc=cumsum(w);
 NS=10^4;

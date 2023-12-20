@@ -99,6 +99,13 @@ fprintf(['Slow waning-Averted Death:' num2str(-Comparison.Average.Cumulative_Cou
 fprintf(['Slow waning-Averted Costs:' num2str(-Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') char(8211) num2str(-Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
 
+fprintf('===========================================================================\n');
+fprintf(['Discussion \n']);
+fprintf('===========================================================================\n');
+load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_180_days.mat']);
+fprintf(['Two-Dose campaign-Averted Hospital:' num2str(-100.*Comparison.Average.Cumulative_Count_Hospital_rel,'%3.1f') ' %%(95%% UI: ' num2str(-100.*Comparison.PRCT.Cumulative_Count_Hospital_rel(PRCT==97.5),'%3.1f') char(8211) num2str(-100.*Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%3.1f') ') \n']);
+fprintf(['Two-Dose campaign-Averted Death:' num2str(-100.*Comparison.Average.Cumulative_Count_Hospital_rel,'%3.1f') ' %%(95%% UI: ' num2str(-100.*Comparison.PRCT.Cumulative_Count_Death_rel(PRCT==97.5),'%3.1f') char(8211) num2str(-100.*Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%3.1f') ') \n']);
+
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %% comaprison of single dose to two-dose
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

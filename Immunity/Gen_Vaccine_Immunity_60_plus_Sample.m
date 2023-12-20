@@ -1,20 +1,22 @@
 clear;
 clc;
-% 
-% L=[];
-% p=[];
-% for ii=1:1465
-%     try
-%         load(['Vaccine_Immunity_60_plus_Sample_' num2str(ii) '.mat']);
-%         L=[L;Log_L(~isnan(Log_L) & ~isinf(Log_L))];
-%         p=[p;x(~isnan(Log_L) & ~isinf(Log_L),:)];
-%     end
-% end
-% clear Log_L x
-% p=p(~isnan(L),:);
-% L=L(~isnan(L));
-load('Vaccine_Immunity_60_plus_Filler.mat','par_samp','L');
-p=par_samp;
+
+L=[];
+p=[];
+for ii=1:1465
+    try
+        load(['Vaccine_Immunity_60_plus_Sample_' num2str(ii) '.mat']);
+        L=[L;Log_L(~isnan(Log_L) & ~isinf(Log_L))];
+        p=[p;x(~isnan(Log_L) & ~isinf(Log_L),:)];
+    end
+end
+clear Log_L x
+p=p(~isnan(L),:);
+L=L(~isnan(L));
+% load('Vaccine_Immunity_60_plus_Filler.mat','par_samp','L');
+% p=par_samp;
+L=L(p(:,2)>=p(:,3));
+p=p(p(:,2)>=p(:,3),:);
 w=exp(L-max(L(:)))./sum(exp(L-max(L(:))));
 wc=cumsum(w);
 NS=10^4;

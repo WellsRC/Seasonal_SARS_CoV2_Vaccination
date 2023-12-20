@@ -3,7 +3,7 @@ parpool(48);
 AC=[0:84];
 load([pwd '/Analyze_Samples/Parameter_Filtered.mat'],'P_Large_Winter','T_Run');
 NS=length(P_Large_Winter);
-R_WPv=R_WP;
+
 num_l=ceil(NS./1000);
 NSv=1000.*ones(num_l,1);
 NSv(end)=NS-sum(NSv(1:end-1));
@@ -12,7 +12,7 @@ Age_Dose(AC>=50  | AC<2)=1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bimodal peaks reduced vaccine efficacy to SD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for eps_SD=0.15:0.2:0.55
+for eps_SD=0.33:0.33:0.66
     for ii=1:length(NSv)  
         Model_Output=cell(NSv(ii),1);
         if(ii==1)
@@ -22,7 +22,7 @@ for eps_SD=0.15:0.2:0.55
         end
         s_end=sum(NSv(1:ii));
         Pt=P_Large_Winter(s_start:s_end);
-        R_WP=R_WPv(s_start:s_end);
+        
         parfor jj=1:NSv(ii)
             Parameters=Pt{jj};
             Parameters.q1_sd=Parameters.q1_sd.*(1-eps_SD);
@@ -35,7 +35,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bimodal peaks reduced vaccine efficacy to Infection
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for eps_INF=0.15:0.2:0.55
+for eps_INF=0.33:0.33:0.66
     for ii=1:length(NSv)  
         Model_Output=cell(NSv(ii),1);
         if(ii==1)
@@ -45,7 +45,7 @@ for eps_INF=0.15:0.2:0.55
         end
         s_end=sum(NSv(1:ii));
         Pt=P_Large_Winter(s_start:s_end);
-        R_WP=R_WPv(s_start:s_end);
+        
         parfor jj=1:NSv(ii)
             Parameters=Pt{jj};
             Parameters.eps_V1=Parameters.eps_V1.*(1-eps_INF);
@@ -60,7 +60,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bimodal peaks reduced probability hospitalization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for eps_H=0.15:0.3:0.75
+for eps_H=0.33:0.33:0.66
     for ii=1:length(NSv)  
         Model_Output=cell(NSv(ii),1);
         if(ii==1)
@@ -70,7 +70,7 @@ for eps_H=0.15:0.3:0.75
         end
         s_end=sum(NSv(1:ii));
         Pt=P_Large_Winter(s_start:s_end);
-        R_WP=R_WPv(s_start:s_end);
+        
         parfor jj=1:NSv(ii)
             Parameters=Pt{jj};
             Parameters.prob_H=Parameters.prob_H.*(1-eps_H);

@@ -1,6 +1,6 @@
 clear;
 clc;
-parpool(32);
+parpool(48);
 % Only have data that can properly inform the efficacy and not the severe
 % disease efficacy for this specified age group 
 
@@ -156,4 +156,4 @@ par_samp=[new_samp;par_samp_vi_60p];
 
 save('Vaccine_Immunity_60_plus_Filler.mat','par_samp','L');
 
-Gen_Vaccine_Immunity_60_plus_Sample
+% Gen_Vaccine_Immunity_60_plus_Sample
