@@ -1,4 +1,4 @@
-function  Supplement_Figure_11
+function  Supplement_Figure_18
 close all;
 Y_Err.LineWidth=2;
 Y_Err.Cap_Size=40;
@@ -26,43 +26,9 @@ Calibration=Output_Summary;
 C_Plot=[hex2rgb('#2f4f4f');
     hex2rgb('#FFC20A');
         hex2rgb('#0C7BDC')];
-figure('units','normalized','outerposition',[0 0.08 0.8 1]);
+figure('units','normalized','outerposition',[0 0.08 0.8 0.8]);
 
 Age_C={'All ages',['Ages: 0' char(8211) '1'],['Ages: 2' char(8211) '4'],['Ages: 5' char(8211) '12'],['Ages: 13' char(8211) '17'],['Ages: 18' char(8211) '49'],['Ages: 50' char(8211) '64'],'Ages: 65+'};
-
-Y_S=[Calibration.Average.Susceptible;
-    Annual.Average.Susceptible;
-    Two_Dose.Average.Susceptible];
-
-Y_S_Age=[Calibration.Average.Susceptible_Age;
-    Annual.Average.Susceptible_Age;
-    Two_Dose.Average.Susceptible_Age];
-Y_S_Age=Y_S_Age(:,1:7,:);
-dx=[0.075 0.32 0.565 0.815];
-dy=[0.775 0.555];
-for ii=1:8
-    subplot('Position',[dx(ii-4.*floor((ii-1)/4)), dy(ceil(ii./4)),0.18 0.2]);
-    if(ii==1)
-        for jj=1:3
-            plot(T,Y_S(jj,:),'color',C_Plot(jj,:),'LineWidth',2); hold on
-        end
-    else
-        for jj=1:3
-            plot(T,squeeze(Y_S_Age(jj,ii-1,:)),'color',C_Plot(jj,:),'LineWidth',2); hold on
-        end    
-    end
-    xlim([T(1) T(53)])
-    ylim([0.2 0.5])
-    box off;
-    set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',[],'YTick',[0.2:0.05:0.5])
-    ylabel({'Susceptbile'},'fontsize',16)
-    text(0.05,0.95,Age_C{ii},'Fontsize',16,'units','normalized')
-    text(-0.3,1.05,char(64+ii),"FontSize",24,'units','normalized')
-%     xlabel('Date','fontsize',16)
-if(ii==1)
-        legend({'Continual','SD-AVC','FDA-AVC'},'Fontsize',12)
-end
-end
 
 Y_Hosp=[Calibration.Average.Hospital_Admission;
     Annual.Average.Hospital_Admission;
@@ -72,10 +38,11 @@ Y_Hosp_Age=[Calibration.Average.Age_Hospital;
     Annual.Average.Age_Hospital;
     Two_Dose.Average.Age_Hospital];
 Y_Hosp_Age=Y_Hosp_Age(:,1:7,:);
-T= datetime(2023,9,1) + caldays(0:364);
-dy=[0.335 0.115];
+T=[1:365];
+dx=[0.075 0.32 0.565 0.815];
+dy=[0.615 0.125];
 for ii=1:8
-    subplot('Position',[dx(ii-4.*floor((ii-1)/4)), dy(ceil(ii./4)),0.18 0.2]);
+    subplot('Position',[dx(ii-4.*floor((ii-1)/4)), dy(ceil(ii./4)),0.18 0.36]);
     if(ii==1)
         for jj=1:3
             plot(T,Y_Hosp(jj,:),'color',C_Plot(jj,:),'LineWidth',2); hold on
@@ -89,11 +56,17 @@ for ii=1:8
             b(jj).CData = C_Plot(jj,:);
         end
     end
-    if(ii<5)
-        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',[])
+    if(ii==1)
+
+        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',datestr(datenum('September 1, 2022')+[1:28:365]-1,'mmm-dd'),'XTick',[1:28:365])
+        xlabel('Date','fontsize',16)
+%         xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
+
+         legend({'Continual','SD-AVC','FDA-AVC'},'Fontsize',12)
+         legend boxoff
 
     else
-        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',datestr(datenum('September 1, 2022')+[90:30:300 364],'mmm-dd'))
+        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',datestr(datenum('September 1, 2022')+[90:30:300 365]-1,'mmm-dd'))
         xlabel('Date','fontsize',16)
 %         xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
     end
@@ -101,14 +74,13 @@ for ii=1:8
         ylabel({'Hospital admissions'},'fontsize',16)
     else
         ylabel({'Total Hospitalizations','(10,000)'},'fontsize',14)
-        
-        
+        text(0.05,0.95,Age_C{ii},'Fontsize',16,'units','normalized')
     end
-%         legend({'Continual','SD-AVC','FDA-AVC'},'Fontsize',12)
     box off;
-    text(0.05,0.95,Age_C{ii},'Fontsize',16,'units','normalized')
-    text(-0.3,1.05,char(72+ii),"FontSize",24,'units','normalized')
+    text(-0.3,0.975,char(64+ii),"FontSize",24,'units','normalized')
 end
+
+print(gcf,['Supplementary_Figure_18.png'],'-dpng','-r300');  
 
 end
 

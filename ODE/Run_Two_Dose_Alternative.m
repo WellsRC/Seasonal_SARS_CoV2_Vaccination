@@ -12,7 +12,7 @@ for t_d=1:8
     NSv=1000.*ones(num_l,1);
     NSv(end)=NS-sum(NSv(1:end-1));
     Age_Dose=zeros(size(AC));
-    Age_Dose(AC>=50 & AC<=64)=1;
+    Age_Dose(AC>=18 & AC<=49)=1;
     for ii=1:length(NSv)  
         Model_Output=cell(NSv(ii),1);
         if(ii==1)

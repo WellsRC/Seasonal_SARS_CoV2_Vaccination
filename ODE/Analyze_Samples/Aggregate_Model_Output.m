@@ -28,13 +28,13 @@ for tt=1:53
 
     Filtered_Output_All.Susceptible(ss,tt)=sum(MO.Fully_Susceptible(:,1+7.*(tt-1)))./sum(Pop);
     for aa=1:length(ACg(:,1))
-        Filtered_Output_All.SD_Natural_Immunity_Age(ss,aa,tt)=sum(MO.SD_Natural_Immunity(ACg(aa,1)>Av | Av>ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)>Av | Av>ACg(aa,2)));
-        Filtered_Output_All.Inf_Natural_Immunity_Age(ss,aa,tt)=sum(MO.Infection_Natural_Immunity(ACg(aa,1)>Av | Av>ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)>Av | Av>ACg(aa,2)));
+        Filtered_Output_All.SD_Natural_Immunity_Age(ss,aa,tt)=sum(MO.SD_Natural_Immunity(ACg(aa,1)<=Av & Av<=ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)<=Av & Av<=ACg(aa,2)));
+        Filtered_Output_All.Inf_Natural_Immunity_Age(ss,aa,tt)=sum(MO.Infection_Natural_Immunity(ACg(aa,1)<=Av & Av<=ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)<=Av & Av<=ACg(aa,2)));
 
-        Filtered_Output_All.SD_Vaccine_Immunity_Age(ss,aa,tt)=sum(MO.SD_Vaccine_Immunity(ACg(aa,1)>Av | Av>ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)>Av | Av>ACg(aa,2)));
-        Filtered_Output_All.Inf_Vaccine_Immunity_Age(ss,aa,tt)=sum(MO.Infection_Vaccine_Immunity(ACg(aa,1)>Av | Av>ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)>Av | Av>ACg(aa,2)));
+        Filtered_Output_All.SD_Vaccine_Immunity_Age(ss,aa,tt)=sum(MO.SD_Vaccine_Immunity(ACg(aa,1)<=Av & Av<=ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)<=Av & Av<=ACg(aa,2)));
+        Filtered_Output_All.Inf_Vaccine_Immunity_Age(ss,aa,tt)=sum(MO.Infection_Vaccine_Immunity(ACg(aa,1)<=Av & Av<=ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)<=Av & Av<=ACg(aa,2)));
 
-        Filtered_Output_All.Susceptible_Age(ss,aa,tt)=sum(MO.Fully_Susceptible(ACg(aa,1)>Av | Av>ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)>Av | Av>ACg(aa,2)));
+        Filtered_Output_All.Susceptible_Age(ss,aa,tt)=sum(MO.Fully_Susceptible(ACg(aa,1)<=Av & Av<=ACg(aa,2),1+7.*(tt-1)))./sum(Pop(ACg(aa,1)<=Av & Av<=ACg(aa,2)));
     end
 
 end

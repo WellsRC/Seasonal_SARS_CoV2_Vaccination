@@ -23,24 +23,6 @@ max_file_u=9;
 [Filtered_Output_Unimodal] = SA_Output(Scenario,Av,ACg,max_file_u);
 save(['Output_' Scenario '.mat'],'Filtered_Output_Unimodal');
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Waning
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Scenario=['FDA_Two_Dose_ILC_Slow_Waning_Vaccine_W'];
-[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
-save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
-
-Scenario=['Annual_ILC_Slow_Waning_Vaccine_W'];
-[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
-save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
-
-Scenario=['FDA_Two_Dose_ILC_Fast_Waning_Vaccine_W'];
-[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
-save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
-
-Scenario=['Annual_ILC_Fast_Waning_Vaccine_W'];
-[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
-save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Annual campaign
@@ -68,13 +50,13 @@ for t_d=1:8
     [Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
     save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
     
-    Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_S'];
-    [Filtered_Output_Large_Summer] = SA_Output(Scenario,Av,ACg,max_file_s);
-    save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Summer');
-    
-    Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_U'];
-    [Filtered_Output_Unimodal] = SA_Output(Scenario,Av,ACg,max_file_u);
-    save(['Output_' Scenario '.mat'],'Filtered_Output_Unimodal');
+%     Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_S'];
+%     [Filtered_Output_Large_Summer] = SA_Output(Scenario,Av,ACg,max_file_s);
+%     save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Summer');
+%     
+%     Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_U'];
+%     [Filtered_Output_Unimodal] = SA_Output(Scenario,Av,ACg,max_file_u);
+%     save(['Output_' Scenario '.mat'],'Filtered_Output_Unimodal');
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 65+ Two Doses
@@ -97,11 +79,11 @@ for t_d=1:8
 
     Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_50_and_older_W'];
     [Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
-    save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
+    save(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_50_64_W.mat'],'Filtered_Output_Large_Winter');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 50+ Two Doses
+% 18-49 Two Doses
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
 for t_d=1:8    
@@ -111,4 +93,32 @@ for t_d=1:8
     [Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
     save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
 end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Waning
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Scenario=['FDA_Two_Dose_ILC_Slow_Waning_Vaccine_W'];
+[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
+save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
+
+Scenario=['Annual_ILC_Slow_Waning_Vaccine_W'];
+[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
+save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
+
+Scenario=['FDA_Two_Dose_ILC_Fast_Waning_Vaccine_W'];
+[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
+save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
+
+Scenario=['Annual_ILC_Fast_Waning_Vaccine_W'];
+[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
+save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
+
+Scenario=['FDA_Two_Dose_ILC_Other_Waning_Vaccine_W'];
+[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
+save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
+
+Scenario=['Annual_ILC_Other_Waning_Vaccine_W'];
+[Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
+save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
 

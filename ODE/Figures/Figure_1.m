@@ -2,7 +2,7 @@ function Figure_1
 close all;
 Y_Err.LineWidth=2;
 Y_Err.Cap_Size=40;
-XTL={'Annual','Two Dose'};
+XTL={'SD-AVC','FDA-AVC'};
 temp_cd=pwd;
 load([temp_cd(1:end-11) 'Contact_Matrix\Contact_USA_85.mat'],'N');
 Av=[0:84];
@@ -116,7 +116,8 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',A
 xlim([0.5 7.5])
 ylabel('Incidence per 10,000','FontSize',16)
 xlabel('Age group','FontSize',16)
-legend({'Annual','Two dose'},'Location','northwest');
+legend({'SD-AVC','FDA-AVC'},'Location','northwest');
+legend boxoff
 text(-0.14,1,'E','Fontsize',28,'Units','Normalized');
 subplot('Position',[0.565, 0.42,0.43 0.28])
 
@@ -131,7 +132,8 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',A
 xlim([0.5 7.5])
 ylabel('Hospitalziation per 10,000','FontSize',16)
 xlabel('Age group','FontSize',16)
-legend({'Annual','Two dose'},'Location','northwest');
+legend({'SD-AVC','FDA-AVC'},'Location','northwest');
+legend boxoff
 text(-0.14,1,'F','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.075, 0.07,0.43 0.28])
@@ -149,7 +151,8 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',A
 xlim([0.5 7.5])
 ylabel('Deaths per 10,000','FontSize',16)
 xlabel('Age group','FontSize',16)
-legend({'Annual','Two dose'},'Location','northwest');
+legend({'SD-AVC','FDA-AVC'},'Location','northwest');
+legend boxoff
 text(-0.14,1,'G','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.565, 0.07,0.43 0.28])
@@ -166,7 +169,8 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',A
 xlim([0.5 7.5])
 ylabel('Costs ($, million) per 10,000','FontSize',16)
 xlabel('Age group','FontSize',16)
-legend({'Annual','Two dose'},'Location','northwest');
+legend({'SD-AVC','FDA-AVC'},'Location','northwest');
+legend boxoff
 text(-0.14,1,'H','Fontsize',28,'Units','Normalized');
 print(gcf,['Figure_1.jpg'],'-djpeg','-r600');    
 print(gcf,['Figure_1.png'],'-dpng','-r600');    

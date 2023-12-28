@@ -1,4 +1,4 @@
-function Figure_2()
+function Supplementary_Figure_11()
 close all;
 temp_cd=pwd;
 
@@ -31,7 +31,7 @@ Y_Err.LB=zeros(8,1);
 Y_Err.UB=zeros(8,1);
 for dd=90:30:300
     
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(dd) '_days.mat']);
     Y(dd./30-2)=10^4.*Comparison.Average.Cumulative_Count_Incidence_dt./Tot_Pop;
     Y_Err.LB(dd./30-2)=10^4.*Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==97.5)./Tot_Pop;
     Y_Err.UB(dd./30-2)=10^4.*Comparison.PRCT.Cumulative_Count_Incidence_dt(PRCT==2.5)./Tot_Pop;
@@ -54,7 +54,7 @@ Y=zeros(8,1);
 Y_Err.LB=zeros(8,1);
 Y_Err.UB=zeros(8,1);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(dd) '_days.mat']);
     Y(dd./30-2)=10^4.*Comparison.Average.Cumulative_Count_Hospital_dt./Tot_Pop;
     Y_Err.LB(dd./30-2)=10^4.*Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5)./Tot_Pop;
     Y_Err.UB(dd./30-2)=10^4.*Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5)./Tot_Pop;
@@ -63,11 +63,11 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL,'YTick',[1:6])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
 ylabel({'Hospitalizations','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
-ylim([0 6])
+ylim([0 5])
 
 
 text(-0.345,1.025,'B','Fontsize',28,'Units','Normalized');
@@ -77,7 +77,7 @@ Y=zeros(8,1);
 Y_Err.LB=zeros(8,1);
 Y_Err.UB=zeros(8,1);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(dd) '_days.mat']);
     Y(dd./30-2)=10^4.*Comparison.Average.Cumulative_Count_Death_dt./Tot_Pop;
     Y_Err.LB(dd./30-2)=10^4.*Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5)./Tot_Pop;
     Y_Err.UB(dd./30-2)=10^4.*Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5)./Tot_Pop;
@@ -97,7 +97,7 @@ text(-0.345,1.025,'C','Fontsize',28,'Units','Normalized');
 subplot('Position',[0.815, 0.77,0.18 0.2])
 
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(dd) '_days.mat']);
     Y(dd./30-2)=(10^4.*Comparison.Average.Cost_Total_dt(end)./Tot_Pop)./10^5;
     Y_Err.LB(dd./30-2)=(10^4.*Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./Tot_Pop)./10^5;
     Y_Err.UB(dd./30-2)=(10^4.*Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./Tot_Pop)./10^5;
@@ -106,12 +106,12 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL,'YTick',[0:0.2:1.6])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
 ylabel({'Costs ($100,000)','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
 
-ylim([0 1.6])
+ylim([0 1.5])
 
 text(-0.345,1.025,'D','Fontsize',28,'Units','Normalized');
 
@@ -125,7 +125,7 @@ Y=zeros(7,8);
 Y_Err.LB=zeros(7,8);
 Y_Err.UB=zeros(7,8);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(dd) '_days.mat']);
     Y(:,dd./30-2)=10.^4.*Comparison.Average.Age_Cumulative_Count_Incidence_dt(1,1:7,end)./Pop;
     Y_Err.LB(:,dd./30-2)=10.^4.*Comparison.PRCT.Age_Cumulative_Count_Incidence_dt(PRCT==97.5,1:7,end)./Pop;
     Y_Err.UB(:,dd./30-2)=10.^4.*Comparison.PRCT.Age_Cumulative_Count_Incidence_dt(PRCT==2.5,1:7,end)./Pop;
@@ -148,7 +148,7 @@ Y=zeros(7,8);
 Y_Err.LB=zeros(7,8);
 Y_Err.UB=zeros(7,8);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(dd) '_days.mat']);
     Y(:,dd./30-2)=10.^4.*Comparison.Average.Age_Cumulative_Count_Hospital_dt(1,1:7,end)./Pop;
     Y_Err.LB(:,dd./30-2)=10.^4.*Comparison.PRCT.Age_Cumulative_Count_Hospital_dt(PRCT==97.5,1:7,end)./Pop;
     Y_Err.UB(:,dd./30-2)=10.^4.*Comparison.PRCT.Age_Cumulative_Count_Hospital_dt(PRCT==2.5,1:7,end)./Pop;
@@ -169,7 +169,7 @@ Y=zeros(7,8);
 Y_Err.LB=zeros(7,8);
 Y_Err.UB=zeros(7,8);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(dd) '_days.mat']);
     Y(:,dd./30-2)=10.^4.*Comparison.Average.Age_Cumulative_Count_Death_dt(:,1:7,end)./Pop;
     Y_Err.LB(:,dd./30-2)=10.^4.*Comparison.PRCT.Age_Cumulative_Count_Death_dt(PRCT==97.5,1:7,end)./Pop;
     Y_Err.UB(:,dd./30-2)=10.^4.*Comparison.PRCT.Age_Cumulative_Count_Death_dt(PRCT==2.5,1:7,end)./Pop;
@@ -177,7 +177,7 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C,'YTick',[0:0.2:1.4]);
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C);
 
 xlim([0.5 7.5])
 ylabel({'Deaths','averted per 10,000'},'FontSize',16)
@@ -186,13 +186,13 @@ l=legend(XTL,'Location','northwest','NumColumns',4);
 l.Title.String='Days between doses';
 legend boxoff
 text(-0.14,1,'G','Fontsize',28,'Units','Normalized');
-ylim([0 1.4])
+ylim([0 1.3])
 subplot('Position',[0.565, 0.07,0.43 0.27])
 Y=zeros(7,8);
 Y_Err.LB=zeros(7,8);
 Y_Err.UB=zeros(7,8);
 for dd=90:30:300
-    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(dd) '_days.mat']);
+    load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(dd) '_days.mat']);
     Y(:,dd./30-2)=(10.^4.*Comparison.Average.Cost_Age_dt(:,1:7,end)./Pop)./10^5;
     Y_Err.LB(:,dd./30-2)=(10.^4.*Comparison.PRCT.Cost_Age_dt(PRCT==97.5,1:7,end)./Pop)./10^5;
     Y_Err.UB(:,dd./30-2)=(10.^4.*Comparison.PRCT.Cost_Age_dt(PRCT==2.5,1:7,end)./Pop)./10^5;
@@ -208,6 +208,5 @@ l=legend(XTL,'Location','northwest','NumColumns',4);
 l.Title.String='Days between doses';
 legend boxoff
 text(-0.14,1,'H','Fontsize',28,'Units','Normalized');
-print(gcf,['Figure_2.jpg'],'-djpeg','-r600');    
-print(gcf,['Figure_2.png'],'-dpng','-r300');    
+print(gcf,['Supplementary_Figure_11-18_to_49.png'],'-dpng','-r300');    
 end

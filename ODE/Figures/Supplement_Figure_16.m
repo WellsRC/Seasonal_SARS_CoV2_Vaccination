@@ -1,4 +1,4 @@
-function  Supplement_Figure_10
+function  Supplement_Figure_16
 close all;
 Y_Err.LineWidth=2;
 Y_Err.Cap_Size=40;
@@ -26,7 +26,7 @@ Calibration=Output_Summary;
 C_Plot=[hex2rgb('#2f4f4f');
     hex2rgb('#FFC20A');
         hex2rgb('#0C7BDC')];
-figure('units','normalized','outerposition',[0 0.08 0.8 1]);
+figure('units','normalized','outerposition',[0 0.01 0.8 1]);
 
 Age_C={'All ages',['Ages: 0' char(8211) '1'],['Ages: 2' char(8211) '4'],['Ages: 5' char(8211) '12'],['Ages: 13' char(8211) '17'],['Ages: 18' char(8211) '49'],['Ages: 50' char(8211) '64'],'Ages: 65+'};
 
@@ -48,7 +48,7 @@ Y_SD_Vac_Immunity_Age=[Calibration.Average.SD_Vaccine_Immunity_Age;
     Two_Dose.Average.SD_Vaccine_Immunity_Age];
 Y_SD_Vac_Immunity_Age=Y_SD_Vac_Immunity_Age(:,1:7,:);
 dx=[0.075 0.32 0.565 0.815];
-dy=[0.78 0.56];
+dy=[0.785 0.565];
 for ii=1:8
     subplot('Position',[dx(ii-4.*floor((ii-1)/4)), dy(ceil(ii./4)),0.18 0.2]);
     if(ii==1)
@@ -65,7 +65,7 @@ for ii=1:8
     xlim([T(1) T(53)])
     ylim([0 0.8])
     box off;
-    set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',[])
+    set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTick',T([1:5:53]),'XTickLabel',[])
     ylabel({'Immunity to','severe disease'},'fontsize',16)
     text(0.05,0.95,Age_C{ii},'Fontsize',16,'units','normalized')
     text(-0.3,1,char(64+ii),"FontSize",24,'units','normalized')
@@ -90,7 +90,7 @@ Y_Inf_Vac_Immunity_Age=[Calibration.Average.Inf_Vaccine_Immunity_Age;
     Two_Dose.Average.Inf_Vaccine_Immunity_Age];
 Y_Inf_Vac_Immunity_Age=Y_Inf_Vac_Immunity_Age(:,1:7,:);
 
-dy=[0.34 0.12];
+dy=[0.345 0.125];
 for ii=1:8
     subplot('Position',[dx(ii-4.*floor((ii-1)/4)), dy(ceil(ii./4)),0.18 0.2]);
     if(ii==1)
@@ -107,9 +107,9 @@ for ii=1:8
     xlim([T(1) T(53)])
     ylim([0 0.6])
     if(ii<5)
-        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTickLabel',[],'YTick',[0:0.1:0.6])
+        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTick',T([1:5:53]),'XTickLabel',[],'YTick',[0:0.1:0.6])
     else
-        set(gca,'LineWidth',2,'tickdir','out','FontSize',14)
+        set(gca,'LineWidth',2,'tickdir','out','FontSize',14,'XTick',T([1:5:53]))
         xlabel('Date','fontsize',16)
         xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
     end
@@ -118,6 +118,8 @@ for ii=1:8
     text(0.05,0.95,Age_C{ii},'Fontsize',16,'units','normalized')
     text(-0.3,1,char(72+ii),"FontSize",24,'units','normalized')
 end
-legend({'Continual: Vaccine','Continual: Natural','SD-AVC: Vaccine','SD-AVC: Natural','FDA-AVC: Vaccine','FDA-AVC: Natural'},'NumColumns',6,'Position',[0.157933638715726,0.022406542734027,0.738157878737701,0.026715076489287],'Fontsize',16)
+legend({'Continual: Vaccine','Continual: Natural','SD-AVC: Vaccine','SD-AVC: Natural','FDA-AVC: Vaccine','FDA-AVC: Natural'},'NumColumns',6,'Position',[0.157933638715726,0.002406542734027,0.738157878737701,0.026715076489287],'Fontsize',16)
+legend boxoff;
+print(gcf,['Supplementary_Figure_16.png'],'-dpng','-r300');    
 end
 
