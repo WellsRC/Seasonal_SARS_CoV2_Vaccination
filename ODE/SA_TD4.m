@@ -12,9 +12,9 @@ NSv(end)=NS-sum(NSv(1:end-1));
 Age_Dose=zeros(size(AC));
 Age_Dose(AC>=50  | AC<2)=1;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-% Reduced transmission
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+Reduced transmission
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for t_d=1:8    
     Time_Dose=90+30.*(t_d-1);
@@ -67,7 +67,7 @@ for t_d=1:8
                     Parameters.Add_dose.Time=Time_Dose+T_Run(1);
                     Parameters.Add_dose.Age=Age_Dose;
                     Parameters.Proportion_Two_Dose=Age_Dose(:);
-                    Parameters.Add_dose.Proportion_Two_Dose=(1-red_vc).*Proportion_Two_Dose;
+                    Parameters.Proportion_Two_Dose=(1-red_vc).*Parameters.Proportion_Two_Dose;
                     [~,Model_Output{jj}] = Run_Two_Dose_ODE(T_Run,Parameters);
                 end
                 save(['FDA_Two_Dose_' num2str(Time_Dose) '_days_ILC_Reduced_2_Dose_' num2str(100.*red_vc) '_' num2str(ii) '.mat'],'T_Run','Model_Output');

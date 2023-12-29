@@ -38,13 +38,13 @@ Per_Month=100.*Count_Month./sum(Count_Month(:));
 
 T= datetime(2023,9,1) + caldays(0:364);
 
-H_Data=readtable('data_table_for_weekly_covid19_hospital_admissions_-_the_united_states.csv');
-T_Data=datetime(2023,9,1) + caldays(0:101);
+H_Data=readtable('Hospital_Admission_US_September_1_2023.csv');
+T_Data=datetime(2023,9,1) + caldays(0:105);
 HD_P=zeros(length(T_Data),1);
-DHA=H_Data.AverageDaily;
+DHA=H_Data.Admissions;
 DHA_Date=H_Data.Date;
 for ii=1:length(HD_P)
-    f_indx=find(T_Data(ii)>=DHA_Date,1);
+    f_indx=find(T_Data(ii)<=DHA_Date,1);
     HD_P(ii)=DHA(f_indx);
 end
 
@@ -195,13 +195,13 @@ Per_Month=100.*Count_Month./sum(Count_Month(:));
 
 T= datetime(2023,9,1) + caldays(0:364);
 
-H_Data=readtable('data_table_for_weekly_covid19_hospital_admissions_-_the_united_states.csv');
-T_Data=datetime(2023,9,1) + caldays(0:101);
+H_Data=readtable('Hospital_Admission_US_September_1_2023.csv');
+T_Data=datetime(2023,9,1) + caldays(0:105);
 HD_P=zeros(length(T_Data),1);
-DHA=H_Data.AverageDaily;
+DHA=H_Data.Admissions;
 DHA_Date=H_Data.Date;
 for ii=1:length(HD_P)
-    f_indx=find(T_Data(ii)>=DHA_Date,1);
+    f_indx=find(T_Data(ii)<=DHA_Date,1);
     HD_P(ii)=DHA(f_indx);
 end
 
@@ -286,13 +286,13 @@ Per_Month=100.*Count_Month./sum(Count_Month(:));
 
 T= datetime(2023,9,1) + caldays(0:364);
 
-H_Data=readtable('data_table_for_weekly_covid19_hospital_admissions_-_the_united_states.csv');
-T_Data=datetime(2023,9,1) + caldays(0:101);
+H_Data=readtable('Hospital_Admission_US_September_1_2023.csv');
+T_Data=datetime(2023,9,1) + caldays(0:105);
 HD_P=zeros(length(T_Data),1);
-DHA=H_Data.AverageDaily;
+DHA=H_Data.Admissions;
 DHA_Date=H_Data.Date;
 for ii=1:length(HD_P)
-    f_indx=find(T_Data(ii)>=DHA_Date,1);
+    f_indx=find(T_Data(ii)<=DHA_Date,1);
     HD_P(ii)=DHA(f_indx);
 end
 

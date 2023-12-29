@@ -227,6 +227,24 @@ for red_tran=0.05:0.05:0.1
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+% Transmission
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+clear;
+clc;
+for red_tran=0.05:0.05:0.1
+    load(['Output_Annual_ILC_Increased_Transmission_' num2str(100.*red_tran) '.mat'],'Filtered_Output_Large_Winter');
+    Annual_Output=Filtered_Output_Large_Winter;
+    Scenario_Calculations(Annual_Output,['Increased_Transmission_' num2str(100.*red_tran) '_SA_Annual']);
+    
+    for t_d=1:8    
+        Time_Dose=90+30.*(t_d-1);    
+        load(['Output_FDA_Two_Dose_' num2str(Time_Dose) '_days_ILC_Increased_Transmission_' num2str(100.*red_tran) '.mat'],'Filtered_Output_Large_Winter');
+        Scenario_Calculations(Filtered_Output_Large_Winter,['Increased_Transmission_' num2str(100.*red_tran) '_SA_FDA_' num2str(Time_Dose) '_days']);
+        Comparison_Calculations(Annual_Output,Filtered_Output_Large_Winter,['Increased_Transmission_' num2str(100.*red_tran) '_SA_FDA_' num2str(Time_Dose) '_days' ]);
+    end
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 % Second Dose
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 clear;
