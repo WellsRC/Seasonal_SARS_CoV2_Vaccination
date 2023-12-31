@@ -19,7 +19,7 @@ if((length(dt_pks)>=2))
            end
        end
        
-       if(dt_pks(pp)>=datenum('May 1, 2023') && dt_pks(pp)<=datenum('August 31, 2023'))
+       if(dt_pks(pp)>=datenum('April 1, 2023') && dt_pks(pp)<=datenum('August 31, 2023'))
            Summer_Peak=1;
            if(m_pks(pp)>Mag_Peaks(2))
                 Mag_Peaks(2)=m_pks(pp);
