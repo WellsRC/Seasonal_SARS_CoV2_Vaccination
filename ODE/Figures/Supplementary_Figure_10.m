@@ -40,11 +40,11 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL,'YTick',[0:75:450])
 ylabel({'Incidence','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
-ylim([0 500])
+ylim([0 450])
 
 
 text(-0.345,1.025,'A','Fontsize',28,'Units','Normalized')
@@ -85,12 +85,12 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL,'YTick',[0:0.05:0.25])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL,'YTick',[0:0.03:0.21])
 ylabel({'Deaths','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
 
-ylim([0 0.25])
+ylim([0 0.21])
 
 text(-0.345,1.025,'C','Fontsize',28,'Units','Normalized');
 
@@ -106,12 +106,12 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL,'YTick',[0:0.2:1.4])
 ylabel({'Costs ($100,000)','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
 
-ylim([0 1.5])
+ylim([0 1.4])
 
 text(-0.345,1.025,'D','Fontsize',28,'Units','Normalized');
 
@@ -135,7 +135,7 @@ Error_Bar_Plot(Y,Y_Err,C_Plot);
 
 box off;
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C);
-ylim([0 700])
+ylim([0 650])
 xlim([0.5 7.5])
 ylabel({'Incidence','averted per 10,000'},'FontSize',16)
 xlabel('Age group','FontSize',16)
@@ -163,7 +163,7 @@ l=legend(XTL,'Location','northwest','NumColumns',4);
 l.Title.String='Days between doses';
 legend boxoff
 text(-0.14,1,'F','Fontsize',28,'Units','Normalized');
-ylim([0 25])
+ylim([0 21])
 subplot('Position',[0.065, 0.07,0.43 0.27])
 Y=zeros(7,8);
 Y_Err.LB=zeros(7,8);
@@ -200,7 +200,7 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C)
-ylim([0 7])
+ylim([0 6])
 xlim([0.5 7.5])
 ylabel({'Costs ($100,000)','averted per 10,000'},'FontSize',16)
 xlabel('Age group','FontSize',16)

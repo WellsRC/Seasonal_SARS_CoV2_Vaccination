@@ -4,24 +4,7 @@ clc;
 Av=[0:84];
 ACg=[0 1;2 4;5 12;13 17; 18 49; 50 64; 65 85;0 17;18 64;65 85];
 
- max_file_w=3;
- max_file_s=1;
- max_file_u=9;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FDA difference in peaks
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-
-for t_d=1:8    
-    Time_Dose=90+30.*(t_d-1);
-    Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_S'];
-    [Filtered_Output_Large_Summer] = SA_Output(Scenario,Av,ACg,max_file_s);
-    save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Summer');
-    
-    Scenario=['Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_U'];
-    [Filtered_Output_Unimodal] = SA_Output(Scenario,Av,ACg,max_file_u);
-    save(['Output_' Scenario '.mat'],'Filtered_Output_Unimodal');
-end
-
+ max_file_w=4;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Delay

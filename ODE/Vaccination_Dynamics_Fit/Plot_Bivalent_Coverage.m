@@ -3,7 +3,7 @@ clc;
 close all;
 load('Bivalent_Vaccination_Parameters.mat','par_A','Age_C','VC','fval');
 
-Age_C_P={'Ages 0-2yrs';'Ages 12-15 yrs';'Ages 16-17 yrs';'Ages 18-24 yrs';'Ages 2-4 yrs';'Ages 25-39 yrs';'Ages 40-49 yrs';'Ages 5-11 yrs';'Ages 50-64 yrs';'Ages 65-74 yrs';'Ages 75+ yrs'};
+Age_C_P={'Ages 0-1yrs';'Ages 12-15 yrs';'Ages 16-17 yrs';'Ages 18-24 yrs';'Ages 2-4 yrs';'Ages 25-39 yrs';'Ages 40-49 yrs';'Ages 5-11 yrs';'Ages 50-64 yrs';'Ages 65-74 yrs';'Ages 75+ yrs'};
 
 Indx=[1 5 8 2 3 4 6 7 9 10 11];
 T=readtable('National_Bivalent_Coverage.xlsx');

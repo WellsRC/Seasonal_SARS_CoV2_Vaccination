@@ -41,6 +41,8 @@ Y_Hosp_Age=Y_Hosp_Age(:,1:7,:);
 T=[1:365];
 dx=[0.075 0.32 0.565 0.815];
 dy=[0.615 0.125];
+
+ymm=[6500 1.2 2.75 6.5 2 32 25 55];
 for ii=1:8
     subplot('Position',[dx(ii-4.*floor((ii-1)/4)), dy(ceil(ii./4)),0.18 0.36]);
     if(ii==1)
@@ -70,6 +72,7 @@ for ii=1:8
         xlabel('Date','fontsize',16)
 %         xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
     end
+    ylim([0 ymm(ii)]);
     if(ii==1)
         ylabel({'Hospital admissions'},'fontsize',16)
     else

@@ -33,11 +33,11 @@ Y_Err.UB=10^4.*[Annual.PRCT.Cumulative_Count_Incidence(ismember(PRCT,97.5));
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',XTL,'YTick',[4500:250:5500])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',XTL,'YTick',[4300:250:5300])
 ylabel({'Incidence','per 10,000'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 2.5])
-ylim([4500 5500])
+ylim([4300 5300])
 
 text(-0.3,1,'A','Fontsize',28,'Units','Normalized')
 
@@ -53,11 +53,11 @@ Y_Err.UB=10^4.*[Annual.PRCT.Cumulative_Count_Hospital(ismember(PRCT,97.5));
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',XTL,'YTick',[25:2:35])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',XTL,'YTick',[24:2:34])
 ylabel({'Hospitalizations','per 10,000'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 2.5])
-ylim([25 35])
+ylim([24 34])
 
 text(-0.3,1,'B','Fontsize',28,'Units','Normalized');
 
@@ -76,7 +76,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',X
 ylabel({'Deaths','per 10,000'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 2.5])
-ylim([1 1.4])
+ylim([0.9 1.35])
 text(-0.3,1,'C','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.815, 0.77,0.18 0.2])
@@ -90,11 +90,11 @@ Y_Err.UB=10^4.*[Annual.PRCT.Cost_Total(ismember(PRCT,97.5),end)';
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',XTL,'YTick',[0.5:0.1:1.1])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2],'XTickLabel',XTL,'YTick',[0.7:0.1:1])
 ylabel({'Costs ($, million)','per 10,000'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 2.5])
-ylim([0.5 1.1])
+ylim([0.7 1])
 text(-0.3,1,'D','Fontsize',28,'Units','Normalized');
 
 

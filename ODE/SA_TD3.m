@@ -10,7 +10,7 @@ NSv(end)=NS-sum(NSv(1:end-1));
 Age_Dose=zeros(size(AC));
 Age_Dose(AC>=50  | AC<2)=1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Bimodal peaks reduced vaccine efficacy to SD
+% Bimodal peaks reduced vaccine efficacy to SD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for t_d=1:8    
     Time_Dose=90+30.*(t_d-1);
