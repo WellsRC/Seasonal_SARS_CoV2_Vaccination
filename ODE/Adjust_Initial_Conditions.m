@@ -98,6 +98,7 @@ if(~isempty(vac_c))
     
     X0(S_i)=X0(S_n).*vac_c;
     X0(S_n)=X0(S_n)-X0(S_i);
+end
 if(~isempty(Proportion_Delay))
     X0(dR1_i)=X0(R1_i).*Proportion_Delay;
     X0(dR2_i)=X0(R2_i).*Proportion_Delay;

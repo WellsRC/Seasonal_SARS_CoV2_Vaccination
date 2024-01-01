@@ -103,7 +103,7 @@ end
 clear;
 clc;
 
-for tau_delay=7:7:28
+for tau_delay=14:14:28
     for p_delay=0.41:0.23:0.64
         load(['Output_Annual_ILC_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '.mat'],'Filtered_Output_Large_Winter');
         Annual_Output=Filtered_Output_Large_Winter;

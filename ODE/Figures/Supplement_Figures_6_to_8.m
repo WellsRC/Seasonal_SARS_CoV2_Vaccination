@@ -98,11 +98,11 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:40000,'Yminortick','on');
 title('Winter peak: September 1 to November 30')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 35000])
+ylim([0 40000])
 xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
@@ -122,11 +122,11 @@ plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:40000,'Yminortick','on');
 title('Winter peak: December 1 to January 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 35000])
+ylim([0 40000])
 xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;
@@ -144,11 +144,11 @@ plot(T,YM,'-.','color',hex2rgb('#E94F08'),'LineWidth',2);
 plot(T_Data,HD_P,'k','LineStyle','-.','LineWidth',1.5);
 box off;
 xlim([T(1) T(end)])
-set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:35000,'Yminortick','on');
+set(gca,'LineWidth',2,'TickDir','out','XTick',T(1:28:end),'Fontsize',16,'YTick',0:5000:40000,'Yminortick','on');
 title('Winter peak: February 1 to March 31')
 xlabel('Date','Fontsize',18)
 ylabel('Hospital admissions','Fontsize',18)
-ylim([0 35000])
+ylim([0 40000])
 xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 ax = gca; % axes handle
 ax.YAxis.Exponent = 0;

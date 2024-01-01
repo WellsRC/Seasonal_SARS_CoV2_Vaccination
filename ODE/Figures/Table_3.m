@@ -15,12 +15,10 @@ Main_Scenario={'Baseline';
 'Reduced uptake of second dose';
 'Reduced transmission rate';
 'Reduced transmission rate';
+'Increased transmission rate';
+'Increased transmission rate';
 'Duration of delay (41%% a delay second dose)';
 'Duration of delay (41%% a delay second dose)';
-'Duration of delay (41%% a delay second dose)';
-'Duration of delay (41%% a delay second dose)';
-'Duration of delay (64%% a delay second dose)';
-'Duration of delay (64%% a delay second dose)';
 'Duration of delay (64%% a delay second dose)';
 'Duration of delay (64%% a delay second dose)';
 'Reduced probability of hospitalization';
@@ -43,13 +41,11 @@ Sub_Scenario={'Baseline';
 '66%%'
 '5%%'
 '10%%'
-'7 days'
+'5%%'
+'10%%'
 '14 days'
-'21 days'
 '28 days'
-'7 days'
 '14 days'
-'21 days'
 '28 days'
 '33%%'
 '66%%'
@@ -77,13 +73,11 @@ Output_Call={'Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_';
 'Reduced_2_Dose_66_SA_FDA_';
 'Reduced_Transmission_5_SA_FDA_';
 'Reduced_Transmission_10_SA_FDA_';
-'SA_Delay_7_days_41_Two_Dose_FDA_';
+'Increased_Transmission_5_SA_FDA_';
+'Increased_Transmission_10_SA_FDA_';
 'SA_Delay_14_days_41_Two_Dose_FDA_';
-'SA_Delay_21_days_41_Two_Dose_FDA_';
 'SA_Delay_28_days_41_Two_Dose_FDA_';
-'SA_Delay_7_days_64_Two_Dose_FDA_';
 'SA_Delay_14_days_64_Two_Dose_FDA_';
-'SA_Delay_21_days_64_Two_Dose_FDA_';
 'SA_Delay_28_days_64_Two_Dose_FDA_';
 'Reduced_Prob_Hospital_33_SA_FDA_';
 'Reduced_Prob_Hospital_66_SA_FDA_';
