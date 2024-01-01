@@ -7,13 +7,22 @@ Time_Peaks=NaN.*zeros(NG*NS,2);
 WPks=NaN.*zeros(NG*NS,1);
 temp_cd=pwd;
 
-for gg=1:NG
-    load([temp_cd(1:end-15) 'Sample_Gen_' num2str(gg) '.mat'],'P','T_Run','Model_Output');
-   for ss=1:NS 
-        MO=Model_Output{ss};        
-        [Pks(ss+NS.*(gg-1)),Time_Peaks(ss+NS.*(gg-1),:),WPks(ss+NS.*(gg-1))]=Hospital_Admission_Peak(MO.Hospital_Admission,T_Run);  
-   end
-    P_All([1:NS]+NS.*(gg-1))=P;
+count_file=1;
+gg=1;
+while gg<=NG
+    try
+        load([temp_cd(1:end-15) 'Sample_Gen_' num2str(count_file) '.mat'],'P','T_Run','Model_Output');
+       for ss=1:NS 
+            MO=Model_Output{ss};        
+            [Pks(ss+NS.*(gg-1)),Time_Peaks(ss+NS.*(gg-1),:),WPks(ss+NS.*(gg-1))]=Hospital_Admission_Peak(MO.Hospital_Admission,T_Run);  
+       end
+        P_All([1:NS]+NS.*(gg-1))=P;
+        gg=gg+1;
+        count_file=count_file+1;
+    catch ME
+        count_file=count_file+1;
+    end
+
 end
 
 
@@ -35,7 +44,7 @@ p_N=min(0.75.*(sum(Indx_W)./3)./sum(Indx_WN),1); % need monthly average
 p_O=min(0.5.*(sum(Indx_W)./3)./sum(Indx_WO),1); % need monthly average
 p_S=min(0.25.*(sum(Indx_W)./3)./sum(Indx_WS),1); % need monthly average
 
-p_M=min(0.5.*(sum(Indx_W)./3)./sum(Indx_WO),1); % need monthly average
+p_M=min(0.5.*(sum(Indx_W)./3)./sum(Indx_WM),1); % need monthly average
 
 Weighted_Winter_Peak=zeros(size(WTime_Peaks,1));
 Weighted_Winter_Peak(Indx_W)=1;
@@ -83,7 +92,7 @@ p_N=min(0.75.*(sum(Indx_W)./3)./sum(Indx_WN),1); % need monthly average
 p_O=min(0.5.*(sum(Indx_W)./3)./sum(Indx_WO),1); % need monthly average
 p_S=min(0.25.*(sum(Indx_W)./3)./sum(Indx_WS),1); % need monthly average
 
-p_M=min(0.5.*(sum(Indx_W)./3)./sum(Indx_WO),1); % need monthly average
+p_M=min(0.5.*(sum(Indx_W)./3)./sum(Indx_WM),1); % need monthly average
 
 Weighted_Winter_Peak=zeros(size(STime_Peaks,1));
 Weighted_Winter_Peak(Indx_W)=1;

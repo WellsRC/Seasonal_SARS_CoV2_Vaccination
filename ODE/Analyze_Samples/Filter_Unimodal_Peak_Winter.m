@@ -7,13 +7,21 @@ Mag_Peaks=NaN.*zeros(NG*NS,1);
 Time_Peak=NaN.*zeros(NG*NS,1);
 temp_cd=pwd;
 
-for gg=1:NG
-    load([temp_cd(1:end-15) 'Sample_Gen_' num2str(gg) '.mat'],'P','T_Run','Model_Output');
-    for ss=1:NS 
-        MO=Model_Output{ss};        
-        [Pks(ss+NS.*(gg-1)),Mag_Peaks(ss+NS.*(gg-1)),Time_Peak(ss+NS.*(gg-1))]=Hospital_Admission_Unimodal_Winter_Peak(MO.Hospital_Admission,T_Run);    
+count_file=1;
+gg=1;
+while gg<=NG
+    try
+        load([temp_cd(1:end-15) 'Sample_Gen_' num2str(count_file) '.mat'],'P','T_Run','Model_Output');
+        for ss=1:NS 
+            MO=Model_Output{ss};        
+            [Pks(ss+NS.*(gg-1)),Mag_Peaks(ss+NS.*(gg-1)),Time_Peak(ss+NS.*(gg-1))]=Hospital_Admission_Unimodal_Winter_Peak(MO.Hospital_Admission,T_Run);    
+        end
+        P_All([1:NS]+NS.*(gg-1))=P;
+        gg=gg+1;
+        count_file=count_file+1;
+    catch ME
+        count_file=count_file+1;
     end
-    P_All([1:NS]+NS.*(gg-1))=P;
 end
 
 Count_W=(Time_Peak>=datenum('December 1, 2022') & Time_Peak<datenum('March 1, 2023'));

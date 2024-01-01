@@ -77,24 +77,6 @@ for eps_INC=0.33:0.33:0.66
     end
 end
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Efficacy SD
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-
-for eps_SD=0.33:0.33:0.66
-    Scenario=['Annual_ILC_Reduced_SD_Efficacy_' num2str(100.*eps_SD) ];
-    [Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
-    save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
-
-    for t_d=1:8    
-        Time_Dose=90+30.*(t_d-1);
-        Scenario=['FDA_Two_Dose_' num2str(Time_Dose) '_days_ILC_Reduced_SD_Efficacy_' num2str(100.*eps_SD) ];
-        [Filtered_Output_Large_Winter] = SA_Output(Scenario,Av,ACg,max_file_w);
-        save(['Output_' Scenario '.mat'],'Filtered_Output_Large_Winter');
-    end
-end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Efficacy Inf
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5

@@ -14,7 +14,7 @@ Age_Dose(AC>=50  | AC<2)=1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for t_d=1:8    
     Time_Dose=90+30.*(t_d-1);
-    for tau_delay=7:7:28
+    for tau_delay=14:14:28
         for p_delay=0.41:0.23:0.64
             for ii=1:length(NSv)  
                 Model_Output=cell(NSv(ii),1);
