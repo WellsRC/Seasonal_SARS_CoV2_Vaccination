@@ -1,45 +1,45 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Influenza-like coverage 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear;
-clc;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-% Scenario Calcualtions and comparison of annula vs two dose
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-
-load(['Output_Annual_ILC_S.mat'],'Filtered_Output_Large_Summer');
-Annual_Output=Filtered_Output_Large_Summer;
-Scenario_Calculations(Annual_Output,['Summer_SA_Annual']);
-
-for t_d=1:8    
-    Time_Dose=90+30.*(t_d-1);    
-    load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_S.mat'],'Filtered_Output_Large_Summer');
-    Scenario_Calculations(Filtered_Output_Large_Summer,['Summer_SA_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days']);
-    Comparison_Calculations(Annual_Output,Filtered_Output_Large_Summer,['Summer_SA_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days' ]);
-end
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Unimodal
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-clear;
-clc;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-% Scenario Calcualtions and comparison of annula vs two dose
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-
-load(['Output_Annual_ILC_U.mat'],'Filtered_Output_Unimodal');
-Annual_Output=Filtered_Output_Unimodal;
-Scenario_Calculations(Annual_Output,['UW_SA_Annual']);
-
-for t_d=1:8    
-    Time_Dose=90+30.*(t_d-1);    
-    load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_U.mat'],'Filtered_Output_Unimodal');
-    Scenario_Calculations(Filtered_Output_Unimodal,['UW_SA_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days']);
-    Comparison_Calculations(Annual_Output,Filtered_Output_Unimodal,['UW_SA_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days' ]);
-end
-
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Influenza-like coverage 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% clear;
+% clc;
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+% % Scenario Calcualtions and comparison of annula vs two dose
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+% 
+% load(['Output_Annual_ILC_S.mat'],'Filtered_Output_Large_Summer');
+% Annual_Output=Filtered_Output_Large_Summer;
+% Scenario_Calculations(Annual_Output,['Summer_SA_Annual']);
+% 
+% for t_d=1:8    
+%     Time_Dose=90+30.*(t_d-1);    
+%     load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_S.mat'],'Filtered_Output_Large_Summer');
+%     Scenario_Calculations(Filtered_Output_Large_Summer,['Summer_SA_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days']);
+%     Comparison_Calculations(Annual_Output,Filtered_Output_Large_Summer,['Summer_SA_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days' ]);
+% end
+% 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Unimodal
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% clear;
+% clc;
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+% % Scenario Calcualtions and comparison of annula vs two dose
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+% 
+% load(['Output_Annual_ILC_U.mat'],'Filtered_Output_Unimodal');
+% Annual_Output=Filtered_Output_Unimodal;
+% Scenario_Calculations(Annual_Output,['UW_SA_Annual']);
+% 
+% for t_d=1:8    
+%     Time_Dose=90+30.*(t_d-1);    
+%     load(['Output_Two_Dose_ILC_' num2str(Time_Dose) '_days_under_2_and_50_and_older_U.mat'],'Filtered_Output_Unimodal');
+%     Scenario_Calculations(Filtered_Output_Unimodal,['UW_SA_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days']);
+%     Comparison_Calculations(Annual_Output,Filtered_Output_Unimodal,['UW_SA_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days' ]);
+% end
+% 
 % 
 % 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,28 +96,28 @@ end
 %     Scenario_Calculations(Filtered_Output_Large_Winter,['Other_Waning_SA_Two_Dose_FDA_' num2str(Time_Dose) '_days']);
 %     Comparison_Calculations(Annual_Output,Filtered_Output_Large_Winter,['Other_Waning_SA_Two_Dose_FDA_' num2str(Time_Dose) '_days' ]);
 % end
-% 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% % Delay
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% clear;
-% clc;
-% 
-% for tau_delay=14:14:28
-%     for p_delay=0.41:0.23:0.64
-%         load(['Output_Annual_ILC_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '.mat'],'Filtered_Output_Large_Winter');
-%         Annual_Output=Filtered_Output_Large_Winter;
-%         Scenario_Calculations(Annual_Output,['SA_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '_Annual']);
-%         
-%         for t_d=1:8    
-%             Time_Dose=90+30.*(t_d-1);    
-%             load(['Output_FDA_Two_Dose_ILC_' num2str(Time_Dose) '_days_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '.mat'],'Filtered_Output_Large_Winter');
-%             Scenario_Calculations(Filtered_Output_Large_Winter,['SA_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '_Two_Dose_FDA_' num2str(Time_Dose) '_days']);
-%             Comparison_Calculations(Annual_Output,Filtered_Output_Large_Winter,['SA_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '_Two_Dose_FDA_' num2str(Time_Dose) '_days']);
-%         end
-% 
-%     end
-% end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Delay
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear;
+clc;
+
+for tau_delay=14:14:28
+    for p_delay=0.41:0.23:0.64
+        load(['Output_Annual_ILC_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '.mat'],'Filtered_Output_Large_Winter');
+        Annual_Output=Filtered_Output_Large_Winter;
+        Scenario_Calculations(Annual_Output,['SA_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '_Annual']);
+        
+        for t_d=1:8    
+            Time_Dose=90+30.*(t_d-1);    
+            load(['Output_FDA_Two_Dose_ILC_' num2str(Time_Dose) '_days_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '.mat'],'Filtered_Output_Large_Winter');
+            Scenario_Calculations(Filtered_Output_Large_Winter,['SA_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '_Two_Dose_FDA_' num2str(Time_Dose) '_days']);
+            Comparison_Calculations(Annual_Output,Filtered_Output_Large_Winter,['SA_Delay_' num2str(tau_delay) '_days_' num2str(100.*p_delay) '_Two_Dose_FDA_' num2str(Time_Dose) '_days']);
+        end
+
+    end
+end
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 % % Reduced vaccination rate
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55

@@ -39,11 +39,11 @@ Y_Err.UB=10^4.*[Calibration.PRCT.Cumulative_Count_Incidence(ismember(PRCT,97.5))
 
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel',XTL,'YTick',[4500:250:6000])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel',XTL,'YTick',[4000:500:6000])
 ylabel({'Incidence','per 10,000'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 3.5])
-ylim([4500 6000])
+ylim([4000 6000])
 
 text(-0.3,1,'A','Fontsize',28,'Units','Normalized')
 
@@ -62,11 +62,11 @@ Y_Err.UB=10^4.*[Calibration.PRCT.Cumulative_Count_Hospital(ismember(PRCT,97.5));
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel',XTL,'YTick',[26:2:38])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel',XTL,'YTick',[25:2:37])
 ylabel({'Hospitalizations','per 10,000'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 3.5])
-ylim([26 38])
+ylim([25 37])
 
 text(-0.3,1,'B','Fontsize',28,'Units','Normalized');
 
@@ -86,11 +86,11 @@ Y_Err.UB=10^4.*[Calibration.PRCT.Cumulative_Count_Death(ismember(PRCT,97.5));
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel',XTL,'YTick',[1:0.1:1.5])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel',XTL,'YTick',[0.9:0.1:1.5])
 ylabel({'Deaths','per 10,000'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 3.5])
-ylim([1 1.5])
+ylim([0.9 1.5])
 text(-0.3,1,'C','Fontsize',28,'Units','Normalized');
 
 subplot('Position',[0.815, 0.77,0.18 0.2])
@@ -107,11 +107,11 @@ Y_Err.UB=10^4.*[Calibration.PRCT.Cost_Total(ismember(PRCT,97.5),end)';
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel',XTL,'YTick',[0.75:0.1:1.15])
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1 2 3],'XTickLabel',XTL,'YTick',[0.7:0.1:1.1])
 ylabel({'Costs ($, million)','per 10,000'},'FontSize',16)
 xlabel('Strategy','FontSize',16)
 xlim([0.5 3.5])
-ylim([0.75 1.15])
+ylim([0.7 1.1])
 text(-0.3,1,'D','Fontsize',28,'Units','Normalized');
 
 

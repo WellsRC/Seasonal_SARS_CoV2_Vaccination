@@ -1,4 +1,4 @@
-function T = Table_3()
+function T = Supplemental_Table_3()
 
 temp_cd=pwd;
 
@@ -113,6 +113,6 @@ for ss=1:length(Sub_Scenario)
 end
 
 T=table(Main_Scenario,Sub_Scenario,Incidence,Hospitalizations,Deaths,Costs,Time_Dose_SA);
-writetable(T,'Table_3.xlsx');
+writetable(T,'Supplemental_Table_3.xlsx');
 end
 

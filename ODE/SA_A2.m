@@ -51,9 +51,9 @@ for eps_INC=0.33:0.33:0.66
             Parameters=Pt{jj};
             Parameters.q1_sd=Parameters.q1_sd+eps_INC.*(1-Parameters.q1_sd);
 
-            Parameters.eps_V1=Parameters.eps_V1+eps_INC.*(1-Parameters.q1_sd);
-            Parameters.eps_V2=Parameters.eps_V2+eps_INC.*(1-Parameters.q1_sd);
-            Parameters.eps_V3=Parameters.eps_V3+eps_INC.*(1-Parameters.q1_sd);
+            Parameters.eps_V1=Parameters.eps_V1+eps_INC.*(1-Parameters.eps_V1);
+            Parameters.eps_V2=Parameters.eps_V2+eps_INC.*(1-Parameters.eps_V2);
+            Parameters.eps_V3=Parameters.eps_V3+eps_INC.*(1-Parameters.eps_V3);
             [~,Model_Output{jj}] = Run_Annual_Booster_ODE(T_Run,Parameters);
         end            
         save(['Annual_ILC_Increased_Overall_Efficacy_' num2str(100.*eps_INC) '_' num2str(ii) '.mat'],'T_Run','Model_Output');
