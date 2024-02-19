@@ -1,6 +1,6 @@
 clear;
 clc;
-parpool(48);
+% parpool(48);
 % Only have data that can properly inform the efficacy and not the severe
 % disease efficacy for this specified age group 
 
@@ -109,7 +109,10 @@ ub=[0.8   0.7  0.8  -2.7  0   -1.25  0    0   1   0.7 1];
 load('Sample_60_plus_Vaccine_Immunity.mat','par_samp_vi_60p');
 par_samp_vi_60p=unique(par_samp_vi_60p,'rows');
 
+par_samp_vi_60p(:,2:3)=par_samp_vi_60p(:,2:3)./repmat(par_samp_vi_60p(:,1),1,2);
 par_samp_vi_60p(:,(N_State+1):(3*N_State-1))=log10(par_samp_vi_60p(:,(N_State+1):(3*N_State-1)));
+
+% par_samp_vi_60p=[0.635353125065089	0.999919264222519	0.999919264222519	-5.03795863202380	-1.03578809067720	-7.99998926943677	-0.809459016070519	-0.975835694669470	0.887938026478497	0.999943969500544	0.383202695158693];
 
 L_old=zeros(size(par_samp_vi_60p,1),1);
 parfor ii=1:size(par_samp_vi_60p,1)

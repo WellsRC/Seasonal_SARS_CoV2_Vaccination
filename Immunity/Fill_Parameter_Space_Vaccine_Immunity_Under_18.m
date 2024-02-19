@@ -108,14 +108,17 @@ for ii=1:length(a_range_sd)
 end
 
 N_State=3;
-
+% 
 load('Sample_Under_18_Vaccine_Immunity.mat','par_samp_vi_U18');
 par_samp_vi_U18=unique(par_samp_vi_U18,'rows');
 
+par_samp_vi_U18(:,2:3)=par_samp_vi_U18(:,2:3)./repmat(par_samp_vi_U18(:,1),1,2);
 par_samp_vi_U18(:,(N_State+1):(3*N_State-1))=log10(par_samp_vi_U18(:,(N_State+1):(3*N_State-1)));
+
+% par_samp_vi_U18=[0.700976562500000	0.818164062500000	0.818164062500000	-4.09277343750000	-3.96875000000000	-5	-0.363281250000000	-1.04824218750000	0.753710937500000	0.999218750000000	0.439257812500000];
+
 lb=[0.65   0.75  0 -7 -7 -5 -1.5 -3   0.6 0.7 0];
 ub=[0.75   0.9   1  0 -2  0 -0   -0   1   1   1];
-
 
 L_old=zeros(size(par_samp_vi_U18,1),1);
 parfor ii=1:size(par_samp_vi_U18,1)

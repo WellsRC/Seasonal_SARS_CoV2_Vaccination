@@ -44,7 +44,7 @@ set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',X
 ylabel({'Incidence','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
-ylim([0 450])
+ylim([0 375])
 
 
 text(-0.345,1.025,'A','Fontsize',28,'Units','Normalized')
@@ -63,11 +63,11 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL)
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:8],'XTickLabel',XTL,'YTick',[0:5])
 ylabel({'Hospitalizations','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
-ylim([0 5])
+ylim([0 4])
 
 
 text(-0.345,1.025,'B','Fontsize',28,'Units','Normalized');
@@ -90,7 +90,7 @@ ylabel({'Deaths','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
 
-ylim([0 0.21])
+ylim([0 0.18])
 
 text(-0.345,1.025,'C','Fontsize',28,'Units','Normalized');
 
@@ -111,7 +111,7 @@ ylabel({'Costs ($100,000)','averted per 10,000'},'FontSize',16)
 xlabel('Days between doses','FontSize',16)
 xlim([0.5 8.5])
 
-ylim([0 1.4])
+ylim([0 1.2])
 
 text(-0.345,1.025,'D','Fontsize',28,'Units','Normalized');
 
@@ -135,7 +135,7 @@ Error_Bar_Plot(Y,Y_Err,C_Plot);
 
 box off;
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C);
-ylim([0 650])
+ylim([0 525])
 xlim([0.5 7.5])
 ylabel({'Incidence','averted per 10,000'},'FontSize',16)
 xlabel('Age group','FontSize',16)
@@ -155,7 +155,7 @@ for dd=90:30:300
 end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C);
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C,'YTick',[0:3:18]);
 xlim([0.5 7.5])
 ylabel({'Hospitalization','averted per 10,000'},'FontSize',16)
 xlabel('Age group','FontSize',16)
@@ -163,7 +163,7 @@ l=legend(XTL,'Location','northwest','NumColumns',4);
 l.Title.String='Days between doses';
 legend boxoff
 text(-0.14,1,'F','Fontsize',28,'Units','Normalized');
-ylim([0 21])
+ylim([0 18])
 subplot('Position',[0.065, 0.07,0.43 0.27])
 Y=zeros(7,8);
 Y_Err.LB=zeros(7,8);
@@ -177,7 +177,7 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 
-set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C);
+set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C,'YTick',[0:0.2:1.4]);
 
 xlim([0.5 7.5])
 ylabel({'Deaths','averted per 10,000'},'FontSize',16)
@@ -186,7 +186,7 @@ l=legend(XTL,'Location','northwest','NumColumns',4);
 l.Title.String='Days between doses';
 legend boxoff
 text(-0.14,1,'G','Fontsize',28,'Units','Normalized');
-ylim([0 1.3])
+ylim([0 1])
 subplot('Position',[0.565, 0.07,0.43 0.27])
 Y=zeros(7,8);
 Y_Err.LB=zeros(7,8);
@@ -200,7 +200,7 @@ end
 Error_Bar_Plot(Y,Y_Err,C_Plot);
 box off;
 set(gca,'LineWidth',2,'TickDir','out','Fontsize',14,'XTick',[1:7],'XTickLabel',Age_C)
-ylim([0 6])
+ylim([0 5])
 xlim([0.5 7.5])
 ylabel({'Costs ($100,000)','averted per 10,000'},'FontSize',16)
 xlabel('Age group','FontSize',16)
@@ -208,5 +208,6 @@ l=legend(XTL,'Location','northwest','NumColumns',4);
 l.Title.String='Days between doses';
 legend boxoff
 text(-0.14,1,'H','Fontsize',28,'Units','Normalized');
+
 print(gcf,['Supplementary_Figure_10-50_to_64.png'],'-dpng','-r300');    
 end
