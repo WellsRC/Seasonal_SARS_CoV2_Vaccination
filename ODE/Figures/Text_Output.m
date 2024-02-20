@@ -33,9 +33,9 @@ end
 Time_DoseFDA=Time_Dose(Y==max(Y));
 load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(Time_DoseFDA) '_days.mat']);
 
-fprintf(['SD-AVC vs FDA-AVC Hospital:' num2str(Comparison.Average.Cumulative_Count_Hospital_dt,'%10.0f') ' (95%% UI: ' num2str(Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%10.0f')  char(8211) num2str(Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5),'%10.0f') ')  \n']);
-fprintf(['SD-AVC vs FDA-AVC Death:' num2str(Comparison.Average.Cumulative_Count_Death_dt,'%10.0f') ' (95%% UI: ' num2str(Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%10.0f')  char(8211) num2str(Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5),'%10.0f') ')  \n']);
-fprintf(['SD-AVC vs FDA-AVC  Costs:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
+fprintf(['Annual vs FDA-proposed Hospital:' num2str(Comparison.Average.Cumulative_Count_Hospital_dt,'%10.0f') ' (95%% UI: ' num2str(Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%10.0f')  char(8211) num2str(Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5),'%10.0f') ')  \n']);
+fprintf(['Annual vs FDA-proposed Death:' num2str(Comparison.Average.Cumulative_Count_Death_dt,'%10.0f') ' (95%% UI: ' num2str(Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%10.0f')  char(8211) num2str(Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5),'%10.0f') ')  \n']);
+fprintf(['Annual vs FDA-proposed  Costs:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
 
 fprintf('=========================================================================== \n');
@@ -45,12 +45,12 @@ fprintf('=======================================================================
 load([temp_cd 'Model_Output_Summary_Main_Text_Annual.mat']);
 
 
-fprintf(['SD-AVC-Cumulative Count Hospital:' num2str(Output_Summary.Average.Cumulative_Count_Hospital,'%10.0f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cumulative_Count_Hospital(PRCT==2.5),'%10.0f') char(8211) num2str(Output_Summary.PRCT.Cumulative_Count_Hospital(PRCT==97.5),'%10.0f') ')  \n']);
-fprintf(['SD-AVC-Cumulative Count Death:' num2str(Output_Summary.Average.Cumulative_Count_Death,'%10.0f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cumulative_Count_Death(PRCT==2.5),'%10.0f') char(8211) num2str(Output_Summary.PRCT.Cumulative_Count_Death(PRCT==97.5),'%10.0f') ') \n']);
-fprintf(['SD-AVC-Cumulative Total Costs:' num2str(Output_Summary.Average.Cost_Total(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cost_Total(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Output_Summary.PRCT.Cost_Total(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
+fprintf(['Annual-Cumulative Count Hospital:' num2str(Output_Summary.Average.Cumulative_Count_Hospital,'%10.0f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cumulative_Count_Hospital(PRCT==2.5),'%10.0f') char(8211) num2str(Output_Summary.PRCT.Cumulative_Count_Hospital(PRCT==97.5),'%10.0f') ')  \n']);
+fprintf(['Annual-Cumulative Count Death:' num2str(Output_Summary.Average.Cumulative_Count_Death,'%10.0f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cumulative_Count_Death(PRCT==2.5),'%10.0f') char(8211) num2str(Output_Summary.PRCT.Cumulative_Count_Death(PRCT==97.5),'%10.0f') ') \n']);
+fprintf(['Annual-Cumulative Total Costs:' num2str(Output_Summary.Average.Cost_Total(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Output_Summary.PRCT.Cost_Total(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Output_Summary.PRCT.Cost_Total(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
 fprintf('===========================================================================\n');
-fprintf(['Results: Benefits of FDA-AVC\n']);
+fprintf(['Results: Benefits of FDA-proposed\n']);
 fprintf('===========================================================================\n');
 
 Y=zeros(8,1);
@@ -70,9 +70,9 @@ end
 Time_Dose=Time_Dose(Y==max(Y));
 load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(Time_Dose) '_days.mat']);
 
-fprintf(['SD-AVC vs FDA-AVC Hospital:' num2str(Comparison.Average.Cumulative_Count_Hospital_dt,'%10.0f') ' (95%% UI: ' num2str(Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%10.0f')  char(8211) num2str(Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5),'%10.0f') ')  \n']);
-fprintf(['SD-AVC vs FDA-AVC Death:' num2str(Comparison.Average.Cumulative_Count_Death_dt,'%10.0f') ' (95%% UI: ' num2str(Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%10.0f')  char(8211) num2str(Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5),'%10.0f') ')  \n']);
-fprintf(['SD-AVC vs FDA-AVC  Costs:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
+fprintf(['Annual vs FDA-proposed Hospital:' num2str(Comparison.Average.Cumulative_Count_Hospital_dt,'%10.0f') ' (95%% UI: ' num2str(Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==2.5),'%10.0f')  char(8211) num2str(Comparison.PRCT.Cumulative_Count_Hospital_dt(PRCT==97.5),'%10.0f') ')  \n']);
+fprintf(['Annual vs FDA-proposed Death:' num2str(Comparison.Average.Cumulative_Count_Death_dt,'%10.0f') ' (95%% UI: ' num2str(Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==2.5),'%10.0f')  char(8211) num2str(Comparison.PRCT.Cumulative_Count_Death_dt(PRCT==97.5),'%10.0f') ')  \n']);
+fprintf(['Annual vs FDA-proposed  Costs:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
 
 fprintf('===========================================================================\n');
@@ -98,23 +98,23 @@ Time_Dose_65=Time_Dose(Y65==max(Y65));
 Time_Dose_50=Time_Dose(Y50==max(Y50));
 Time_Dose_18=Time_Dose(Y18==max(Y18));
 
-fprintf(['S1: Time between doses the maximizes overall costs averted: ' num2str(Time_Dose_65) ' days \n']);
-fprintf(['S2: Time between doses the maximizes overall costs averted: ' num2str(Time_Dose_50) ' days \n']);
-fprintf(['S3: Time between doses the maximizes overall costs averted: ' num2str(Time_Dose_18) ' days \n']);
+fprintf(['Annual with second dose for 65+: Time between doses the maximizes overall costs averted: ' num2str(Time_Dose_65) ' days \n']);
+fprintf(['Annual with second dose for 50-64: Time between doses the maximizes overall costs averted: ' num2str(Time_Dose_50) ' days \n']);
+fprintf(['Annual with second dose for 18-49: Time between doses the maximizes overall costs averted: ' num2str(Time_Dose_18) ' days \n']);
 
 load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_65_and_older_' num2str(Time_Dose_65) '_days.mat']);
-fprintf(['S1: Maximal overall costs averted:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
+fprintf(['Annual with second dose for 65+: Maximal overall costs averted:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
 load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_50_64_' num2str(Time_Dose_50) '_days.mat']);
-fprintf(['S2: Maximal overall costs averted:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
+fprintf(['Annual with second dose for 50-64: Maximal overall costs averted:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
 load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_18_49_' num2str(Time_Dose_18) '_days.mat']);
-fprintf(['S3: Maximal overall costs averted:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
+fprintf(['Annual with second dose for 18-49: Maximal overall costs averted:' num2str(Comparison.Average.Cost_Total_dt(end)./10^9,'%3.2f') ' (95%% UI: ' num2str(Comparison.PRCT.Cost_Total_dt(PRCT==2.5,end)./10^9,'%3.2f') char(8211) num2str(Comparison.PRCT.Cost_Total_dt(PRCT==97.5,end)./10^9,'%3.2f') ') billion USD \n']);
 
 fprintf('===========================================================================\n');
 fprintf(['Results: Discussions\n']);
 fprintf('===========================================================================\n');
 
 load([temp_cd 'Comparison_Summary_Main_Text_Annual_vs_Two_Dose_under_2_and_50_and_older_' num2str(Time_DoseFDA) '_days.mat']);
-fprintf(['Relative SD-AVC vs FDA-AVC Hospital: ' num2str(100.*Comparison.Average.Cumulative_Count_Hospital_rel,'%2.0f') '%%\n']);%
-fprintf(['Relative SD-AVC vs FDA-AVC Death: ' num2str(100.*Comparison.Average.Cumulative_Count_Death_rel,'%2.0f') '%%\n']);
+fprintf(['Relative Annual vs FDA-proposed Hospital: ' num2str(100.*Comparison.Average.Cumulative_Count_Hospital_rel,'%2.0f') '%%\n']);%
+fprintf(['Relative Annual vs FDA-proposed Death: ' num2str(100.*Comparison.Average.Cumulative_Count_Death_rel,'%2.0f') '%%\n']);

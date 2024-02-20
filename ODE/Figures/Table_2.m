@@ -1,6 +1,6 @@
 function T=Table_2()
 
-Strategy={'SD-AVC','FDA-AVC','S1','S2','S3'}';
+Strategy={'Annual','FDA-proposed','Annual with second dose for 65+','Annual with second dose for 50-64','Annual with second dose for 18-49'}';
 
 temp_cd=pwd;
 

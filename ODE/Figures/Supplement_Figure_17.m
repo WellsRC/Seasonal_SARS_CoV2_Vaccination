@@ -66,7 +66,7 @@ for ii=1:8
     text(-0.3,0.975,char(64+ii),"FontSize",24,'units','normalized')
 %     xlabel('Date','fontsize',16)
 if(ii==1)
-        legend({'Continual','SD-AVC','FDA-AVC'},'Fontsize',12)
+        legend({'Continual','Annual','FDA-proposed'},'Fontsize',12)
         legend boxoff
 end
 end

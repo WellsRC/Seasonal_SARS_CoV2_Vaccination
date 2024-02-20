@@ -2,7 +2,6 @@ function  Supplement_Figure_16
 close all;
 Y_Err.LineWidth=2;
 Y_Err.Cap_Size=40;
-XTL={'Continual','Annual','Two Dose'};
 temp_cd=pwd;
 load([temp_cd(1:end-11) 'Contact_Matrix\Contact_USA_85.mat'],'N');
 Av=[0:84];
@@ -118,7 +117,7 @@ for ii=1:8
     text(0.05,0.95,Age_C{ii},'Fontsize',16,'units','normalized')
     text(-0.3,1,char(72+ii),"FontSize",24,'units','normalized')
 end
-legend({'Continual: Vaccine','Continual: Natural','SD-AVC: Vaccine','SD-AVC: Natural','FDA-AVC: Vaccine','FDA-AVC: Natural'},'NumColumns',6,'Position',[0.157933638715726,0.002406542734027,0.738157878737701,0.026715076489287],'Fontsize',16)
+legend({'Continual: Vaccine','Continual: Natural','Annual: Vaccine','Annual: Natural','FDA-proposed: Vaccine','FDA-proposed: Natural'},'NumColumns',6,'Position',[0.157933638715726,0.002406542734027,0.738157878737701,0.026715076489287],'Fontsize',16)
 legend boxoff;
 print(gcf,['Supplementary_Figure_16.png'],'-dpng','-r300');    
 end

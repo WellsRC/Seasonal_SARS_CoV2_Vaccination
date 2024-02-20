@@ -64,7 +64,7 @@ for ii=1:8
         xlabel('Date','fontsize',16)
 %         xtickformat('MMM d' ); ax=gca; ax.XTickLabel = ax.XTickLabel;
 
-         legend({'Continual','SD-AVC','FDA-AVC'},'Fontsize',12)
+         legend({'Continual','Annual','FDA-proposed'},'Fontsize',12,'Position',[0.157275730038456,0.88499784074044,0.102631576888655,0.088197144127696],'units','normalized');
          legend boxoff
 
     else
