@@ -12,3 +12,8 @@ Chad R. Wells <sup>1</sup>, Abhishek Pandey <sup>1</sup>, Seyed M. Moghadas <sup
 Copyright (C) <2024>, Chad R. Wells et. al. All rights reserved. Released under the GNU General Public License (GPL)
 
 This repository contains codes and data used to simulate and analyze annual SARS-CoV-2 vaccination campaigns.
+
+## Contact matrix
+The age-stratified contact matrix downloaded from [Mistry et al (2021)]([url](https://github.com/mobs-lab/mixing-patterns)https://github.com/mobs-lab/mixing-patterns).
+## Immunity
+Optimization for the temporal natural and vaccine immunity. The m-files starting with AIC_Name_Immunity (e.g., AIC_Vaccine_Immunity) optimize the different immunity models and compute the AIC score.
