@@ -1,5 +1,5 @@
 # Evaluation of strategies for transitioning to annual SARS-CoV-2 vaccination campaigns in the United States
-Chad R. Wells <sup>1</sup>, Abhishek Pandey <sup>1</sup>, Seyed M. Moghadas <sup>2</sup>, Meagan C. Fitzpatrick <sup>3</sup>, Burton H. Singer <sup>4</sup>, Alison P. Galvani <sup>1,5</sup>
+Chad R. Wells <sup>1</sup>, Abhishek Pandey <sup>1</sup>, Seyed M. Moghadas <sup>2</sup>, Meagan C. Fitzpatrick <sup>3</sup>, Burton H. Singer <sup>4</sup>, Alison P. Galvani <sup>1</sup>
 
 
 1 Center for Infectious Disease Modeling and Analysis (CIDMA), Yale School of Public Health, New Haven, Connecticut 06520, USA <br /> 
