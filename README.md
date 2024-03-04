@@ -17,3 +17,11 @@ This repository contains codes and data used to simulate and analyze annual SARS
 The age-stratified contact matrix downloaded from [Mistry et al 2021](https://github.com/mobs-lab/mixing-patterns).
 ## Immunity
 Optimization for the temporal natural and vaccine immunity. The m-files starting with AIC_Name_Immunity (e.g., AIC_Vaccine_Immunity) optimize the different immunity models and compute the AIC score.
+## ODE
+Contains the scripts and functions to run the different vaccination campaigns
+### Vaccination_Dynamics_Fit
+The estimation of the vaccine uptake and vaccination rates used in the model
+### Figures
+Contains the scripts to produce the figures, tables, and model results for the manuscript
+### Ananlayze_Samples
+Contains the scripts to conduct the trajectory filtering as well as analyze and sumamrize the model output.
